@@ -1,5 +1,5 @@
 import "./App.css";
-import CardButton from "./components/cardButton/cardButton";
+import CardButton from "./components/molecules/cardButton/cardButton";
 
 function App() {
   return (

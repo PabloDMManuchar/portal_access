@@ -1,6 +1,6 @@
 import React from "react";
 import "./cardButton.css";
-import Button from "../buttons/button";
+import Button from "../../atoms/buttons/button";
 
 const buttonsData = [
   {
