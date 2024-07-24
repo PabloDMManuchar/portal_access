@@ -9,6 +9,7 @@ function App() {
       </div>
 
       <CardButton />
+      
       {/* <footer className="footer">
         <img src={manucharLogo} alt="LogoIT" className="imagen-footer" />
         <img src={logoItMar} alt="LogoIT" className="imagen-footer" />
