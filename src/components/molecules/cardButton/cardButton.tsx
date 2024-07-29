@@ -75,27 +75,10 @@ const cardsData = [
   },
 ];
 
-// interface  {
-//   url: string;
-//   icon: string;
-//   text: string;
-// }
-
-// <Button
-//   key={index}
-//   url={button?.url}
-//   icon={button?.icon}
-//   text={button?.text}
-// />
-
-const CardButton: React.FC<{group:'admin' | 'ventas' | 'comex' | string}> = ({group}) => (
-
-
-
-
+const CardButton: React.FC = () => (
   <div className="containerButton">
     {cardsData.map((card, index) => (
-      <div key={index}className="min-w-60">
+      <div key={index} className="min-w-60">
         <a
           href={card?.url}
           className="relative block overflow-hidden rounded-lg p-2 sm:p-6 lg:p-8 bg-slate-800 transition duration-300 ease-in-out transform hover:bg-slate-700 "
