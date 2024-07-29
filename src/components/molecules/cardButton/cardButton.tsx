@@ -1,12 +1,12 @@
 import React from "react";
 import "./cardButton.css";
-import Button from "../../atoms/buttons/button";
+// import Button from "../../atoms/buttons/button";
 
-const buttonsData = [
+const cardsData = [
   {
     url: "https://www.manuchar.com/ar/es",
     icon: "fa-solid fa-globe",
-    text: "WEB MANUCHAR ARGENTINA",
+    text: "MANUCHAR ARGENTINA",
   },
   {
     url: "http://10.9.0.103:80/apuntadores/DG",
@@ -81,15 +81,54 @@ const buttonsData = [
 //   text: string;
 // }
 
-const CardButton: React.FC = () => (
+// <Button
+//   key={index}
+//   url={button?.url}
+//   icon={button?.icon}
+//   text={button?.text}
+// />
+
+const CardButton: React.FC<{group:'admin' | 'ventas' | 'comex' | string}> = ({group}) => (
+
+
+
+
   <div className="containerButton">
-    {buttonsData.map((button, index) => (
-      <Button
-        key={index}
-        url={button.url}
-        icon={button.icon}
-        text={button.text}
-      />
+    {cardsData.map((card, index) => (
+      <div key={index}className="min-w-60">
+        <a
+          href={card?.url}
+          className="relative block overflow-hidden rounded-lg p-2 sm:p-6 lg:p-8 bg-slate-800 transition duration-300 ease-in-out transform hover:bg-slate-700 "
+          // className="relative block overflow-hidden rounded-lg p-2 sm:p-6 lg:p-8 bg-slate-800 transition duration-300 ease-in-out transform hover:bg-slate-700 hover:scale-105"
+        >
+          <span className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"></span>
+
+          <div className="flex flex-col items-center justify-center">
+            <h3 className="text-lg text-white">{card?.text}</h3>
+
+            <div className="py-3">
+              <i className={`fa ${card?.icon} `}></i>
+            </div>
+          </div>
+          {/* <div className="mt-4">
+            <p className="text-pretty text-sm text-gray-500">{card?.text}</p>
+          </div> */}
+
+          {/* <dl className="mt-6 flex gap-4 sm:gap-6">
+            <div className="flex flex-col-reverse">
+              <dt className="text-sm font-medium text-gray-600">Published</dt>
+              <dd className="text-xs text-gray-500">31st June, 2021</dd>
+            </div>
+
+            <div className="flex flex-col-reverse">
+              <dt className="text-sm font-medium text-gray-600">
+                Reading time
+              </dt>
+              <dd className="text-xs text-gray-500">3 minute</dd>
+            </div>
+          </dl> */}
+        </a>
+      </div>
     ))}
   </div>
 );
