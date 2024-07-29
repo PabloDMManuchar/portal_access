@@ -14,7 +14,7 @@ const Home: React.FC = () => {
           ACCESS
         </h2>
       </div>
-      {isAdmin && <CardButton  group={'ventas'} />}
+      {isAdmin && <CardButton />}
     </>
   );
 };
