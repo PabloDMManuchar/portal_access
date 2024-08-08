@@ -76,7 +76,7 @@ const cardsData = [
 ];
 
 const CardButton: React.FC = () => (
-  <div className="containerButton">
+  <div className="flex flex-wrap max-w-3xl justify-center">
     {cardsData.map((card, index) => (
       <div key={index} className="min-w-60">
         <a
