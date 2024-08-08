@@ -6,6 +6,7 @@ export default defineConfig({
   define: {
     'process.env': {}
   },
+  base: '/portal_access/',
   plugins: [
     react(),
     VitePWA({
