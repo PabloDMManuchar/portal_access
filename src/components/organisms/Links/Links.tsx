@@ -8,14 +8,35 @@ import { services } from "../../../services";
 import { TLinks } from "../../../services/links/links";
 
 const Links: React.FC = () => {
-  const [data, setData] = useState<TLinks>();
+  const [linksPublics, setLinksPublics] = useState<TLinks>();
+  const [linksPrivate, setLinksPrivate] = useState<TLinks>();
+  const [linksPowerBi, setLinksPowerBi] = useState<TLinks>();
+
+  const [isVPN, setisVPN] = useState<boolean>(false);
 
   const getData = async () => {
     const data = services.links.data;
-    setData(data);
+    const publics = data.filter((item) => item.type === "public");
+    const privates = data.filter((item) => item.type === "private");
+    const powerBi = data.filter((item) => item.type === "powerBi");
+    setLinksPublics(publics);
+    setLinksPrivate(privates);
+    setLinksPowerBi(powerBi);
+  };
+
+  const isAPIActive = async () => {
+    try {
+      const response = await services.status.isAPIActive();
+      if (response.message) {
+        setisVPN(true);
+      }
+    } catch (error) {
+      console.error("Error fetching API:", error);
+    }
   };
 
   useEffect(() => {
+    isAPIActive();
     getData();
   }, []);
 
@@ -23,16 +44,24 @@ const Links: React.FC = () => {
     <div className="w-full flex justify-center z-10">
       <Tabs align="end">
         <TabList>
-          <Tab color={"gray.400"}>Mis accesos</Tab>
-          <Tab color={"gray.400"}>Opcion 2</Tab>
+          <Tab color={"gray.400"}>Accesos</Tab>
+          <Tab color={"gray.400"} isDisabled={!isVPN}>
+            Mis accesos
+          </Tab>
           <Tab color={"gray.400"}>Mis BI</Tab>
         </TabList>
 
         <TabPanels>
-          <TabPanel>{data && <CardButtonDos data={data} />}</TabPanel>
-          <TabPanel>{data && <CardButtonTres data={data} />}</TabPanel>
           <TabPanel>
-            <CardButton />
+            {linksPublics && <CardButtonDos data={linksPublics} />}
+          </TabPanel>
+          <TabPanel>
+            {linksPrivate && <CardButtonDos data={linksPrivate} />}
+          </TabPanel>
+          <TabPanel>
+            <TabPanel>
+              {linksPowerBi && <CardButtonDos data={linksPowerBi} />}
+            </TabPanel>
           </TabPanel>
         </TabPanels>
       </Tabs>
