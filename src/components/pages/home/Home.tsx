@@ -7,7 +7,7 @@ const Home: React.FC = () => {
   return (
     <div className="relative min-h-screen flex flex-col items-center bg-custom-blue">
       <div className="pl-8 my-4 w-full text-start flex z-10">
-      <img src="/portal_access/manucharlogo.png" alt="Manuchar Logo" width="320" />
+      <img src="/manucharlogo.png" alt="Manuchar Logo" width="320" />
 
       </div>
 
@@ -17,7 +17,7 @@ const Home: React.FC = () => {
 
       <footer className="footer z-10">
         <p className="text-white font-light font-sm"></p>
-        <img src={"/portal_access/Mit.png"} alt="LogoIT" className="imagen-footer " />
+        <img src={"/Mit.png"} alt="LogoIT" className="imagen-footer " />
       </footer>
 
       <div className="absolute bottom-0 w-full z-0">
