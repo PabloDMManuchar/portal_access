@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
-
-import CardButton from "../cardButton/cardButton";
 import CardButtonDos from "../cardButton/cardButtonDos";
-import CardButtonTres from "../cardButton/cardButtonTres";
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { services } from "../../../services";
 import { TLinks } from "../../../services/links/links";
