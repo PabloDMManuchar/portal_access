@@ -18,28 +18,9 @@
 
 
 body {
-  background-image: url('fondoII.svg');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-  background-color: #01010d;
 }
 
 
-footer {
-  /* background: gray; */
-  position: absolute;
-  width:100%;
-  bottom: 1rem;
-  padding: 1rem;
-  display: flex;
-  justify-content: space-between;
-}
-
-.imagen-footer {
-  display: block; /* Muestra la imagen como un bloque */
-  margin-top: 30px; /* Espacio entre el contenido del footer y la imagen */
-  max-width: 100%; /* Ajusta el ancho máximo de la imagen */
-  float: right;
-  height: 4rem;
-}
