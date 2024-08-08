@@ -1,1 +1,1 @@
-{"name":"Mi Aplicación PWA","short_name":"MiApp","start_url":"/portal_access/","display":"standalone","background_color":"#ffffff","lang":"en","scope":"/portal_access/","description":"Descripción de mi aplicación PWA","theme_color":"#ffffff"}
+{"name":"Mi Aplicación PWA","short_name":"MiApp","start_url":"/","display":"standalone","background_color":"#ffffff","lang":"en","scope":"/","description":"Descripción de mi aplicación PWA","theme_color":"#ffffff"}
