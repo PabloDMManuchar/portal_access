@@ -1,0 +1,17 @@
+footer {
+    /* background: ; */
+    position: absolute;
+    width:100%;
+    bottom: 0;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .imagen-footer {
+    display: block; /* Muestra la imagen como un bloque */
+    /* margin-top: 30px;  */
+    max-width: 100%; /* Ajusta el ancho máximo de la imagen */
+    float: right;
+    height: 4rem;
+  }
