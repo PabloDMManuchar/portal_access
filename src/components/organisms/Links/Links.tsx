@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import CardButtonDos from "../cardButton/cardButtonDos";
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import {
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Tooltip,
+} from "@chakra-ui/react";
 import { services } from "../../../services";
 import { TLinks } from "../../../services/links/links";
 
@@ -43,7 +50,7 @@ const Links: React.FC = () => {
         <TabList>
           <Tab color={"gray.400"}>Accesos</Tab>
           <Tab color={"gray.400"} isDisabled={!isVPN}>
-            Mis accesos
+            {!isVPN ? <Tooltip label={'No tienes acceso a estos accesos, posiblemente no tengas la VPN conectada.'}>Mis accesos</Tooltip> : "Mis accesos"}
           </Tab>
           <Tab color={"gray.400"}>Mis BI</Tab>
         </TabList>
