@@ -2,11 +2,12 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
+
 export default defineConfig({
   define: {
     'process.env': {}
   },
-  base: '/portal_access/',
+  base: '/',
   publicDir: 'public',
   plugins: [
     react(),
