@@ -6,7 +6,6 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  Tooltip,
 } from "@chakra-ui/react";
 import { services } from "../../../services";
 import { TLinks } from "../../../services/links/links";
