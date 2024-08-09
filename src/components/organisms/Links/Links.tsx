@@ -1,19 +1,32 @@
 import React, { useEffect, useState } from "react";
 import CardButtonDos from "../cardButton/cardButtonDos";
 import {
+  Divider,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
+  Text
 } from "@chakra-ui/react";
 import { services } from "../../../services";
 import { TLinks } from "../../../services/links/links";
 
+const TitleList: React.FC<{ text: string }> = ({ text }) => {
+  return (
+    <div className="pt-6 pb-4">
+      <Text color={'white'}>{text}</Text>
+      <Divider borderColor="gray.800" />
+    </div>
+  );
+};
+
 const Links: React.FC = () => {
-  const [linksPublics, setLinksPublics] = useState<TLinks>();
-  const [linksPrivate, setLinksPrivate] = useState<TLinks>();
-  const [linksPowerBi, setLinksPowerBi] = useState<TLinks>();
+  const [allLinks, setAllLinks] = useState<{
+    publics: TLinks;
+    privates: TLinks;
+    powerBi: TLinks;
+  }>();
 
   // const [isVPN, setisVPN] = useState<boolean>(false);
 
@@ -22,21 +35,13 @@ const Links: React.FC = () => {
     const publics = data.filter((item) => item.type === "public");
     const privates = data.filter((item) => item.type === "private");
     const powerBi = data.filter((item) => item.type === "powerBi");
-    setLinksPublics(publics);
-    setLinksPrivate(privates);
-    setLinksPowerBi(powerBi);
-  };
 
-  // const isAPIActive = async () => {
-  //   try {
-  //     const response = await services.status.isAPIActive();
-  //     if (response.message) {
-  //       setisVPN(true);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching API:", error);
-  //   }
-  // };
+
+    const all = { publics: publics, privates: privates, powerBi: powerBi };
+    if (all) {
+      setAllLinks(all);
+    }
+  };
 
   useEffect(() => {
     // isAPIActive();
@@ -44,27 +49,43 @@ const Links: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full flex justify-center z-10">
+    <div className=" z-10">
       <Tabs align="end">
         <TabList>
-          <Tab color={"gray.400"}>Accesos</Tab>
-          <Tab color={"gray.400"} >
+          <Tab color={"gray.400"}>Accesos publicos</Tab>
+          <Tab color={"gray.400"}>
             {/* {!isVPN ? <Tooltip label={'No tienes acceso a estos accesos, posiblemente no tengas la VPN conectada.'}>Mis accesos</Tooltip> : "Mis accesos"} */}
-           Mis accesos
+            Mis accesos
+
           </Tab>
           <Tab color={"gray.400"}>Mis BI</Tab>
         </TabList>
 
         <TabPanels>
           <TabPanel>
-            {linksPublics && <CardButtonDos data={linksPublics} />}
+            <>
+              {allLinks?.publics && <CardButtonDos data={allLinks?.publics} />}
+              {allLinks?.privates && (
+                <>
+                  <TitleList text={'Privados'}/>
+                  <CardButtonDos data={allLinks?.privates} />
+                </>
+              )}
+
+              {allLinks?.powerBi && (
+                <>
+                  <TitleList text={'PowerBi'}/>
+                  <CardButtonDos data={allLinks?.powerBi} />
+                </>
+              )}
+            </>
           </TabPanel>
           <TabPanel>
-            {linksPrivate && <CardButtonDos data={linksPrivate} />}
+            {allLinks?.privates && <CardButtonDos data={allLinks?.privates} />}
           </TabPanel>
           <TabPanel>
             <TabPanel>
-              {linksPowerBi && <CardButtonDos data={linksPowerBi} />}
+              {allLinks?.powerBi && <CardButtonDos data={allLinks?.powerBi} />}
             </TabPanel>
           </TabPanel>
         </TabPanels>
