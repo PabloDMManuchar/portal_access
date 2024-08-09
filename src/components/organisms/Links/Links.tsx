@@ -49,8 +49,9 @@ const Links: React.FC = () => {
       <Tabs align="end">
         <TabList>
           <Tab color={"gray.400"}>Accesos</Tab>
-          <Tab color={"gray.400"} isDisabled={!isVPN}>
-            {!isVPN ? <Tooltip label={'No tienes acceso a estos accesos, posiblemente no tengas la VPN conectada.'}>Mis accesos</Tooltip> : "Mis accesos"}
+          <Tab color={"gray.400"} >
+            {/* {!isVPN ? <Tooltip label={'No tienes acceso a estos accesos, posiblemente no tengas la VPN conectada.'}>Mis accesos</Tooltip> : "Mis accesos"} */}
+           Mis accesos
           </Tab>
           <Tab color={"gray.400"}>Mis BI</Tab>
         </TabList>
