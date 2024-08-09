@@ -6,7 +6,8 @@ const Home: React.FC = () => {
   return (
     <div className="relative min-h-screen flex flex-col items-center bg-custom-blue">
       <div className="pl-8 my-4 w-full text-start flex z-10">
-        <img src="/manucharlogo.png" alt="Manuchar Logo" width="320" />
+      <img src="/manucharlogo.png" alt="Manuchar Logo" width="320" />
+
       </div>
       <div className="w-full flex justify-center">
         <Links />

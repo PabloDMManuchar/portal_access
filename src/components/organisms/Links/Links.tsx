@@ -7,8 +7,7 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  Text,
-  // Tooltip,
+  Text
 } from "@chakra-ui/react";
 import { services } from "../../../services";
 import { TLinks } from "../../../services/links/links";
@@ -37,22 +36,12 @@ const Links: React.FC = () => {
     const privates = data.filter((item) => item.type === "private");
     const powerBi = data.filter((item) => item.type === "powerBi");
 
+
     const all = { publics: publics, privates: privates, powerBi: powerBi };
     if (all) {
       setAllLinks(all);
     }
   };
-
-  // const isAPIActive = async () => {
-  //   try {
-  //     const response = await services.status.isAPIActive();
-  //     if (response.message) {
-  //       setisVPN(true);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching API:", error);
-  //   }
-  // };
 
   useEffect(() => {
     // isAPIActive();
@@ -67,6 +56,7 @@ const Links: React.FC = () => {
           <Tab color={"gray.400"}>
             {/* {!isVPN ? <Tooltip label={'No tienes acceso a estos accesos, posiblemente no tengas la VPN conectada.'}>Mis accesos</Tooltip> : "Mis accesos"} */}
             Mis accesos
+
           </Tab>
           <Tab color={"gray.400"}>Mis BI</Tab>
         </TabList>
