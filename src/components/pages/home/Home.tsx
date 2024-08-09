@@ -1,7 +1,6 @@
 import React from "react";
 import Links from "../../organisms/Links/Links";
 import "./home.css";
-// import { Divider } from "@chakra-ui/react";
 
 const Home: React.FC = () => {
   return (
@@ -9,10 +8,9 @@ const Home: React.FC = () => {
       <div className="pl-8 my-4 w-full text-start flex z-10">
         <img src="/manucharlogo.png" alt="Manuchar Logo" width="320" />
       </div>
-
-      <Links />
-
-      {/* <Divider zIndex={10} w={"80%"} /> */}
+      <div className="w-full flex justify-center">
+        <Links />
+      </div>
 
       <footer className="footer z-10">
         <p className="text-white font-light font-sm"></p>
