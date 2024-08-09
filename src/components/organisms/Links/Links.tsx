@@ -16,7 +16,7 @@ const Links: React.FC = () => {
   const [linksPrivate, setLinksPrivate] = useState<TLinks>();
   const [linksPowerBi, setLinksPowerBi] = useState<TLinks>();
 
-  const [isVPN, setisVPN] = useState<boolean>(false);
+  // const [isVPN, setisVPN] = useState<boolean>(false);
 
   const getData = async () => {
     const data = services.links.data;
@@ -28,19 +28,19 @@ const Links: React.FC = () => {
     setLinksPowerBi(powerBi);
   };
 
-  const isAPIActive = async () => {
-    try {
-      const response = await services.status.isAPIActive();
-      if (response.message) {
-        setisVPN(true);
-      }
-    } catch (error) {
-      console.error("Error fetching API:", error);
-    }
-  };
+  // const isAPIActive = async () => {
+  //   try {
+  //     const response = await services.status.isAPIActive();
+  //     if (response.message) {
+  //       setisVPN(true);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching API:", error);
+  //   }
+  // };
 
   useEffect(() => {
-    isAPIActive();
+    // isAPIActive();
     getData();
   }, []);
 
