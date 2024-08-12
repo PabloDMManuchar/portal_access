@@ -4,7 +4,7 @@ import { TLinks } from "../../../services/links/links";
 import { Tooltip } from "@chakra-ui/react";
 
 const CardButtonDos: React.FC<{ data: TLinks }> = ({ data }) => (
-  <div className="flex flex-wrap max-w-4xl justify-start">
+  <div className="flex flex-wrap justify-center">
     {data?.map((card, index) => (
       <Tooltip key={index} label={card?.title.toLocaleLowerCase()} placement="top" fontSize='sm' bg='gray.300' color='black' hasArrow >
         <a  className=" m-4" href={card?.url}>

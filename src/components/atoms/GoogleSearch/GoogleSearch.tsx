@@ -11,7 +11,7 @@ const GoogleSearch: React.FC = () => {
   }, []);
 
   return (
-    <div className="gcse-search" />
+    <div className="gcse-search" style={{ backgroundColor: '#f0f0f0', padding: '10px' }}/>
   );
 };
 
