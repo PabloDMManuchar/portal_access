@@ -1,26 +1,14 @@
 import React, { useEffect, useState } from "react";
 import CardButtonDos from "../cardButton/cardButtonDos";
 import {
-  // Divider,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
-  // Text,
-  // Tooltip,
 } from "@chakra-ui/react";
 import { services } from "../../../services";
 import { TLinks } from "../../../services/links/links";
-
-// const TitleList: React.FC<{ text: string }> = ({ text }) => {
-//   return (
-//     <div className="pt-6 pb-4">
-//       <Text color={"white"}>{text}</Text>
-//       <Divider borderColor="gray.800" />
-//     </div>
-//   );
-// };
 
 const Links: React.FC = () => {
   const [allLinks, setAllLinks] = useState<{
@@ -29,7 +17,6 @@ const Links: React.FC = () => {
     powerBi: TLinks;
   }>();
 
-  // const [isVPN, setisVPN] = useState<boolean>(false);
 
   const getData = async () => {
     const data = services.links.data;
@@ -43,19 +30,8 @@ const Links: React.FC = () => {
     }
   };
 
-  // const isAPIActive = async () => {
-  //   try {
-  //     const response = await services.status.isAPIActive();
-  //     if (response.message) {
-  //       setisVPN(true);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching API:", error);
-  //   }
-  // };
 
   useEffect(() => {
-    // isAPIActive();
     getData();
   }, []);
 
