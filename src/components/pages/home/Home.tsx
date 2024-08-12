@@ -1,21 +1,37 @@
 import React from "react";
 import Links from "../../organisms/Links/Links";
 import "./home.css";
+import IconUser from "../../atoms/icons/UserIcon/UserIcon";
+import { Tooltip } from "@chakra-ui/react";
+import GoogleSearch from "../../atoms/GoogleSearch/GoogleSearch";
 
 const Home: React.FC = () => {
   return (
-    <div className="relative min-h-screen flex flex-col items-center bg-custom-blue">
-      <div className="pl-8 my-4 w-full text-start flex z-10">
-      <img src="/manucharlogo.png" alt="Manuchar Logo" width="320" />
+
+    <div className="flex flex-col items-center min-h-screen relative overflow-hidden bg-slate-950">
+      <div className="pl-8 my-4 w-full text-start flex z-10 justify-between">
+        <img src="/manucharlogo.png" alt="Manuchar Logo" width="320" />
+        <Tooltip label="proximamente...">
+          <div className="p-4 ">
+            <IconUser width={36} height={36} />
+          </div>
+        </Tooltip>
 
       </div>
-      <div className="w-full flex justify-center">
+
+      <div
+        className="gcse-search-container bg-white rounded-lg overflow-hidden shadow-lg w-full "
+        style={{ width: "400px" }}
+      >
+        <GoogleSearch />
+      </div>
+      <div className="w-full flex justify-center ">
         <Links />
       </div>
 
-      <footer className="footer z-10">
+      <footer className="footer absolute bottom-4 right-4 z-10">
         <p className="text-white font-light font-sm"></p>
-        <img src={"/Mit.png"} alt="LogoIT" className="imagen-footer " />
+        <img src={"/Mit.png"} alt="LogoIT" className="imagen-footer" />
       </footer>
 
       <div className="absolute bottom-0 w-full z-0">
