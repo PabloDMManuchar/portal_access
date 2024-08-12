@@ -5,7 +5,7 @@ export type TLink = {
   text: string;
   title: string;
   src: string;
-  type: "public" | "private" | "powerBi";
+  type: "public" | "public" | "powerBi";
 }
 
 export type TLinks = TLink[]
@@ -28,7 +28,7 @@ const data: TLinks = [
     text: "APUNTADORES DG",
     title: "APUNTADORES DG",
     src: URL + "/apuntadores/background.png",
-    type: "private",
+    type: "public",
   },
   {
     url: URL + ":80/apuntadores/SN",
@@ -36,7 +36,7 @@ const data: TLinks = [
     text: "APUNTADORES SN",
     title: "APUNTADORES SN",
     src: URL + "/apuntadores/background.png",
-    type: "private",
+    type: "public",
   },
   {
     url: URL + ":80/stockit",
@@ -44,7 +44,7 @@ const data: TLinks = [
     text: "STOCK IT",
     title: "STOCK IT",
     src: URL + "/stockit/Content/adminlte/img/Stockit.jpg",
-    type: "private",
+    type: "public",
   },
   {
     url: URL + ":8080/",
@@ -52,7 +52,7 @@ const data: TLinks = [
     text: "INDENT",
     title: "INDENT",
     src: URL + ":8080/background.jpeg",
-    type: "private",
+    type: "public",
   },
   {
     url: "https://www1.intiza.com/es/logon",
