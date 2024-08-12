@@ -7,6 +7,7 @@ import GoogleSearch from "../../atoms/GoogleSearch/GoogleSearch";
 
 const Home: React.FC = () => {
   return (
+
     <div className="flex flex-col items-center min-h-screen relative overflow-hidden bg-slate-950">
       <div className="pl-8 my-4 w-full text-start flex z-10 justify-between">
         <img src="/manucharlogo.png" alt="Manuchar Logo" width="320" />
@@ -15,6 +16,7 @@ const Home: React.FC = () => {
             <IconUser width={36} height={36} />
           </div>
         </Tooltip>
+
       </div>
 
       <div

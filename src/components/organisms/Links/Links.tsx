@@ -5,7 +5,7 @@ import {
   TabList,
   TabPanel,
   TabPanels,
-  Tabs,
+  Tabs
 } from "@chakra-ui/react";
 import { services } from "../../../services";
 import { TLinks } from "../../../services/links/links";
@@ -24,6 +24,7 @@ const Links: React.FC = () => {
     const privates: any = []
     const powerBi = data.filter((item) => item.type === "powerBi");
 
+
     const all = { publics: publics, privates: privates, powerBi: powerBi };
     if (all) {
       setAllLinks(all);
@@ -40,7 +41,9 @@ const Links: React.FC = () => {
 
       <Tabs align="end">
         <TabList>
+
           <Tab color={"gray.400"}>Mis accesos</Tab>
+
           <Tab color={"gray.400"}>Mis BI</Tab>
         </TabList>
 
