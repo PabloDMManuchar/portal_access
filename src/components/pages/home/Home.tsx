@@ -2,31 +2,34 @@ import React from "react";
 import Links from "../../organisms/Links/Links";
 import "./home.css";
 import IconUser from "../../atoms/icons/UserIcon/UserIcon";
-import { Tooltip } from "@chakra-ui/react";
+import { Text, Tooltip } from "@chakra-ui/react";
 import GoogleSearch from "../../atoms/GoogleSearch/GoogleSearch";
+import Chat from "../../molecules/chatGpt/ChatGPT";
 
 const Home: React.FC = () => {
   return (
-
     <div className="flex flex-col items-center min-h-screen relative overflow-hidden bg-slate-950">
-      <div className="pl-8 my-4 w-full text-start flex z-10 justify-between">
-        <img src="/manucharlogo.png" alt="Manuchar Logo" width="320" />
+      <div className="p-8 w-full text-start flex z-10 justify-between">
+        <img src="/manucharlogo.png" alt="Manuchar Logo" width="240" />
         <Tooltip label="proximamente...">
-          <div className="p-4 ">
+          <div className="flex justify-center items-center">
+            <Text color={"white"} p={"0.4rem"}>
+              Bienvenido a Manuchar
+            </Text>
             <IconUser width={36} height={36} />
           </div>
         </Tooltip>
-
       </div>
 
+      <div className="w-full flex flex-col md:flex-row justify-center px-20">
+        <Links />
+        <Chat />
+      </div>
       <div
-        className="gcse-search-container bg-white rounded-lg overflow-hidden shadow-lg w-full "
+        className="gcse-search-container rounded-lg overflow-hidden shadow-lg w-full "
         style={{ width: "400px" }}
       >
         <GoogleSearch />
-      </div>
-      <div className="w-full flex justify-center ">
-        <Links />
       </div>
 
       <footer className="footer absolute bottom-4 right-4 z-10">

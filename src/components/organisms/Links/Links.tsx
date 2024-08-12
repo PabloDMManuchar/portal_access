@@ -37,7 +37,7 @@ const Links: React.FC = () => {
   }, []);
 
   return (
-    <div className=" z-10">
+    <div className="z-10" style={{maxWidth:'46rem'}}>
 
       <Tabs align="end">
         <TabList>
