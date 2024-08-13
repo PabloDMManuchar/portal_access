@@ -1,9 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Box, Flex, Button, VStack, Text, Textarea, Alert, AlertIcon } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Button,
+  VStack,
+  Text,
+  Textarea,
+  Alert,
+  AlertIcon,
+} from "@chakra-ui/react";
 
 const Chat: React.FC = () => {
   const [messages, setMessages] = useState([
-    { sender: "bot", text: "Hola! En qué te puedo ayudar hoy?" },
+    {
+      sender: "bot",
+      text: "Hola, soy tu asistente virtual, en que te puedo ayudar hoy?",
+    },
   ]);
   const [input, setInput] = useState("");
   const [isServerAvailable, setIsServerAvailable] = useState(true); // Estado para la disponibilidad del servidor
@@ -54,7 +66,7 @@ const Chat: React.FC = () => {
 
   useEffect(() => {
     if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto'; // Reset height to auto
+      textareaRef.current.style.height = "auto"; // Reset height to auto
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // Set height based on content
     }
   }, [input]); // Run effect when `input` changes
@@ -70,8 +82,8 @@ const Chat: React.FC = () => {
       w="28rem"
       mx="auto"
       h="74vh"
-      minW={'20rem'}
-      maxH={'90%'}
+      minW={"20rem"}
+      maxH={"90%"}
       // justifyContent="space-between"
       zIndex={1}
     >
@@ -87,8 +99,8 @@ const Chat: React.FC = () => {
         {messages.map((msg, index) => (
           <Box
             key={index}
-            alignSelf={msg.sender === 'bot' ? 'flex-start' : 'flex-end'}
-            bg={msg.sender === 'bot' ? 'blue.600' : 'green.500'}
+            alignSelf={msg.sender === "bot" ? "flex-start" : "flex-end"}
+            bg={msg.sender === "bot" ? "blue.600" : "green.500"}
             color="white"
             px={4}
             py={2}
