@@ -64,14 +64,16 @@ const Chat: React.FC = () => {
       direction="column"
       bg="gray.800"
       p={4}
+      // mt={20}
       rounded="md"
       boxShadow="lg"
       w="28rem"
       mx="auto"
-      h="full"
+      h="74vh"
+      minW={'20rem'}
       maxH={'90%'}
-      justifyContent="space-between"
-      zIndex={11}
+      // justifyContent="space-between"
+      zIndex={1}
     >
       <VStack
         spacing={4}
@@ -97,7 +99,7 @@ const Chat: React.FC = () => {
         ))}
       </VStack>
 
-      <Flex mt={4} direction="column">
+      <Flex direction="column">
         {!isServerAvailable && (
           <Alert status="error" mb={2}>
             <AlertIcon />
