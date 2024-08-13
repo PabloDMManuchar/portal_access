@@ -3,7 +3,7 @@ import Links from "../../organisms/Links/Links";
 import "./home.css";
 import IconUser from "../../atoms/icons/UserIcon/UserIcon";
 import { Text, Tooltip } from "@chakra-ui/react";
-import GoogleSearch from "../../atoms/GoogleSearch/GoogleSearch";
+// import GoogleSearch from "../../atoms/GoogleSearch/GoogleSearch";
 import Chat from "../../molecules/chatGpt/ChatGPT";
 
 const Home: React.FC = () => {
@@ -21,15 +21,17 @@ const Home: React.FC = () => {
         </Tooltip>
       </div>
 
-      <div className="w-full flex flex-col md:flex-row justify-center px-20">
+      <div className="w-full flex flex-col md:flex-row justify-center">
         <Links />
-        <Chat />
-      </div>
-      <div
-        className="gcse-search-container rounded-lg overflow-hidden shadow-lg w-full "
-        style={{ width: "400px" }}
-      >
-        <GoogleSearch />
+
+        <div className="flex flex-col px-4">
+          {/* <div
+            className="gcse-search-container rounded-lg overflow-hidden shadow-lg w-full mx-auto mb-12"
+          >
+            <GoogleSearch />
+          </div> */}
+          <Chat />
+        </div>
       </div>
 
       <footer className="footer absolute bottom-4 right-4 z-10">

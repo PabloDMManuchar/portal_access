@@ -1,0 +1,28 @@
+.google-search-container {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-block;
+}
+
+.search-translate {
+  position: absolute;
+  left: -300px; /* Inicialmente fuera de la pantalla a la izquierda */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 400px;
+  opacity: 0;
+  visibility: hidden;
+  transition: left 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.google-search-container:hover .search-translate {
+  left: 50px; /* Se moverá hacia la derecha desde el borde izquierdo */
+  opacity: 1;
+  visibility: visible;
+}
+
+.google-icon {
+  cursor: pointer;
+}
