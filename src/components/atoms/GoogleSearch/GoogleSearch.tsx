@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
+import "./GoogleSearch.css";
 
 const GoogleSearch: React.FC = () => {
   useEffect(() => {
@@ -11,6 +12,12 @@ const GoogleSearch: React.FC = () => {
   }, []);
 
   return (
+    // <div className="google-search-container">
+    //   <img src="/googleIcon.png" alt="Google Icon" className="google-icon" />
+    //   <div className="search-translate">
+    //     <div className="gcse-search" />
+    //   </div>
+    // </div>
     <div className="gcse-search" style={{ backgroundColor: '#f0f0f0', padding: '10px' }}/>
   );
 };

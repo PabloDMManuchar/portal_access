@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from "react";
 import CardButtonDos from "../cardButton/cardButtonDos";
-import {
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs
-} from "@chakra-ui/react";
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { services } from "../../../services";
 import { TLinks } from "../../../services/links/links";
+import GoogleSearch from "../../atoms/GoogleSearch/GoogleSearch";
 
 const Links: React.FC = () => {
   const [allLinks, setAllLinks] = useState<{
@@ -17,13 +12,11 @@ const Links: React.FC = () => {
     powerBi: TLinks;
   }>();
 
-
   const getData = async () => {
     const data = services.links.data;
     const publics = data.filter((item) => item.type === "public");
-    const privates: any = []
+    const privates: any = [];
     const powerBi = data.filter((item) => item.type === "powerBi");
-
 
     const all = { publics: publics, privates: privates, powerBi: powerBi };
     if (all) {
@@ -31,17 +24,17 @@ const Links: React.FC = () => {
     }
   };
 
-
   useEffect(() => {
     getData();
   }, []);
 
   return (
-    <div className="z-10" style={{maxWidth:'46rem'}}>
-
-      <Tabs align="end">
+    <div className="z-10" style={{ maxWidth: "46rem" }}>
+      <div className="gcse-search-container rounded-lg overflow-hidden shadow-lg w-full z-20 mb-12">
+        <GoogleSearch />
+      </div>
+      <Tabs align="center">
         <TabList>
-
           <Tab color={"gray.400"}>Mis accesos</Tab>
 
           <Tab color={"gray.400"}>Mis BI</Tab>
