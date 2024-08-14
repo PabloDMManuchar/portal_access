@@ -3,12 +3,25 @@ import "./cardButton.css";
 import { TLinks } from "../../../services/links/links";
 import { Tooltip } from "@chakra-ui/react";
 
+
+
 const CardButtonDos: React.FC<{ data: TLinks }> = ({ data }) => (
   <div className="flex flex-wrap justify-center">
     {data?.map((card, index) => (
-      <Tooltip key={index} label={card?.title.toLocaleLowerCase()} placement="top" fontSize='sm' bg='gray.300' color='black' hasArrow >
-        <a  className=" m-4" href={card?.url}>
-
+      <Tooltip
+        key={index}
+        label={card?.title.toLocaleLowerCase()}
+        placement="top"
+        fontSize="sm"
+        bg="gray.300"
+        color="black"
+        hasArrow
+      >
+        <a
+          className=" m-4"
+          href={card?.url}
+          target={card.type !== "add" ? "_blank" : "_top"}
+        >
           <div className="group relative m-0 flex h-28 w-32 rounded-xl shadow-xl ring-gray-900/5 sm:mx-auto sm:max-w-lg cursor-pointer">
             <div className="z-10 h-full w-full overflow-hidden rounded-xl border border-gray-200 opacity-80 transition duration-300 ease-in-out group-hover:opacity-100 dark:border-gray-700 dark:opacity-70">
               <img
