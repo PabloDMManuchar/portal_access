@@ -10,7 +10,7 @@ const CardButtonDos: React.FC<{ data: TLinks }> = ({ data }) => (
     {data?.map((card, index) => (
       <Tooltip
         key={index}
-        label={card?.title.toLocaleLowerCase()}
+        label={card?.title}
         placement="top"
         fontSize="sm"
         bg="gray.300"
