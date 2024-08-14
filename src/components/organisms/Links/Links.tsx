@@ -18,7 +18,12 @@ const Links: React.FC = () => {
     const privates: any = [];
     const powerBi = data.filter((item) => item.type === "powerBi");
 
-    const all = { publics: publics, privates: privates, powerBi: powerBi };
+    const add = data.filter((item) => item.type === "add");
+
+    const puclicsAdd = [...publics, ...add ];
+
+    const all = { publics: puclicsAdd, privates: privates, powerBi: powerBi };
+
     if (all) {
       setAllLinks(all);
     }
