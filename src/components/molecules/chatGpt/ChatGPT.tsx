@@ -81,7 +81,7 @@ const Chat: React.FC = () => {
       boxShadow="lg"
       w="28rem"
       mx="auto"
-      h="74vh"
+      h="84vh"
       minW={"20rem"}
       maxH={"90%"}
       // justifyContent="space-between"

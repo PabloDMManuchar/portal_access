@@ -7,11 +7,11 @@ footer {
     display: flex;
     justify-content: space-between;
   }
-  
+
   .imagen-footer {
-    display: block; /* Muestra la imagen como un bloque */
-    /* margin-top: 30px;  */
-    max-width: 100%; /* Ajusta el ancho máximo de la imagen */
-    float: right;
-    height: 4rem;
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    height: 3rem;
+    z-index: 10; /* Asegura que la imagen esté por encima de otros elementos si es necesario */
   }

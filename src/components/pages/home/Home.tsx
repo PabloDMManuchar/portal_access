@@ -3,7 +3,6 @@ import Links from "../../organisms/Links/Links";
 import "./home.css";
 import IconUser from "../../atoms/icons/UserIcon/UserIcon";
 import { Text, Tooltip } from "@chakra-ui/react";
-// import GoogleSearch from "../../atoms/GoogleSearch/GoogleSearch";
 import Chat from "../../molecules/chatGpt/ChatGPT";
 
 const Home: React.FC = () => {
@@ -24,17 +23,11 @@ const Home: React.FC = () => {
       <div className="w-full flex flex-col md:flex-row justify-center">
         <Links />
 
-        <div className="flex flex-col px-4">
-          {/* <div
-            className="gcse-search-container rounded-lg overflow-hidden shadow-lg w-full mx-auto mb-12"
-          >
-            <GoogleSearch />
-          </div> */}
+        <div className="px-4 z-10">
           <Chat />
         </div>
       </div>
-
-      <footer className="footer absolute bottom-4 right-4 z-10">
+      <footer className="footer absolute bottom-4 right-4">
         <p className="text-white font-light font-sm"></p>
         <img src={"/Mit.png"} alt="LogoIT" className="imagen-footer" />
       </footer>
