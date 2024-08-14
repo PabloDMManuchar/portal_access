@@ -40,7 +40,6 @@ const Links: React.FC = () => {
       <Tabs align="center">
         <TabList>
           <Tab color={"gray.400"}>Mis accesos</Tab>
-
           <Tab color={"gray.400"}>Mis BI</Tab>
         </TabList>
 
