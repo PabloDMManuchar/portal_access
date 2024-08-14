@@ -29,10 +29,9 @@ const Links: React.FC = () => {
   }, []);
 
   return (
-    <div className="z-10" style={{ maxWidth: "46rem" }}>
-      <div className="gcse-search-container rounded-lg overflow-hidden shadow-lg w-full z-20 mb-12">
-        <GoogleSearch />
-      </div>
+    <div style={{ maxWidth: "46rem" }}>
+      <GoogleSearch />
+
       <Tabs align="center">
         <TabList>
           <Tab color={"gray.400"}>Mis accesos</Tab>
