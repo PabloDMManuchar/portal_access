@@ -2,19 +2,20 @@ import React from "react";
 import Links from "../../organisms/Links/Links";
 import "./home.css";
 import IconUser from "../../atoms/icons/UserIcon/UserIcon";
-import { Text, Tooltip } from "@chakra-ui/react";
+import { Tooltip } from "@chakra-ui/react";
 import Chat from "../../molecules/chatGpt/ChatGPT";
+import { Login } from "./modals/login";
 
 const Home: React.FC = () => {
+
+
   return (
     <div className="flex flex-col items-center min-h-screen relative overflow-hidden bg-slate-950">
       <div className="p-8 w-full text-start flex z-10 justify-between">
         <img src="/manucharlogo.png" alt="Manuchar Logo" width="240" />
         <Tooltip label="proximamente...">
           <div className="flex justify-center items-center">
-            <Text color={"white"} p={"0.4rem"}>
-              Bienvenido a Manuchar
-            </Text>
+            <Login/>
             <IconUser width={36} height={36} />
           </div>
         </Tooltip>
