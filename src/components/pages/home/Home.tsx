@@ -1,22 +1,36 @@
 import React from "react";
 import Links from "../../organisms/Links/Links";
 import "./home.css";
-// import { Divider } from "@chakra-ui/react";
+import IconUser from "../../atoms/icons/UserIcon/UserIcon";
+import { Tooltip } from "@chakra-ui/react";
+import Chat from "../../molecules/chatGpt/ChatGPT";
+import { Login } from "./modals/login";
 
 const Home: React.FC = () => {
+
+
   return (
-    <div className="relative min-h-screen flex flex-col items-center bg-custom-blue">
-      <div className="pl-8 my-4 w-full text-start flex z-10">
-        <img src="/manucharlogo.png" alt="Manuchar Logo" width="320" />
+    <div className="flex flex-col items-center min-h-screen relative overflow-hidden bg-slate-950">
+      <div className="p-8 w-full text-start flex z-10 justify-between">
+        <img src="/manucharlogo.png" alt="Manuchar Logo" width="240" />
+        <Tooltip label="proximamente...">
+          <div className="flex justify-center items-center">
+            <Login/>
+            <IconUser width={36} height={36} />
+          </div>
+        </Tooltip>
       </div>
 
-      <Links />
+      <div className="w-full flex flex-col md:flex-row justify-center">
+        <Links />
 
-      {/* <Divider zIndex={10} w={"80%"} /> */}
-
-      <footer className="footer z-10">
+        <div className="px-4 z-10">
+          <Chat />
+        </div>
+      </div>
+      <footer className="footer absolute bottom-4 right-4">
         <p className="text-white font-light font-sm"></p>
-        <img src={"/Mit.png"} alt="LogoIT" className="imagen-footer " />
+        <img src={"/Mit.png"} alt="LogoIT" className="imagen-footer" />
       </footer>
 
       <div className="absolute bottom-0 w-full z-0">
