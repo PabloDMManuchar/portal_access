@@ -11,22 +11,20 @@ import {
   Heading,
   Text,
 } from "@chakra-ui/react";
-import { users } from "../../../../services/users/users"; // Importamos la función de la API
 import { LoginCredentials, LoginResponse } from "../../../../types/auth";
-import { toast } from "sonner";
-import Cookies from "js-cookie";
 import { useAuth } from "../../../../context/AuthContext";
 interface LoginProps {
-  enviarDatosALogin: (dato: string) => void;
   onClose: () => void;
 }
 
-const Loginaccess: React.FC<LoginProps> = ({ enviarDatosALogin, onClose }) => {
-  const { login, logout, isAuthenticated } = useAuth();
+const Loginaccess: React.FC<LoginProps> = ({ onClose }) => {
+  const { login } = useAuth();
+
   const [credentials, setCredentials] = useState<LoginCredentials>({
     username: "",
     password: "",
   });
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setCredentials({ ...credentials, [name]: value });
@@ -36,16 +34,10 @@ const Loginaccess: React.FC<LoginProps> = ({ enviarDatosALogin, onClose }) => {
     e.preventDefault();
 
     try {
-      const response: LoginResponse = login(credentials); // Llamada a la API
-      //const accessToken = response.token;
-      //Cookies.set("Token", accessToken, { expires: 7 });
-
-      enviarDatosALogin("Login Success:");
-      console.log("OK", response.mensaje);
+      login(credentials); // Llamada a la API
       onClose();
     } catch (error) {
       console.error("Login Failed:", error);
-      enviarDatosALogin("ERR");
     }
   };
 

@@ -2,12 +2,15 @@ import React from "react";
 import Links from "../../organisms/Links/Links";
 import "./home.css";
 import IconUser from "../../atoms/icons/UserIcon/UserIcon";
-import { Tooltip } from "@chakra-ui/react";
+import { Button, Icon, Tooltip } from "@chakra-ui/react";
 import Chat from "../../molecules/chatGpt/ChatGPT";
-//import { Login } from "../../molecules/modals/login";
 import { Loginform } from "../../molecules/forms/loginform";
+import { useAuth } from "../../../context/AuthContext";
+import LogoutIcon from "../../atoms/icons/UserIcon/LogoutIcon";
 
 const Home: React.FC = () => {
+  const { isAuthenticated, logout } = useAuth();
+
   return (
     <div className="flex flex-col items-center min-h-screen relative overflow-hidden bg-slate-950">
       <div className="p-8 w-full text-start flex z-10 justify-between">
@@ -15,7 +18,18 @@ const Home: React.FC = () => {
         <Tooltip label="proximamente...">
           <div className="flex justify-center items-center">
             <>
-              <Loginform />
+              {isAuthenticated ? (
+                <Button
+                  colorScheme="black"
+                  leftIcon={<Icon as={LogoutIcon} boxSize={6} />}
+                  onClick={logout}
+                  mr={4}
+                >
+                  Cerrar sesion
+                </Button>
+              ) : (
+                <Loginform />
+              )}
               <IconUser width={36} height={36} />
             </>
           </div>

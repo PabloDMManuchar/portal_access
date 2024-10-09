@@ -1,3 +1,6 @@
+/// no se esta utilizando
+
+
 import React, { useState } from "react";
 //manejo de cookies
 import Cookies from "js-cookie";
@@ -28,14 +31,21 @@ import {
 import { useAuth } from "../../../../context/AuthContext";
 import Loginform from "../loginform";
 
-const isCookies = Cookies.get("Token");
-
 const Navigationusers = () => {
   // constante para validar via un use state el estado de la cookie
-  const { login, logout, isAuthenticated } = useAuth();
-  const [tokenCookies, setTokenCookies] = useState<string | undefined>(
-    isCookies
-  );
+  const { logout, isAuthenticated } = useAuth();
+  console.log("🚀 ~ Navigationusers ~ isAuthenticated:", isAuthenticated)
+
+  const handleLogout = () => {
+    try {
+      console.log("Intentando cerrar sesión...");
+      logout();
+      console.log("Sesión cerrada exitosamente.");
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+      toast.error("Error al cerrar sesión. Inténtalo de nuevo.");
+    }
+  };
 
   return (
     <Flex minWidth="max-content" alignItems="center" gap="2">
@@ -45,16 +55,19 @@ const Navigationusers = () => {
       <Spacer />
       <ButtonGroup gap="2">
         {isAuthenticated ? (
-          <Button
-            colorScheme="black"
-            leftIcon={<Icon as={LogoutIcon} boxSize={6} />}
-            onClick={logout}
-            mr={4}
-          >
-            Cerrar sesion
-          </Button>
+        <Button
+          colorScheme="black"
+          leftIcon={<Icon as={LogoutIcon} boxSize={6} />}
+          onClick={handleLogout}
+          mr={4}
+        >
+          Cerrar sesion
+        </Button>
         ) : (
-          <Loginform />
+          <>
+
+            <Loginform />
+          </>
         )}
       </ButtonGroup>
     </Flex>

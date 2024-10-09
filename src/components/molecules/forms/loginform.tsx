@@ -5,89 +5,55 @@ import Cookies from "js-cookie";
 
 //importacion de iconos para los botones
 import LoginIcon from "../../atoms/icons/UserIcon/LoginIcon";
-import LogoutIcon from "../../atoms/icons/UserIcon/LogoutIcon";
+// import LogoutIcon from "../../atoms/icons/UserIcon/LogoutIcon";
 
-//importacion para llamada a api
+// //importacion para llamada a api
 
-import { users } from "../../../services/users/users";
+// import { users } from "../../../services/users/users";
 
-// mensajes emergentes
+// // mensajes emergentes
 
-import { toast } from "sonner";
+// import { toast } from "sonner";
 
-// tipado
+// // tipado
 
-import { LoginCredentials } from "../../../types/auth";
+// import { LoginCredentials } from "../../../types/auth";
 
-import Loginaccess from "../../molecules/forms/authentication/loginaccess";
-import Navigationusers from "../../molecules/forms/navigation/navigationusers";
 
 import {
   Box,
-  Button,
-  Icon,
+  // Button,
+  // Icon,
   Drawer,
   DrawerBody,
   DrawerFooter,
-  DrawerHeader,
+  // DrawerHeader,
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
   useDisclosure,
+  Button,
 } from "@chakra-ui/react";
+import { useAuth } from "../../../context/AuthContext";
+import Loginaccess from "./authentication/loginaccess";
 
 export const Loginform: React.FC = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const [islogin, setIslogin] = useState<string>("ERR");
-
-  // Función que recibe datos del componente hijo
-  const recibirDatosDeLogin = (dato: string) => {
-    setIslogin(dato);
-    setTokenCookies(Cookies.get("Token"));
-
-    console.log(islogin);
-
-    if (islogin != "ERR") {
-      onClose();
-    }
-  };
-
-  const isCookies = Cookies.get("Token");
-
-  // constante para validar via un use state el estado de la cookie
-  const [tokenCookies, setTokenCookies] = useState<string | undefined>(
-    isCookies
-  );
+  const { isAuthenticated } = useAuth();
+  const { isOpen, onOpen,  onClose } = useDisclosure();
+  const btnRef = React.useRef()
 
   return (
     <>
-      {tokenCookies ? (
-        <Navigationusers />
-      ) : (
-        /*
-        <Button
-          colorScheme="black"
-          leftIcon={<Icon as={LogoutIcon} boxSize={6} />}
-          onClick={handleLogout}
-          mr={4}
-        >
-          Cerrar sesion
-        </Button>
-        */
-        <Button
-          colorScheme="black"
-          leftIcon={<Icon as={LoginIcon} boxSize={6} />}
-          onClick={onOpen}
-        >
-          Iniciar sesion
-        </Button>
-      )}
+      {/* <Navigationusers /> */}
+
+      <Button ref={btnRef} colorScheme='teal' onClick={onOpen}>
+       login
+      </Button>
+
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader></DrawerHeader>
 
           <DrawerBody>
             <Box
@@ -99,16 +65,13 @@ export const Loginform: React.FC = () => {
               borderRadius="lg"
               boxShadow="lg"
             >
-              <Loginaccess
-                enviarDatosALogin={recibirDatosDeLogin}
-                onClose={onClose}
-              />
+              <Loginaccess onClose={onClose} />
             </Box>
           </DrawerBody>
 
           <DrawerFooter>
-            <p>status Login: {islogin}</p>
-            <p>{tokenCookies}</p>
+            <p>status Login: {isAuthenticated}</p>
+            {/* <p>{tokenCookies}</p> */}
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
