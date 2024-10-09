@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+
+import { LoginCredentials } from "../../../types/auth";
+
 import {
   Modal,
   ModalOverlay,
@@ -45,8 +48,11 @@ export const Login: React.FC = () => {
   };
 
   const handleLogin = async () => {
-    toast("Consultando usuario...", { duration: 2000 });
+    console.log(form);
+    form: toast("Consultando usuario...", { duration: 2000 });
+
     try {
+      /*
       const result: TLoginProps = await axios.post(
         `${import.meta.env.VITE_API_URL}/access/login`,
         form
@@ -60,6 +66,7 @@ export const Login: React.FC = () => {
 
       Cookies.set("accessToken", accessToken, { expires: 7 });
       onClose();
+      */
     } catch (error: any) {
       console.error(error?.response?.data);
       const message = error?.response?.data ? error?.response?.data : "";
@@ -117,7 +124,7 @@ export const Login: React.FC = () => {
                     onChange={onChange}
                     variant="flushed"
                     size="md"
-                    name="usuario"
+                    name="username"
                     type="text"
                     placeholder="Ingrese su usuario"
                   />
@@ -137,7 +144,6 @@ export const Login: React.FC = () => {
                       variant="flushed"
                       size="md"
                       name="password"
-                      // type="password"
                       placeholder="Ingrese su contraseña"
                     />
                     <InputRightElement width="4.5rem">

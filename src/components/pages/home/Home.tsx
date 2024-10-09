@@ -4,19 +4,20 @@ import "./home.css";
 import IconUser from "../../atoms/icons/UserIcon/UserIcon";
 import { Tooltip } from "@chakra-ui/react";
 import Chat from "../../molecules/chatGpt/ChatGPT";
-import { Login } from "./modals/login";
+//import { Login } from "../../molecules/modals/login";
+import { Loginform } from "../../molecules/forms/loginform";
 
 const Home: React.FC = () => {
-
-
   return (
     <div className="flex flex-col items-center min-h-screen relative overflow-hidden bg-slate-950">
       <div className="p-8 w-full text-start flex z-10 justify-between">
         <img src="/manucharlogo.png" alt="Manuchar Logo" width="240" />
         <Tooltip label="proximamente...">
           <div className="flex justify-center items-center">
-            <Login/>
-            <IconUser width={36} height={36} />
+            <>
+              <Loginform />
+              <IconUser width={36} height={36} />
+            </>
           </div>
         </Tooltip>
       </div>

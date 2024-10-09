@@ -4,13 +4,16 @@ import App from "./App.tsx";
 import "./index.css";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "./theme/theme.ts";
-import { Toaster } from 'sonner';
+import { Toaster } from "sonner";
+import { AuthProvider } from "./context/AuthContext.tsx"; // Importar AuthProvider
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-     <ChakraProvider theme={theme}>
-      <App />
-      <Toaster position="bottom-center" />
+    <ChakraProvider theme={theme}>
+      <AuthProvider>
+        <App />
+        <Toaster position="bottom-center" />
+      </AuthProvider>
     </ChakraProvider>
   </React.StrictMode>
 );
