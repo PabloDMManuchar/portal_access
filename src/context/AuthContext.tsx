@@ -11,14 +11,9 @@ import Cookies from "js-cookie";
 import { toast } from "sonner";
 interface AuthContextType {
   isAuthenticated: boolean;
-  login: () => void;
+  login: (credentials: LoginCredentials) => Promise<LoginResponse>;
   logout: () => void;
 }
-
-const [credentials, setCredentials] = useState<LoginCredentials>({
-  username: "",
-  password: "",
-});
 
 // Crear el contexto con valores predeterminados
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -28,25 +23,37 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   //   const [message, setMessage] = useState(initialState)
 
-  useEffect(() => {
-    Cookies.get("Token") ? setIsAuthenticated(true) : setIsAuthenticated(false);
-  }, []);
+  // useEffect(() => {
+  //   Cookies.get("Token") ? setIsAuthenticated(true) : setIsAuthenticated(false);
+  //   console.log('---------------', Cookies.get("Token"));
+  // }, []);
 
-  const login = async (credentials) => {
-    toast("Consultando usuario...", { duration: 2000 });
-    const response: LoginResponse = await users.login(credentials); // Llamada a la API
-    const accessToken = response.token;
-    Cookies.set("Token", accessToken, { expires: 7 });
-    toast.success("Login OK");
-    setIsAuthenticated(true);
-    return response;
+  const login = async (credentials: LoginCredentials) => {
+    try {
+      toast("Consultando usuario...", { duration: 2000 });
+      const response: LoginResponse = await users.login(credentials); // Llamada a la API
+      const accessToken = response.token;
+      Cookies.set("Token", accessToken, { expires: 7, sameSite: "Lax" }); // Establecer SameSite
+      toast.success("Login OK");
+      setIsAuthenticated(true);
+      return response;
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+      toast.error("Error al iniciar sesión. Inténtalo de nuevo.");
+      throw error;
+    }
   };
 
-  const logout = () => {
-    // services.logout();
-    users.logout();
-    setIsAuthenticated(false);
-    toast.success("Sesion cerrada");
+  const logout = async () => {
+    try {
+      await users.logout();
+      Cookies.remove("Token");
+      setIsAuthenticated(false);
+      toast.success("Sesión cerrada correctamente.");
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+      toast.error("Error al cerrar sesión. Inténtalo de nuevo.");
+    }
   };
 
   return (
