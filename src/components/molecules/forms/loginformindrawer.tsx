@@ -1,7 +1,4 @@
-import React, { useState } from "react";
-
-//manejo de cookies
-import Cookies from "js-cookie";
+import React from "react";
 
 //importacion de iconos para los botones
 import LoginIcon from "../../atoms/icons/UserIcon/LoginIcon";
@@ -19,11 +16,9 @@ import LoginIcon from "../../atoms/icons/UserIcon/LoginIcon";
 
 // import { LoginCredentials } from "../../../types/auth";
 
-
 import {
   Box,
-  // Button,
-  // Icon,
+  Icon,
   Drawer,
   DrawerBody,
   DrawerFooter,
@@ -34,20 +29,21 @@ import {
   useDisclosure,
   Button,
 } from "@chakra-ui/react";
-import { useAuth } from "../../../context/AuthContext";
-import Loginaccess from "./authentication/loginaccess";
 
-export const Loginform: React.FC = () => {
-  const { isAuthenticated } = useAuth();
-  const { isOpen, onOpen,  onClose } = useDisclosure();
-  const btnRef = React.useRef()
+import LoginForm from "./authentication/loginform";
+
+export const Loginformindrawer: React.FC = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
-      {/* <Navigationusers /> */}
-
-      <Button ref={btnRef} colorScheme='teal' onClick={onOpen}>
-       login
+      <Button
+        colorScheme="black"
+        leftIcon={<Icon as={LoginIcon} boxSize={6} />}
+        onClick={onOpen}
+        mr={4}
+      >
+        Iniciar sesion
       </Button>
 
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
@@ -65,18 +61,15 @@ export const Loginform: React.FC = () => {
               borderRadius="lg"
               boxShadow="lg"
             >
-              <Loginaccess onClose={onClose} />
+              <LoginForm onClose={onClose} />
             </Box>
           </DrawerBody>
 
-          <DrawerFooter>
-            <p>status Login: {isAuthenticated}</p>
-            {/* <p>{tokenCookies}</p> */}
-          </DrawerFooter>
+          <DrawerFooter></DrawerFooter>
         </DrawerContent>
       </Drawer>
     </>
   );
 };
 
-export default Loginform;
+export default Loginformindrawer;

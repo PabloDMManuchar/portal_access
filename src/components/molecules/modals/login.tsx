@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 
-import { LoginCredentials } from "../../../types/auth";
-
 import {
   Modal,
   ModalOverlay,
@@ -15,7 +13,7 @@ import {
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
-import axios from "axios";
+
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { toast } from "sonner";
 import Cookies from "js-cookie";
@@ -48,7 +46,6 @@ export const Login: React.FC = () => {
   };
 
   const handleLogin = async () => {
-    console.log(form);
     form: toast("Consultando usuario...", { duration: 2000 });
 
     try {
