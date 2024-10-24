@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import AplicationCard from "./aplicationCard";
 import NewAplicationForm from "./newAplicationForm";
-import { Aplicacion, NewAplicacion } from "../../../../types/apptype";
+import { Aplicacion } from "../../../../types/apptype";
 import { services } from "../../../../services/index";
 
 const AplicationList: React.FC = () => {

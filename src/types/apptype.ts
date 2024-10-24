@@ -1,8 +1,10 @@
 export interface LinkApp {
+  idaplicaciones: number;
   url: string;
+  mostrarimagen: string;
   icon: string;
   text: string;
-  title: string;
+  nombre: string;
   src: string;
   type: "public" | "private" | "powerBi" | "add";
 }

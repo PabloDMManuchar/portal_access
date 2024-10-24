@@ -10,8 +10,6 @@ import {
 import { users } from "../services/users/users";
 import { UserType, CreateUserType, UpdateUserType } from "../types/usertype";
 
-import { toast } from "sonner";
-
 interface UserContextProps {
   userslist: UserType[];
   fetchAllUsers: () => Promise<void>;

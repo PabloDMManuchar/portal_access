@@ -102,7 +102,7 @@ interface StatBoxProps {
 }
 
 // Componente reutilizable para cada KPI
-const StatBox = ({ label, value }) => {
+const StatBox = ({ label, value }: StatBoxProps) => {
   return (
     <Stat
       p={4}

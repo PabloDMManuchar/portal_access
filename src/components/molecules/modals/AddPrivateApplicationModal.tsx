@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Box,
   FormLabel,
   Input,
   Button,
-  Select,
-  Flex,
   RadioGroup,
   Stack,
   Radio,
@@ -27,7 +25,6 @@ import * as Icons from "react-icons/fa"; // Importa todos los iconos de FontAwes
 import { FaCheckCircle, FaPlusCircle } from "react-icons/fa";
 import { NewAplicacionPrivate } from "../../../types/apptype";
 import { services } from "../../../services/index";
-import { z } from "zod";
 import { newApplicationPrivateSchema } from "../../../schemas/applicationSchema";
 
 const AddPrivateApplicationModal: React.FC = () => {
@@ -96,7 +93,7 @@ const AddPrivateApplicationModal: React.FC = () => {
       return;
     }
     const resp = await services.applications.CreateApplicationPrivate(formData);
-
+    console.info(resp);
     // Si todo está bien, proceder con la lógica
     onClose();
     setShowIconList(true); // Resetear para que el ícono se pueda volver a elegir si es necesario

@@ -1,6 +1,6 @@
 // molecules/Menu.tsx
 import { useState } from "react";
-import { VStack, Box, IconButton, Flex } from "@chakra-ui/react";
+import { Box, IconButton, Flex } from "@chakra-ui/react";
 import { ButtonMenu } from "../../atoms/buttons/buttonMenu";
 import {
   FaHome,

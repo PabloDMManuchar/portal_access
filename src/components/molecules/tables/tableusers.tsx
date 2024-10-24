@@ -1,28 +1,13 @@
 import { useEffect, useState } from "react";
-import {
-  Flex,
-  Input,
-  Button,
-  IconButton,
-  Box,
-  Toast,
-  Icon,
-} from "@chakra-ui/react";
+import { Flex, Input, Button, Box, Toast, Icon } from "@chakra-ui/react";
 import { UserType } from "../../../types/usertype";
 import { users } from "../../../services/users/users";
 import DataTable from "react-data-table-component";
-import {
-  FaEdit,
-  FaSync,
-  FaUserCheck,
-  FaUserTimes,
-  FaTimes,
-} from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
 import AddUserModal from "../modals/AddUserModal";
 import ExpandableRow from "./ExpandableRow"; // Importa el nuevo componente
 
 const TableUsers = () => {
-  const [loading, setLoading] = useState(false);
   const [usersdata, setUsersData] = useState<UserType[]>([]); // Estado para almacenar los usuarios
   const [filterText, setFilterText] = useState("");
 
@@ -79,12 +64,12 @@ const TableUsers = () => {
       sortable: true,
     },
     {
-      name: "último cambio de contraseña",
-      selector: (row: UserType) => row.diascambiopassword,
+      name: "Último cambio de contraseña",
+      selector: (row: UserType) => row.feultimocambiopassword?.toString() || "", // Convertir a string
       cell: (row: UserType) =>
-        row.diascambiopassword === 0
-          ? "Nunca"
-          : `${row.diascambiopassword} días`,
+        row.feultimocambiopassword
+          ? new Date(row.feultimocambiopassword).toLocaleDateString()
+          : "Nunca",
       sortable: true,
     },
     {
@@ -98,14 +83,15 @@ const TableUsers = () => {
     },
     {
       name: "Último ingreso",
-      selector: (row: UserType) => {
+      selector: (row: UserType) => row.feultimoingreso?.toString() || "", // Convertir a string
+      cell: (row: UserType) => {
+        if (!row.feultimoingreso) return "Nunca";
         const lastLoginDate = new Date(row.feultimoingreso);
-        const referenceDate = new Date("2024-01-01"); // Fecha de referencia
+        const referenceDate = new Date("2024-01-01");
 
-        // Comparar la fecha del último ingreso con la fecha de referencia
         return lastLoginDate < referenceDate
-          ? "Nunca" // Mostrar "Nunca" si es menor a 01-01-2024
-          : lastLoginDate.toLocaleDateString(); // Formatear como string si no
+          ? "Nunca"
+          : lastLoginDate.toLocaleDateString();
       },
       sortable: true,
     },
@@ -117,6 +103,7 @@ const TableUsers = () => {
   // Función para editar un usuario
   const handleEditUser = async (userId: number) => {
     try {
+      console.info(userId);
       // Aquí abrirías el formulario de edición
       // Puedes llamar a la API de editar usuario si ya tienes los datos listos
     } catch (error) {
@@ -131,7 +118,7 @@ const TableUsers = () => {
   // Función para refrescar la contraseña del usuario
   const handleRefreshPassword = async (userId: number) => {
     try {
-      const resp = await users.refreshpassword(userId);
+      await users.refreshpassword(userId);
       Toast({
         title: "Contraseña refrescada exitosamente",
         status: "success",
@@ -149,6 +136,7 @@ const TableUsers = () => {
   // Función para habilitar/deshabilitar un usuario
   const handleToggleUser = async (userId: number, newStatus: boolean) => {
     try {
+      console.info(userId);
       Toast({
         title: `Usuario ${
           newStatus ? "habilitado" : "deshabilitado"
@@ -165,7 +153,7 @@ const TableUsers = () => {
     }
   };
 
-  const handleFilter = (e) => {
+  const handleFilter = (e: any) => {
     setFilterText(e.target.value);
   };
 

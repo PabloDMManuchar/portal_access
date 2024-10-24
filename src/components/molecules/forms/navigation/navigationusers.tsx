@@ -1,14 +1,11 @@
 //Iconos
-import IconUser from "../../../atoms/icons/UserIcon/UserProfileIcon";
 import LogoutIcon from "../../../atoms/icons/UserIcon/LogoutIcon";
-import AdministratorIcon from "../../../atoms/icons/UserIcon/AdministratorIcon";
 
 //llamada al modal para cambiar Password
 
 import ChangePasswordModal from "../../modals/ChangePasswordModal";
 import Administrator from "../../forms/navigation/administrator";
 import ProfileUser from "../../forms/navigation/profileuser";
-
 import { useAuth } from "../../../../context/AuthContext";
 
 import {
@@ -24,7 +21,7 @@ import {
 
 const Navigationusers = () => {
   // constante para validar via un use state el estado de la cookie
-  const { logout, isAuthenticated, statusPassword, dataUser } = useAuth();
+  const { logout, statusPassword, dataUser } = useAuth();
 
   return (
     <Flex minWidth="max-content" alignItems="center" gap="2">

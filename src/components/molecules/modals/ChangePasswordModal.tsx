@@ -12,7 +12,6 @@ import {
   FormLabel,
   Input,
   Tooltip,
-  Icon,
   useDisclosure,
   useToast,
   Spacer,
@@ -38,7 +37,7 @@ const ChangePasswordModal = () => {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const toast = useToast();
-  const { dataUser, statusPassword } = useAuth();
+  const { dataUser } = useAuth();
 
   // Función para manejar el cambio de contraseña
   const handleChangePassword = async () => {

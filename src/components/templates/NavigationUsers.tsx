@@ -1,29 +1,53 @@
-import React from "react";
-import { FaSignOutAlt } from "react-icons/fa"; // Importa el ícono de react-icons/fa
+import { FaCogs, FaHome, FaSignOutAlt, FaUser } from "react-icons/fa"; // Importa el ícono de react-icons/fa
 import { useAuth } from "../../context/AuthContext"; // Importa el Context
 import ChangePasswordModal from "../molecules/modals/ChangePasswordModal"; //Importa el Modal para cambiar contraseña
-import Administrator from "../molecules/forms/navigation/administrator"; //Importa el acceso al menu administrador
-import ProfileUser from "../molecules/forms/navigation/profileuser"; //Importa el acceso al perfil del usuario registrado
-import UserProfileDrawer from "./UserProfileDrawer";
-import {
-  Flex,
-  Spacer,
-  Box,
-  Heading,
-  Button,
-  ButtonGroup,
-  Tooltip,
-} from "@chakra-ui/react";
+import { Flex, Spacer, Button, ButtonGroup, Tooltip } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 const NavigationUsers = () => {
-  const { logout, isAuthenticated, statusPassword, dataUser } = useAuth();
+  const { logout, statusPassword, dataUser } = useAuth();
+
   return (
     <>
       <Flex minWidth="max-content" alignItems="center" gap="2">
         <Spacer />
         <ButtonGroup gap="2">
-          <UserProfileDrawer />
-          {dataUser.idperfil === 1 && <Administrator />}
+          <Tooltip
+            label="HOME"
+            fontSize="md"
+            bg="gray.300"
+            color="black"
+            hasArrow
+          >
+            <Link to="/" className="flex items-center">
+              <FaHome style={{ marginRight: "8px", color: "white" }} />{" "}
+            </Link>
+          </Tooltip>
+          <Tooltip
+            label="MI PERFIL"
+            fontSize="md"
+            bg="gray.300"
+            color="black"
+            hasArrow
+          >
+            <Link to="/myprofile" className="flex items-center">
+              <FaUser style={{ marginRight: "8px", color: "white" }} />{" "}
+            </Link>
+          </Tooltip>
+
+          {dataUser.idperfil === 1 && (
+            <Tooltip
+              label="ADMINISTRADOR"
+              fontSize="md"
+              bg="gray.300"
+              color="black"
+              hasArrow
+            >
+              <Link to="/administrator" className="flex items-center">
+                <FaCogs style={{ marginRight: "8px", color: "white" }} />{" "}
+              </Link>
+            </Tooltip>
+          )}
           {statusPassword != "OK" && <ChangePasswordModal />}
           <Tooltip label="Cerrar sesion" openDelay={500}>
             <Button
