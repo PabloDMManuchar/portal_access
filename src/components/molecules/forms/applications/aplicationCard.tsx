@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { Box, Image, Text, Button } from "@chakra-ui/react";
 import { Aplicacion } from "../../../../types/apptype"; // Importar el tipo
-import EditApplicationModal from "../../modals/EditApplicationModal";
+import EditApplicationModal, { ModalonSaveType } from "../../modals/EditApplicationModal";
 
 interface AplicacionCardProps {
   aplicacion: Aplicacion; // Definir el tipo de props
 }
 
 const AplicationCard: React.FC<AplicacionCardProps> = ({ aplicacion }) => {
+  
   const {
     idaplicaciones,
     nombre,
@@ -25,14 +26,15 @@ const AplicationCard: React.FC<AplicacionCardProps> = ({ aplicacion }) => {
   const [isEditModalOpen, setEditModalOpen] = useState(false);
 
   // Estado para controlar los datos del formulario de edición
-  const [editData, setEditData] = useState({
-    nombre,
+  const [editData, setEditData] = useState<ModalonSaveType>({
     descripcion,
     grupo,
-    type,
-    url,
     idaplicaciones,
     idgrupoaplicaciones,
+    nombre,
+    type,
+    src,
+    url,
   });
 
   // Abrir el modal
@@ -46,15 +48,7 @@ const AplicationCard: React.FC<AplicacionCardProps> = ({ aplicacion }) => {
   };
 
   // Guardar los cambios realizados en el modal
-  const handleSaveEdit = (newData: {
-    nombre: string;
-    descripcion: string;
-    grupo: string;
-    type: string;
-    url: string;
-    idaplicaciones: number;
-    idgrupoaplicaciones: number;
-  }) => {
+  const handleSaveEdit = (newData: ModalonSaveType) => {
     setEditData(newData); // Actualiza los datos si es necesario
     // Aquí puedes agregar la lógica para actualizar en la API
   };

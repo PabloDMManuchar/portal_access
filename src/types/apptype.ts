@@ -20,7 +20,7 @@ export interface Aplicacion {
   type: string;
   cantuser: number;
   mostrarimagen: string;
-  hab: boolean;
+  hab: "SI" | "NO";
   genero: string;
   fechagenero: string;
   modifico: string;
