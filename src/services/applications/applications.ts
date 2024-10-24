@@ -19,7 +19,7 @@ const api = axios.create({
 const AllApplications = async () => {
   try {
     const response = await api.get("/allapplications");
-
+    console.info(response);
     return response.data.apps;
   } catch (error) {
     console.error("Error fetching applications", error);
@@ -42,6 +42,18 @@ const ApplicationById = async (id: number) => {
 const AllApplicationPrivateByIdusuario = async (id: number) => {
   try {
     const response = await api.get(`/applicationsprivatebyidusuario/${id}`);
+    console.info(response);
+    return response.data.apps;
+  } catch (error) {
+    console.error("Error fetching user", error);
+    return null;
+  }
+};
+
+// Función para obtener las aplicaciones private y public x idusuario
+const AllApplicationAuthByIdusuario = async (id: number) => {
+  try {
+    const response = await api.get(`/applicationsauthbyidusuario/${id}`);
 
     return response.data.apps;
   } catch (error) {
@@ -91,11 +103,27 @@ const CreateApplicationPrivate = async ({
   } catch (error) {}
 };
 
+// Función para obtener las aplicaciones private y public x idusuario
+const CheckAuthAplicationsByIdAplicaciones = async (id: number) => {
+  try {
+    const response = await api.post("/checkauthbyidaplicaciones", {
+      idaplicaciones: id,
+    });
+
+    return response.data.auth;
+  } catch (error) {
+    console.error("Error fetching user", error);
+    return null;
+  }
+};
+
 export const applications = {
   AllApplications,
   ApplicationById,
   AllApplicationPrivateByIdusuario,
+  AllApplicationAuthByIdusuario,
   AllGroupApp,
   AllEnabledGroupApp,
   CreateApplicationPrivate,
+  CheckAuthAplicationsByIdAplicaciones,
 };

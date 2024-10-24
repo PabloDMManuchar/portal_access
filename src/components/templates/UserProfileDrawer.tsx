@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Drawer,
   DrawerBody,
@@ -19,7 +18,7 @@ import {
   Tag,
   TagLabel,
 } from "@chakra-ui/react";
-import { FaKey, FaPlusCircle, FaCheckCircle, FaUser } from "react-icons/fa";
+import { FaCheckCircle, FaUser } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
 import ChangePasswordModal from "../molecules/modals/ChangePasswordModal";
 import AddPrivateApplicationModal from "../molecules/modals/AddPrivateApplicationModal";

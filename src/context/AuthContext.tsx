@@ -2,8 +2,8 @@ import React, {
   createContext,
   useContext,
   useState,
-  ReactNode,
   useEffect,
+  ReactNode,
 } from "react";
 import { users } from "../services/users/users";
 import {
@@ -18,6 +18,7 @@ interface AuthContextType {
   isTokenValid: boolean;
   statusPassword: string;
   dataUser: LoginDataUser;
+  loading: boolean;
   checktoken: () => void;
   login: (credentials: LoginCredentials) => Promise<LoginResponse>;
   logout: () => void;
@@ -47,6 +48,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [statusPassword, setStatusPassword] = useState("");
   const [dataUser, setDataUSer] = useState<LoginDataUser>(InitialdataUser);
   //   const [message, setMessage] = useState(initialState)
+  const [loading, setLoading] = useState(true);
 
   const login = async (credentials: LoginCredentials) => {
     try {
@@ -111,8 +113,14 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     } catch (error) {
       setIsTokenValid(false);
       toast.error("Token Invalido, vuelva a iniciar sesion");
+    } finally {
+      setLoading(false); // Finaliza la carga después de verificar el token
     }
   };
+
+  useEffect(() => {
+    checktoken(); // Verifica el token al cargar la app
+  }, []);
 
   return (
     <AuthContext.Provider
@@ -124,6 +132,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         checktoken,
         login,
         logout,
+        loading,
       }}
     >
       {children}

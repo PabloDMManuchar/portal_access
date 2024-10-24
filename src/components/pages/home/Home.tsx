@@ -8,12 +8,13 @@ import { useAuth } from "../../../context/AuthContext";
 import Navigationusers from "../../templates/NavigationUsers";
 
 const Home: React.FC = () => {
-  const { isAuthenticated, checktoken, isTokenValid } = useAuth();
+  const { isAuthenticated, checktoken } = useAuth();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const checkToken = async () => {
       const response = checktoken();
+      console.info(response);
       setLoading(false); // Finalizar la carga
     };
 

@@ -1,11 +1,10 @@
 import React from "react";
 import { Button as ChakraButton } from "@chakra-ui/react";
-import { IconType } from "react-icons/fa"; // Importa IconType desde react-icons/fa
 
 interface ButtonProps {
   type?: "button" | "submit" | "reset";
   onClick?: () => void;
-  leftIcon?: IconType; // Permite pasar un icono de react-icons/fa
+  leftIcon?: ""; // Permite pasar un icono de react-icons/fa
   children: React.ReactNode;
 }
 

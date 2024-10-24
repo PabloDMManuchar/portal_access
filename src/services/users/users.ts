@@ -29,7 +29,7 @@ const login = async (credentials: LoginCredentials): Promise<LoginResponse> => {
 };
 
 const logout = async () => {
-  const resp = await axios.post(`${API}/logout`);
+  await axios.post(`${API}/logout`);
   Cookies.remove("token");
 };
 
