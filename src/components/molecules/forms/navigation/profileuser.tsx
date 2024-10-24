@@ -1,19 +1,14 @@
-import React from "react";
 import {
   Tag,
   TagLabel,
   Card,
-  CardHeader,
   CardBody,
-  CardFooter,
   Image,
   Stack,
   Heading,
   Text,
   Button,
   Tooltip,
-  Icon,
-  Input,
   Flex,
   useDisclosure,
   Box,
@@ -22,7 +17,6 @@ import {
   Tbody,
   Tr,
   Th,
-  Td,
   Drawer,
   DrawerBody,
   DrawerFooter,
@@ -32,7 +26,7 @@ import {
   DrawerCloseButton,
 } from "@chakra-ui/react";
 import { FaUser } from "react-icons/fa"; // Importa el ícono de react-icons/fa
-import UserProfileIcon from "../../../atoms/icons/UserIcon/UserProfileIcon";
+
 import { useAuth } from "../../../../context/AuthContext";
 import ChangePasswordModal from "../../modals/ChangePasswordModal";
 
@@ -73,7 +67,6 @@ const Profileuser = () => {
                 boxShadow="lg"
               >
                 <Image
-                  objectFit="contein"
                   maxW={{ base: "100%", sm: "150px" }}
                   boxSize="100px"
                   src="./profileimg.png"

@@ -9,7 +9,6 @@ import {
   RadioGroup,
   Stack,
   Radio,
-  Center,
 } from "@chakra-ui/react";
 import { FaCheckCircle, FaPlus } from "react-icons/fa";
 import { NewAplicacion, Grupo } from "../../../../types/apptype";

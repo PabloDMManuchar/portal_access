@@ -5,7 +5,6 @@ import EditApplicationModal from "../../modals/EditApplicationModal";
 
 interface AplicacionCardProps {
   aplicacion: Aplicacion; // Definir el tipo de props
-  onEdit: (id: number) => void; // Función para manejar la edición
 }
 
 const AplicationCard: React.FC<AplicacionCardProps> = ({ aplicacion }) => {

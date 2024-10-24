@@ -3,7 +3,6 @@ import {
   Box,
   List,
   ListItem,
-  ListIcon,
   Link,
   Heading,
   Spinner,
@@ -13,7 +12,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 import * as Icons from "react-icons/fa"; // Importa todos los iconos de FontAwesome
-import { FaExternalLinkAlt } from "react-icons/fa";
 import { services } from "../../../services/index";
 import { Aplicacion } from "../../../types/apptype"; // Ajusta según tu tipo
 import { useAuth } from "../../../context/AuthContext";

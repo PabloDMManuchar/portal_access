@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Drawer,
   DrawerBody,
@@ -8,7 +8,6 @@ import {
   DrawerContent,
   DrawerCloseButton,
   Button,
-  Box,
   Flex,
   Tooltip,
   Icon,
@@ -17,24 +16,23 @@ import {
 import AdministratorIcon from "../../../atoms/icons/UserIcon/AdministratorIcon";
 import { MenuAdmin } from "../../menu/MenuAdmin";
 import UsersContentPage from "../../../pages/usersadmin/userscontentpage";
-import { useAuth } from "../../../../context/AuthContext";
 import { Titlecontent } from "../../../atoms/title/titlecontent";
 import HomeContentPage from "../../../pages/usersadmin/homecontentpage";
 import AplicationContentPage from "../../../pages/usersadmin/aplicationcontentpage";
 
 const Administrator = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [activeSection, setActiveSection] = useState("");
   const [isOpenMenu, setIsOpenMenu] = useState(true);
   const [currentContent, setCurrentContent] = useState("home");
 
-  const handleMenuItemClick = (content) => {
+  const handleMenuItemClick = (content: any) => {
     setCurrentContent(content);
     setIsOpenMenu(false); // Cerrar el menú al seleccionar un item
   };
 
   return (
     <>
+      {console.info(isOpenMenu)}
       <Tooltip label="Acceso administracion App" openDelay={500}>
         <Button
           colorScheme="black"
