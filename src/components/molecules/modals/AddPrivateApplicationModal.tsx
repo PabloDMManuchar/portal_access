@@ -28,16 +28,16 @@ import { services } from "../../../services/index";
 import { newApplicationPrivateSchema } from "../../../schemas/applicationSchema";
 
 const AddPrivateApplicationModal: React.FC = () => {
-  const OverlayTwo = () => (
-    <ModalOverlay
-      bg="none"
-      backdropFilter="auto"
-      backdropInvert="80%"
-      backdropBlur="2px"
-    />
-  );
+  // const OverlayTwo = () => (
+  //   <ModalOverlay
+  //     bg="none"
+  //     backdropFilter="auto"
+  //     backdropInvert="80%"
+  //     backdropBlur="2px"
+  //   />
+  // );
   const { isOpen, onOpen, onClose } = useDisclosure(); // Para controlar la apertura/cierre del modal
-  const [overlay, setOverlay] = React.useState(<OverlayTwo />);
+  // const [overlay, setOverlay] = React.useState(<OverlayTwo />);
 
   const [formData, setFormData] = useState<NewAplicacionPrivate>({
     nombre: "",
@@ -117,7 +117,7 @@ const AddPrivateApplicationModal: React.FC = () => {
           borderColor="blue.500" // Borde verde para hacer juego con el ícono
           _hover={{ bg: "gray.100" }} // Efecto hover opcional
           onClick={() => {
-            setOverlay(<OverlayTwo />);
+            // setOverlay(<OverlayTwo />);
             onOpen();
           }}
           mr={4}

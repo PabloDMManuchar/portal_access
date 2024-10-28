@@ -1,17 +1,17 @@
 export interface UserType {
-  nombre: string;
-  usuario: string;
-  email: string;
-  perfil: string;
-  diasexpirapassword: number;
-  feultimocambiopassword: Date;
-  feultimoingreso: Date;
-  diascambiopassword: number;
   cantapprivate: number;
   cantappublic: number;
+  diascambiopassword: number;
+  diasexpirapassword: number;
+  email: string;
+  feultimocambiopassword: Date;
+  feultimoingreso: Date;
   hab: string;
   idperfil: number;
   idusuario: number;
+  nombre: string;
+  perfil: string;
+  usuario: string;
 }
 
 export interface CreateUserType {

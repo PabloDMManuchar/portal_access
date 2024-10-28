@@ -64,35 +64,18 @@ const TableUsers = () => {
       sortable: true,
     },
     {
-      name: "Último cambio de contraseña",
-      selector: (row: UserType) => row.feultimocambiopassword?.toString() || "", // Convertir a string
-      cell: (row: UserType) =>
-        row.feultimocambiopassword
-          ? new Date(row.feultimocambiopassword).toLocaleDateString()
-          : "Nunca",
+      name: "Último Cambio de Contraseña",
+      selector: (row: UserType) => row.feultimocambiopassword.toISOString(), // Convertir Date a string
+      cell: (row: UserType) => row.feultimocambiopassword.toLocaleDateString(), // Mostrar la fecha en formato legible
       sortable: true,
     },
     {
-      name: "Último cambio de contraseña",
-      selector: (row: UserType) => row.feultimocambiopassword,
-      cell: (row: UserType) =>
-        row.feultimocambiopassword
-          ? new Date(row.feultimocambiopassword).toLocaleDateString() // Formatear fecha si existe
-          : "Nunca", // Mostrar "Nunca" si no hay fecha
+      name: "Último Ingreso",
+      selector: (row: UserType) => row.feultimoingreso.toISOString(), // Convertir Date a string
+      cell: (row: UserType) => row.feultimoingreso.toLocaleDateString(), // Mostrar la fecha en formato legible
       sortable: true,
     },
     {
-      name: "Último ingreso",
-      selector: (row: UserType) => row.feultimoingreso?.toString() || "", // Convertir a string
-      cell: (row: UserType) => {
-        if (!row.feultimoingreso) return "Nunca";
-        const lastLoginDate = new Date(row.feultimoingreso);
-        const referenceDate = new Date("2024-01-01");
-
-        return lastLoginDate < referenceDate
-          ? "Nunca"
-          : lastLoginDate.toLocaleDateString();
-      },
       sortable: true,
     },
   ];
