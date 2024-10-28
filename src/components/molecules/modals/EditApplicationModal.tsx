@@ -14,23 +14,22 @@ import {
   FormLabel,
 } from "@chakra-ui/react";
 
+export type ModalonSaveType = {
+  descripcion: string;
+  grupo: string;
+  idaplicaciones: number;
+  idgrupoaplicaciones: number;
+  nombre: string;
+  type: string;
+  url: string;
+  src: string;
+};
+
 interface EditModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (editData: {
-    nombre: string;
-    descripcion: string;
-    src: string;
-    idaplicaciones: number;
-    grupo: string;
-  }) => void;
-  initialData: {
-    nombre: string;
-    descripcion: string;
-    idaplicaciones: number;
-    grupo: string;
-    src: string;
-  };
+  onSave: (editData: ModalonSaveType) => void;
+  initialData: ModalonSaveType;
 }
 
 const EditApplicationModal: React.FC<EditModalProps> = ({

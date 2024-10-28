@@ -1,4 +1,3 @@
-import Home from "./components/pages/home/Home";
 import {
   BrowserRouter as Router,
   Routes,
