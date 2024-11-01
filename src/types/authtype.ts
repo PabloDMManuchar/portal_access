@@ -1,3 +1,4 @@
+import { LinkApp } from "./apptype";
 export interface LoginCredentials {
   username: string;
   password: string;
@@ -9,6 +10,7 @@ export interface LoginResponse {
   statuspass: string; // Estado del password, puede ser "OK" u otro.
   token: string; // El token JWT generado.
   checkacceso: LoginDataUser;
+  apps: LinkApp[];
 }
 
 export interface LoginDataUser {
@@ -16,6 +18,10 @@ export interface LoginDataUser {
   nombre: string;
   usuario: string;
   email: string;
+  tipo: string;
+  empresa: string;
+  sucursal: string;
+  area: string;
   perfil: string;
   idperfil: number;
   diascambiopassword: number;

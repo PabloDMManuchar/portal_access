@@ -1,9 +1,31 @@
 import React from "react";
-import { Tooltip } from "@chakra-ui/react";
+import { Tooltip, useToast } from "@chakra-ui/react";
 import { LinkApp } from "../../../types/apptype";
 import * as Icons from "react-icons/fa"; // Asegúrate de importar los íconos de FontAwesome u otros
 
 const CardButtonLinkApp: React.FC<{ data: LinkApp[] }> = ({ data }) => {
+  const toast = useToast();
+
+  const handleClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    auth: number,
+    url: string | undefined
+  ) => {
+    if (auth === 0) {
+      e.preventDefault(); // Evita la navegación si no está autorizado
+      toast({
+        title: "Acceso Denegado",
+        description: "No estás autorizado para acceder a este enlace.",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      // Si está autorizado, permite la navegación normal
+      window.open(url, "_blank"); // Abre la URL en una nueva pestaña
+    }
+  };
+
   return (
     <div className="flex flex-wrap justify-center">
       {data?.map((card, index) => (
@@ -18,7 +40,8 @@ const CardButtonLinkApp: React.FC<{ data: LinkApp[] }> = ({ data }) => {
         >
           <a
             className="m-4"
-            href={card?.url}
+            href={card?.auth === 1 ? card?.url : "#"}
+            onClick={(e) => handleClick(e, card?.auth, card?.url)}
             target={card.type !== "add" ? "_blank" : "_top"}
           >
             <div className="group relative m-0 flex h-28 w-32 rounded-xl shadow-xl ring-gray-900/5 sm:mx-auto sm:max-w-lg cursor-pointer">
@@ -40,7 +63,7 @@ const CardButtonLinkApp: React.FC<{ data: LinkApp[] }> = ({ data }) => {
               </div>
               <div className="w-full absolute bottom-0 z-20 m-0 pb-4 transition duration-300 ease-in-out group-hover:-translate-y-2">
                 <p className="text-xs text-white text-center relative">
-                  {card?.text}
+                  {card?.descripcion}
                 </p>
               </div>
             </div>

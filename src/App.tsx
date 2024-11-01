@@ -14,16 +14,19 @@ function App() {
     <Router>
       <Routes>
         {/* Ruta pública */}
-        <Route path="/" element={<HomePage />} /> {/* Ruta para Home */}
+        <Route path="/access" element={<HomePage />} /> {/* Ruta para Home */}
         {/* Rutas protegidas */}
         <Route element={<PrivateRoute />}>
           {/* Ruta para el perfil del usuario */}
-          <Route path="/myprofile" element={<ProfileUserPage />} />{" "}
+          <Route path="/access/myprofile" element={<ProfileUserPage />} />{" "}
           {/* Ruta para el administrador */}
-          <Route path="/administrator" element={<AdministratorPage />} />{" "}
+          <Route
+            path="/access/administrator"
+            element={<AdministratorPage />}
+          />{" "}
         </Route>
         {/* Ruta de captura para rutas inexistentes */}
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="*" element={<Navigate to="/access" />} />
       </Routes>
     </Router>
   );

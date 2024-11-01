@@ -16,15 +16,20 @@ const LinksApp: React.FC = () => {
   >(undefined);
 
   const { dataUser } = useAuth();
+
   const getData = async () => {
-    const data = await services.applications.AllApplications();
+    const data = await services.applications.AllApplicationAuthByIdusuario(
+      dataUser.idusuario
+    );
+
     const publicsapp = data.filter((item: LinkApp) => item.type === "public");
     const powerBi = data.filter((item: LinkApp) => item.type === "powerBi");
-    const dataprivate: LinkApp[] =
-      await services.applications.AllApplicationPrivateByIdusuario(
-        dataUser.idusuario
-      );
-    const privates: LinkApp[] = dataprivate;
+    const privates = data.filter((item: LinkApp) => item.type === "private");
+    //const dataprivate: LinkApp[] =
+    // await services.applications.AllApplicationPrivateByIdusuario(
+    //    dataUser.idusuario
+    //  );
+    //const privates: LinkApp[] = dataprivate;
     //const add = data.filter((item) => item.type === "add");
 
     const puclicsAdd = [...publicsapp, ...privates];

@@ -66,7 +66,7 @@ const AllGroupApp = async () => {
   try {
     const response = await api.get("/allgroupapp");
 
-    return response.data.usuario;
+    return response.data.group;
   } catch (error) {
     console.error("Error fetching groups", error);
   }
