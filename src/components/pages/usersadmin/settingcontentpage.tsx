@@ -127,16 +127,18 @@ const CRUDGroups = ({
                     <Button
                       colorScheme="blue"
                       mr={2}
-                      onClick={() =>
-                        console.log("Editando", data.idgrupoaplicaciones)
+                      onClick={
+                        () => {}
+                        //console.log("Editando", data.idgrupoaplicaciones)
                       }
                     >
                       Editar
                     </Button>
                     <Button
                       colorScheme="red"
-                      onClick={() =>
-                        console.log("Eliminando", data.idgrupoaplicaciones)
+                      onClick={
+                        () => {}
+                        //console.log("Eliminando", data.idgrupoaplicaciones)
                       }
                     >
                       Eliminar

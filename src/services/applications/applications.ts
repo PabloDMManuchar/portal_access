@@ -9,7 +9,7 @@ const getToken = () => Cookies.get("token");
 
 // Crear una instancia de Axios con el token incluido en los headers
 const api = axios.create({
-  baseURL: "http://localhost:8000/access/api", // Cambia por la URL base de tu API
+  baseURL: import.meta.env.VITE_API_ACCESS + "/access/api", // Cambia por la URL base de tu API
   headers: {
     Authorization: `Bearer ${getToken()}`, // Incluye el token en el encabezado
   },
