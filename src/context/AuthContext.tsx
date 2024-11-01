@@ -68,7 +68,6 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       toast("Consultando usuario...", { duration: 2000 });
       const response: LoginResponse = await users.login(credentials); // Llamada a la API
       const accessToken = response.token;
-      console.log(response);
       Cookies.set("token", accessToken, { expires: 7, sameSite: "lax" }); // Establecer SameSite
       toast.success("Bienvenido!! " + response.checkacceso.nombre);
       setIsAuthenticated(true);

@@ -71,7 +71,6 @@ const UpdateUserModal: React.FC<EditUserModalProps> = ({
     if (userId) {
       services.users.UserById(userId).then(setUserData).catch(console.error);
     }
-    console.log(userId);
   }, [userId]);
 
   if (!userData) return null;

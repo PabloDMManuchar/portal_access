@@ -12,8 +12,7 @@ import {
 import Cookies from "js-cookie";
 
 // URL de la API
-const API = "http://localhost:8000/access/api";
-//const API = import.meta.env.API_ACCESS;
+const API = import.meta.env.VITE_API_ACCESS + "/access/api";
 // Función para obtener el token de la cookie
 const getToken = () => Cookies.get("token");
 
