@@ -5,11 +5,14 @@ import { users } from "../../../services/users/users";
 import DataTable from "react-data-table-component";
 import { FaTimes } from "react-icons/fa";
 import AddUserModal from "../modals/AddUserModal";
+import UpdateUserModal from "../modals/UpdateUserModal";
 import ExpandableRow from "./ExpandableRow"; // Importa el nuevo componente
 
 const TableUsers = () => {
   const [usersdata, setUsersData] = useState<UserType[]>([]); // Estado para almacenar los usuarios
   const [filterText, setFilterText] = useState("");
+  const [editUserId, setEditUserId] = useState<number | null>(null); // ID del usuario a editar
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -49,6 +52,22 @@ const TableUsers = () => {
       selector: (row: UserType) => row.email,
       sortable: true,
     },
+    { name: "Tipo", selector: (row: UserType) => row.tipo, sorteable: true },
+    {
+      name: "Empresa",
+      selector: (row: UserType) => row.empresa,
+      sorteable: true,
+    },
+    {
+      name: "Sucursal",
+      selector: (row: UserType) => row.sucursal,
+      sorteable: true,
+    },
+    {
+      name: "Area",
+      selector: (row: UserType) => row.area,
+      sorteable: true,
+    },
     {
       name: "Perfil",
       selector: (row: UserType) => row.perfil,
@@ -65,14 +84,17 @@ const TableUsers = () => {
     },
     {
       name: "Último Cambio de Contraseña",
-      selector: (row: UserType) => row.feultimocambiopassword.toISOString(), // Convertir Date a string
-      cell: (row: UserType) => row.feultimocambiopassword.toLocaleDateString(), // Mostrar la fecha en formato legible
+      selector: (row: UserType) =>
+        new Date(row.feultimocambiopassword).toISOString(),
+      cell: (row: UserType) =>
+        new Date(row.feultimocambiopassword).toLocaleDateString(),
       sortable: true,
     },
     {
       name: "Último Ingreso",
-      selector: (row: UserType) => row.feultimoingreso.toISOString(), // Convertir Date a string
-      cell: (row: UserType) => row.feultimoingreso.toLocaleDateString(), // Mostrar la fecha en formato legible
+      selector: (row: UserType) => new Date(row.feultimoingreso).toISOString(),
+      cell: (row: UserType) =>
+        new Date(row.feultimoingreso).toLocaleDateString(),
       sortable: true,
     },
     {
@@ -84,18 +106,9 @@ const TableUsers = () => {
   const [filteredData, setFilteredData] = useState(data);
 
   // Función para editar un usuario
-  const handleEditUser = async (userId: number) => {
-    try {
-      console.info(userId);
-      // Aquí abrirías el formulario de edición
-      // Puedes llamar a la API de editar usuario si ya tienes los datos listos
-    } catch (error) {
-      Toast({
-        title: "Error al editar usuario",
-        status: "error",
-        isClosable: true,
-      });
-    }
+  const handleEditUser = (userId: number) => {
+    setEditUserId(userId);
+    setIsEditModalOpen(true);
   };
 
   // Función para refrescar la contraseña del usuario
@@ -188,6 +201,13 @@ const TableUsers = () => {
         subHeader
         persistTableHead
       />
+      {isEditModalOpen && editUserId && (
+        <UpdateUserModal
+          userId={editUserId}
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+        />
+      )}
     </Box>
   );
 };
