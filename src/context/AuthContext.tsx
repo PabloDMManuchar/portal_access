@@ -115,6 +115,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         setStatusPassword(resp.statuspass);
         toast.success("Token Valido.. Restaurando la sesion");
         const User: LoginDataUser = response[0];
+        console.log(User);
         setDataUSer(User);
         toast.success("Sesión recuperada.");
         checkauthapplications();
@@ -133,6 +134,17 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   const checkauthapplications = async () => {
+    const token = Cookies.get("token"); // Cambia "token" al nombre exacto de la cookie que contiene el token
+
+    if (!token) {
+      // Si no existe el token, cierra la sesión directamente
+      logout();
+      setIsTokenValid(false);
+      setIsAuthenticated(false);
+      toast.error("No hay token disponible. Por favor, inicie sesión.");
+      setLoading(false);
+      return;
+    }
     try {
       if (!dataUser.idusuario) return;
       const data = await services.applications.AllApplicationAuthByIdusuario(

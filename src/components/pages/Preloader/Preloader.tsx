@@ -1,0 +1,60 @@
+import React, { useEffect } from "react";
+import { useSpring, animated } from "@react-spring/web";
+import { Flex, Text } from "@chakra-ui/react";
+import { useAuth } from "../../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+
+const Preloader: React.FC = () => {
+  const { checktoken, isTokenValid } = useAuth();
+  const navigate = useNavigate();
+
+  const styles = useSpring({
+    from: { opacity: 0, transform: "scale(0.5)" },
+    to: { opacity: 1, transform: "scale(1)" },
+    config: { duration: 4000 },
+    loop: { reverse: true },
+  });
+
+  useEffect(() => {
+    const verifyToken = async () => {
+      await checktoken();
+
+      setTimeout(() => {
+        if (isTokenValid) {
+          navigate("/access/home");
+        } else {
+          navigate("/access/login");
+        }
+      }, 4000); // Tiempo coincide con la duración de la animación
+    };
+
+    verifyToken();
+  }, [checktoken, isTokenValid, navigate]);
+
+  return (
+    <Flex
+      height="100vh"
+      alignItems="center"
+      justifyContent="center"
+      bgImage="url('/welcomeimg.png')"
+      bgPosition="center"
+      bgSize="cover"
+      bgRepeat="no-repeat"
+      position="relative"
+    >
+      <animated.div style={styles}>
+        <Text
+          fontSize="6xl"
+          fontWeight="bold"
+          color="white"
+          textShadow="2px 2px 6px rgba(0, 0, 0, 0.8)"
+          className="preloader"
+        >
+          Checkeando Token....
+        </Text>
+      </animated.div>
+    </Flex>
+  );
+};
+
+export default Preloader;

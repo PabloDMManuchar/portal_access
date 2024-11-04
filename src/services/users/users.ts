@@ -37,6 +37,19 @@ const logout = async () => {
 };
 
 const checkToken = async () => {
+  // Verifico primero que el token exista
+  const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("token="));
+
+  if (!token) {
+    // Si el token no existe, devuelve una respuesta sin hacer la solicitud
+    return {
+      tokenvalid: false,
+      statuspass: "",
+      idusuario: 0,
+    };
+  }
   try {
     const resp = await api.post(`/checktoken`);
     if (resp.status != 200) {
