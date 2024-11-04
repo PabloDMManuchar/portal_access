@@ -1,12 +1,16 @@
 export interface LinkApp {
-  idaplicaciones: number;
+  nombre: string;
+  descripcion: string;
+  grupo: string;
   url: string;
   mostrarimagen: string;
   icon: string;
-  text: string;
-  nombre: string;
   src: string;
-  type: "public" | "private" | "powerBi" | "add";
+  type: "public" | "private" | "powerBi" | "desktop" | "add";
+  idaplicaciones: number;
+  idusuariogenero: number;
+  idusuario: number;
+  auth: number;
 }
 
 export interface Aplicacion {
@@ -63,3 +67,5 @@ export interface Grupo {
   modifico: string;
   fechamodifico: string;
 }
+
+export interface GrupoType {}

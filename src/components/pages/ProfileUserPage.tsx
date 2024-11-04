@@ -31,6 +31,18 @@ const ProfileUserPage = () => {
           <Text color="gray.500" fontSize="sm">
             {dataUser.perfil}
           </Text>
+          <Text color="gray.500" fontSize="sm">
+            Tipo: {dataUser.tipo}
+          </Text>
+          <Text color="gray.500" fontSize="sm">
+            Empresa: {dataUser.empresa}
+          </Text>
+          <Text color="gray.500" fontSize="sm">
+            Sucursal: {dataUser.sucursal}
+          </Text>
+          <Text color="gray.500" fontSize="sm">
+            Area: {dataUser.area}
+          </Text>
           <Text color="gray.600" fontSize="sm">
             Status Password: {statusPassword}
           </Text>

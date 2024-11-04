@@ -6,19 +6,24 @@ import React, {
   ReactNode,
 } from "react";
 import { users } from "../services/users/users";
+import { services } from "../services/index";
 import {
   LoginResponse,
   LoginCredentials,
   LoginDataUser,
 } from "../types/authtype";
+import { LinkApp } from "../types/apptype";
 import Cookies from "js-cookie";
 import { toast } from "sonner";
+
 interface AuthContextType {
   isAuthenticated: boolean;
   isTokenValid: boolean;
   statusPassword: string;
   dataUser: LoginDataUser;
+  dataAuthLink: LinkApp[];
   loading: boolean;
+  checkauthapplications: () => void;
   checktoken: () => void;
   login: (credentials: LoginCredentials) => Promise<LoginResponse>;
   logout: () => void;
@@ -32,11 +37,17 @@ const InitialdataUser: LoginDataUser = {
   email: "",
   perfil: "",
   idperfil: 0,
+  empresa: "",
+  sucursal: "",
+  area: "",
+  tipo: "",
   diascambiopassword: 0,
   diasexpirapassword: 0, // valor inicial o predeterminado
   cantapprivate: 0,
   cantappublic: 0,
 };
+
+const InitialdataAuthLink: LinkApp[] = [];
 
 // Crear el contexto con valores predeterminados
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -47,6 +58,8 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isTokenValid, setIsTokenValid] = useState(false);
   const [statusPassword, setStatusPassword] = useState("");
   const [dataUser, setDataUSer] = useState<LoginDataUser>(InitialdataUser);
+  const [dataAuthLink, setDataAuthLink] =
+    useState<LinkApp[]>(InitialdataAuthLink);
   //   const [message, setMessage] = useState(initialState)
   const [loading, setLoading] = useState(true);
 
@@ -55,7 +68,6 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       toast("Consultando usuario...", { duration: 2000 });
       const response: LoginResponse = await users.login(credentials); // Llamada a la API
       const accessToken = response.token;
-
       Cookies.set("token", accessToken, { expires: 7, sameSite: "lax" }); // Establecer SameSite
       toast.success("Bienvenido!! " + response.checkacceso.nombre);
       setIsAuthenticated(true);
@@ -67,8 +79,9 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       if (statusPassword == "VENCIDA") {
         toast.warning("Contraseña Vencida!!!, Debe Cambiar su Password");
       }
-      const User: LoginDataUser = response.checkacceso;
-      setDataUSer(User);
+
+      setDataUSer(response.checkacceso);
+      checkauthapplications();
       return response;
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
@@ -104,9 +117,10 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         const User: LoginDataUser = response[0];
         setDataUSer(User);
         toast.success("Sesión recuperada.");
+        checkauthapplications();
         //return User;
       } else {
-        logout;
+        logout();
         setIsTokenValid(false);
         setIsAuthenticated(false);
       }
@@ -115,6 +129,22 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       toast.error("Token Invalido, vuelva a iniciar sesion");
     } finally {
       setLoading(false); // Finaliza la carga después de verificar el token
+    }
+  };
+
+  const checkauthapplications = async () => {
+    try {
+      if (!dataUser.idusuario) return;
+      const data = await services.applications.AllApplicationAuthByIdusuario(
+        dataUser.idusuario
+      );
+      console.info(data);
+      const authLink: LinkApp[] = data;
+      setDataAuthLink(authLink);
+      console.info(dataAuthLink);
+    } catch (error) {
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -129,7 +159,9 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         isTokenValid,
         statusPassword,
         dataUser,
+        dataAuthLink,
         checktoken,
+        checkauthapplications,
         login,
         logout,
         loading,

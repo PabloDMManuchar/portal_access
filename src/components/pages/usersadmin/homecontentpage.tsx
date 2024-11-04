@@ -14,14 +14,22 @@ import {
   TableCaption,
   TableContainer,
 } from "@chakra-ui/react";
-import { UserType } from "../../../types/usertype";
+import {
+  UserType,
+  UsersbyEmpresaSucursal,
+  UsersbyArea,
+  LastEvents,
+} from "../../../types/usertype";
 import { users } from "../../../services/users/users";
 
 // Componente para el Dashboard
 const HomeContentPage = () => {
-  // Estado de los datos
-  const [usersdata, setUsersData] = useState<UserType[]>([]); // Estado para almacenar los usuarios
-  // Simulación de llamada a la API
+  const [usersdata, setUsersData] = useState<UserType[]>([]);
+  const [usersbyempsucdata, setUsersbyEmpSucData] = useState<
+    UsersbyEmpresaSucursal[]
+  >([]);
+  const [usersbyarea, setUsersbyareaData] = useState<UsersbyArea[]>([]);
+  const [lasteventdata, setLastEventData] = useState<LastEvents[]>([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -36,7 +44,45 @@ const HomeContentPage = () => {
     fetchUsers();
   }, []);
 
-  // KPIs
+  useEffect(() => {
+    const fetchUsersbyEmpresaSucursal = async () => {
+      try {
+        const response = await users.UsersbyEmpresaSucursal();
+        setUsersbyEmpSucData(response);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchUsersbyEmpresaSucursal();
+  }, []);
+
+  useEffect(() => {
+    const fetchUsersbyArea = async () => {
+      try {
+        const response = await users.UsersbyArea();
+        setUsersbyareaData(response);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchUsersbyArea();
+  }, []);
+
+  useEffect(() => {
+    const fetchLastEvent = async () => {
+      try {
+        const response = await users.LastEvents();
+        setLastEventData(response);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchLastEvent();
+  }, []);
+
   const totalUsuarios = usersdata.length;
   const totalHabilitados = usersdata.filter((user) => user.hab === "SI").length;
   const totalDeshabilitados = usersdata.filter(
@@ -48,69 +94,117 @@ const HomeContentPage = () => {
   const totalUsuariosComunes = usersdata.filter(
     (user) => user.perfil === "usuario"
   ).length;
+  const totalUsuariosInternos = usersdata.filter(
+    (user) => user.tipo === "int"
+  ).length;
+  const totalUsuariosExternos = usersdata.filter(
+    (user) => user.tipo === "ext"
+  ).length;
+
   return (
     <Box p={4}>
-      {/* Sección de KPIs */}
-      <SimpleGrid columns={{ base: 1, md: 5 }} spacing={4} mb={8}>
+      <SimpleGrid
+        columns={{ base: 1, md: 5 }}
+        spacing={4}
+        mb={8}
+        textColor={"white"}
+      >
         <StatBox label="Total Usuarios" value={totalUsuarios} />
-        <StatBox label="Total Habilitados (SI)" value={totalHabilitados} />
-        <StatBox
-          label="Total Deshabilitados (NO)"
-          value={totalDeshabilitados}
-        />
-        <StatBox
-          label="Usuarios Administradores"
-          value={totalAdministradores}
-        />
-        <StatBox label="Usuarios Comunes" value={totalUsuariosComunes} />
+        <StatBox label="Activos" value={totalHabilitados} />
+        <StatBox label="Inactivos" value={totalDeshabilitados} />
+        <StatBox label="Administradores App" value={totalAdministradores} />
+        <StatBox label="Usuarios App" value={totalUsuariosComunes} />
+        <StatBox label="Internos" value={totalUsuariosInternos} />
+        <StatBox label="Externos" value={totalUsuariosExternos} />
       </SimpleGrid>
 
-      {/* Tabla de Usuarios */}
-      <TableContainer>
-        <Table variant="striped" colorScheme="teal">
-          <TableCaption>Lista de usuarios y detalles</TableCaption>
-          <Thead>
-            <Tr>
-              <Th>Nombre</Th>
-              <Th>Usuario</Th>
-              <Th>Email</Th>
-              <Th>Perfil</Th>
-              <Th>Habilitado</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {usersdata.map((user, index) => (
-              <Tr key={index}>
-                <Td>{user.nombre}</Td>
-                <Td>{user.usuario}</Td>
-                <Td>{user.email}</Td>
-                <Td>{user.perfil}</Td>
-                <Td>{user.hab}</Td>
+      <SimpleGrid columns={{ base: 1, md: 3 }} spacing={4}>
+        {/* Tabla de Usuarios x Empresa */}
+        <TableContainer>
+          <Table variant="striped" colorScheme="teal">
+            <TableCaption>Lista de usuarios x Empresa - Sucursal</TableCaption>
+            <Thead>
+              <Tr>
+                <Th>Empresa</Th>
+                <Th>Sucursal</Th>
+                <Th>Cant</Th>
               </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
+            </Thead>
+            <Tbody>
+              {usersbyempsucdata.map((user) => (
+                <Tr key={user.idempresasucursal}>
+                  <Td>{user.empresa}</Td>
+                  <Td>{user.sucursal}</Td>
+                  <Td>{user.cant}</Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
+
+        {/* Tabla de Usuarios x Area */}
+        <TableContainer>
+          <Table variant="striped" colorScheme="teal">
+            <TableCaption>Lista de usuarios x Area</TableCaption>
+            <Thead>
+              <Tr>
+                <Th>Area</Th>
+                <Th>Cant</Th>
+              </Tr>
+            </Thead>
+            <Tbody color="white">
+              {usersbyarea.map((user) => (
+                <Tr key={user.idarea}>
+                  <Td>{user.area}</Td>
+                  <Td>{user.cant}</Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
+
+        {/* Tabla de Últimos Eventos */}
+        <TableContainer>
+          <Table variant="striped" colorScheme="teal">
+            <TableCaption>Últimos Eventos</TableCaption>
+            <Thead>
+              <Tr>
+                <Th>Fecha</Th>
+                <Th>Usuario</Th>
+                <Th>Evento</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {lasteventdata.map((eventos) => (
+                <Tr key={eventos.idlogseventos}>
+                  <Td>{new Date(eventos.fecha).toDateString()}</Td>
+                  <Td>{eventos.usuario}</Td>
+                  <Td>{eventos.evento}</Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      </SimpleGrid>
     </Box>
   );
 };
 
-// Definir los tipos para las props
 interface StatBoxProps {
   label: string;
   value: number;
 }
 
-// Componente reutilizable para cada KPI
 const StatBox = ({ label, value }: StatBoxProps) => {
   return (
     <Stat
       p={4}
       border="1px solid"
-      borderColor="gray.200"
+      borderColor="white.800"
       borderRadius="md"
       shadow="sm"
       textAlign="center"
+      textColor="white"
     >
       <StatLabel fontSize="lg">{label}</StatLabel>
       <StatNumber fontSize="2xl">{value}</StatNumber>

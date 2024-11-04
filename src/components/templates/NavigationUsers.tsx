@@ -19,7 +19,7 @@ const NavigationUsers = () => {
             color="black"
             hasArrow
           >
-            <Link to="/" className="flex items-center">
+            <Link to="/access" className="flex items-center">
               <FaHome style={{ marginRight: "8px", color: "white" }} />{" "}
             </Link>
           </Tooltip>
@@ -30,7 +30,7 @@ const NavigationUsers = () => {
             color="black"
             hasArrow
           >
-            <Link to="/myprofile" className="flex items-center">
+            <Link to="/access/myprofile" className="flex items-center">
               <FaUser style={{ marginRight: "8px", color: "white" }} />{" "}
             </Link>
           </Tooltip>
@@ -43,7 +43,7 @@ const NavigationUsers = () => {
               color="black"
               hasArrow
             >
-              <Link to="/administrator" className="flex items-center">
+              <Link to="/access/administrator" className="flex items-center">
                 <FaCogs style={{ marginRight: "8px", color: "white" }} />{" "}
               </Link>
             </Tooltip>
