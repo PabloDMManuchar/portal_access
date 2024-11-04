@@ -1,0 +1,12 @@
+.containerButton {
+  padding: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+i {
+  font-size: 2cqi;
+  color: white;
+}

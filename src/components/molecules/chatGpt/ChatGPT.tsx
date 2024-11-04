@@ -10,6 +10,8 @@ import {
   AlertIcon,
 } from "@chakra-ui/react";
 
+const API = `${import.meta.env.VITE_API_ACCESS}/chat/new`;
+
 const Chat: React.FC = () => {
   const [messages, setMessages] = useState([
     {
@@ -29,7 +31,7 @@ const Chat: React.FC = () => {
     setInput("");
 
     try {
-      const response = await fetch("http://localhost:8000/chat/new", {
+      const response = await fetch(API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: input }),
