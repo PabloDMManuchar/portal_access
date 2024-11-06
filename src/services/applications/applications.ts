@@ -19,7 +19,6 @@ const api = axios.create({
 const AllApplications = async () => {
   try {
     const response = await api.get("/allapplications");
-    console.info(response);
     return response.data.apps;
   } catch (error) {
     console.error("Error fetching applications", error);

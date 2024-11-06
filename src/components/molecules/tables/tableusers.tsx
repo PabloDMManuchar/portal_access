@@ -165,23 +165,26 @@ const TableUsers = () => {
           <AddUserModal />
         </Box>
 
-        <Input
-          placeholder="Filtrar por nombre"
-          value={filterText}
-          onChange={handleFilter}
-          borderRadius="0"
-          height="24px"
-        />
-        <Button
-          borderTopLeftRadius="0"
-          borderBottomLeftRadius="0"
-          borderTopRightRadius="5px"
-          borderBottomRightRadius="5px"
-          height="34px"
-          width="42px"
-          leftIcon={<Icon as={FaTimes} boxSize={6} />}
-          onClick={clearFilter}
-        ></Button>
+        <Flex alignItems={'center'}>
+          <Input
+            w={"14rem"}
+            placeholder="Filtrar por nombre"
+            value={filterText}
+            onChange={handleFilter}
+            borderRadius="0"
+            height="34px"
+          />
+          <Button
+            borderTopLeftRadius="0"
+            borderBottomLeftRadius="0"
+            borderTopRightRadius="5px"
+            borderBottomRightRadius="5px"
+            height="34px"
+            width="42px"
+            leftIcon={<Icon as={FaTimes} boxSize={6} />}
+            onClick={clearFilter}
+          />
+        </Flex>
       </Flex>
 
       <DataTable

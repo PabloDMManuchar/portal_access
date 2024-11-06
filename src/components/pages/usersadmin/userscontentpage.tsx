@@ -5,10 +5,8 @@ import { SubTitlecontent } from "../../atoms/title/subtitlecontent";
 const UsersContentPage = () => {
   return (
     <>
-      <SubTitlecontent>USUARIOS</SubTitlecontent>
-      <Stack>
-        <Skeleton height="20px" />
-      </Stack>
+      {/* <SubTitlecontent>USUARIOS</SubTitlecontent> */}
+
       <TableUsers />
     </>
   );
