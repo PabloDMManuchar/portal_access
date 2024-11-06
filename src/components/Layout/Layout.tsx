@@ -12,7 +12,7 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { isAuthenticated } = useAuth();
-  console.log("Esto es layout" + isAuthenticated);
+  // console.log("Esto es layout" + isAuthenticated);
   return (
     <Box className="flex flex-col items-center min-h-screen relative overflow-hidden bg-slate-950">
       <header className="p-8 w-full text-start flex z-10 justify-between">

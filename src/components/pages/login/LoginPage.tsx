@@ -32,10 +32,10 @@ const LoginPage = () => {
   useEffect(() => {
     setLoginVisible(true);
     const verifyAuth = async () => {
-      console.log(isAuthenticated);
+      // console.log(isAuthenticated);
 
       if (isAuthenticated) {
-        navigate("/access/home");
+        navigate("/access/inicio");
       } else {
         navigate("/access/login");
       }
@@ -78,7 +78,7 @@ const LoginPage = () => {
       await login(credentials);
       if (isAuthenticated) {
         setLoginVisible(false);
-        navigate("/access/home");
+        navigate("/access/inicio");
       } else {
         setError("Login fallido. Verifica tus credenciales.");
         setLoginVisible(true);
@@ -167,12 +167,6 @@ const LoginPage = () => {
               />
               <Button colorScheme="teal" onClick={handleLogin}>
                 Iniciar Sesión
-              </Button>
-              <Button
-                colorScheme="teal"
-                onClick={() => navigate("/access/home")}
-              >
-                Home
               </Button>
             </Stack>
           </animated.div>

@@ -13,31 +13,31 @@ const NavigationUsers = () => {
         <Spacer />
         <ButtonGroup gap="2">
           <Tooltip
-            label="HOME"
+            label="Inicio"
             fontSize="md"
             bg="gray.300"
             color="black"
             hasArrow
           >
-            <Link to="/access" className="flex items-center">
+            <Link to="/access/inicio" className="flex items-center">
               <FaHome style={{ marginRight: "8px", color: "white" }} />{" "}
             </Link>
           </Tooltip>
           <Tooltip
-            label="MI PERFIL"
+            label="Mi perfil"
             fontSize="md"
             bg="gray.300"
             color="black"
             hasArrow
           >
-            <Link to="/access/myprofile" className="flex items-center">
+            <Link to="/access/mi-perfil" className="flex items-center">
               <FaUser style={{ marginRight: "8px", color: "white" }} />{" "}
             </Link>
           </Tooltip>
 
           {dataUser.idperfil === 1 && (
             <Tooltip
-              label="ADMINISTRADOR"
+              label="Administrador"
               fontSize="md"
               bg="gray.300"
               color="black"

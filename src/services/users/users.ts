@@ -40,7 +40,6 @@ const logout = async () => {
 const checkToken = async () => {
   // Verifico primero que el token exista
   const token = getToken();
-  console.log(token);
   if (!token) {
     // Si el token no existe, devuelve una respuesta sin hacer la solicitud
     return {
@@ -61,7 +60,6 @@ const checkToken = async () => {
       }
     );
 
-    console.log(resp);
     if (resp.status != 200) {
       const respuesta = {
         tokenvalid: false,
