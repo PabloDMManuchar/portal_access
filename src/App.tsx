@@ -2,31 +2,35 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Navigate,
 } from "react-router-dom";
+import Preloader from "./components/pages/Preloader/Preloader";
 import AdministratorPage from "./components/pages/AdministratorPage";
 import HomePage from "./components/pages/HomePage";
 import ProfileUserPage from "./components/pages/ProfileUserPage";
 import PrivateRoute from "./components/routes/PrivateRoute";
+import { useAuth } from "./context/AuthContext";
+import LoginPage from "./components/pages/login/LoginPage";
 
 function App() {
+  const { isAuthenticated, loadingCheckToken } = useAuth();
+
   return (
     <Router>
+      {
+      loadingCheckToken ? <Preloader /> : !isAuthenticated &&  <LoginPage />
+      
+      }
       <Routes>
-        {/* Ruta pública */}
-        <Route path="/access" element={<HomePage />} /> {/* Ruta para Home */}
-        {/* Rutas protegidas */}
-        <Route element={<PrivateRoute />}>
-          {/* Ruta para el perfil del usuario */}
-          <Route path="/access/myprofile" element={<ProfileUserPage />} />{" "}
-          {/* Ruta para el administrador */}
-          <Route
-            path="/access/administrator"
-            element={<AdministratorPage />}
-          />{" "}
-        </Route>
-        {/* Ruta de captura para rutas inexistentes */}
-        <Route path="*" element={<Navigate to="/access" />} />
+        <Route path="/access/login" element={<LoginPage />} />
+        <Route path="/access/inicio" element={<HomePage />} />
+        {/* <Route element={<PrivateRoute />}> */}
+          <Route path="/access/mi-perfil" element={<ProfileUserPage />} />
+          <Route path="/access/administrator" element={<AdministratorPage />} />
+        {/* </Route> */}
+        {/* <Route
+          path="*"
+          element={<Navigate to={isTokenValid ? "/access/inicio" : "/access"} />}
+        /> */}
       </Routes>
     </Router>
   );
