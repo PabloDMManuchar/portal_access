@@ -44,7 +44,9 @@ const NavigationUsers = () => {
           </Tooltip>
 
           {dataUser.idperfil === 1 && (
+
             <Tooltip label="Administrador">
+
               <Link to="/access/administrator" className="flex items-center">
                 <MdOutlineAdminPanelSettings 
                   className={

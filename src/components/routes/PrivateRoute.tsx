@@ -1,13 +1,10 @@
-// src/components/routes/PrivateRoute.tsx
 import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { Spinner } from "@chakra-ui/react";
 
 const PrivateRoute: React.FC = () => {
-  const { isAuthenticated, loading } = useAuth(); // Obtiene si está autenticado y si está cargando
-
-  // Mostrar un spinner mientras verifica el estado de autenticación
+  const { loading } = useAuth(); 
+  
   if (loading) {
     return (
       <Spinner
@@ -19,10 +16,6 @@ const PrivateRoute: React.FC = () => {
       />
     );
   }
-
-  // Si está autenticado, permite el acceso a la ruta
-  // Si no, redirige a la página de inicio ("/")
-  return isAuthenticated ? <Outlet /> : <Navigate to="/" />;
 };
 
 export default PrivateRoute;
