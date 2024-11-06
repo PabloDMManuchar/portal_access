@@ -12,22 +12,13 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { isAuthenticated } = useAuth();
+  
   return (
     <Box className="flex flex-col items-center min-h-screen relative overflow-hidden bg-slate-950">
       <header className="p-8 w-full text-start flex z-10 justify-between">
         <img src="/manucharlogo.png" alt="Manuchar Logo" width="240" />
         <div className="flex justify-center items-center">
-          <>
-            {isAuthenticated ? (
-              <>
-                <NavigationUsers />
-              </>
-            ) : (
-              <>
-                <SesionInit />
-              </>
-            )}
-          </>
+          <>{isAuthenticated ? <NavigationUsers /> : <SesionInit />}</>
         </div>
       </header>
 

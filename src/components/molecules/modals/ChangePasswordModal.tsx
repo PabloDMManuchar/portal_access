@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Modal,
-  ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
   Button,
@@ -14,7 +12,6 @@ import {
   Tooltip,
   useDisclosure,
   useToast,
-  Spacer,
 } from "@chakra-ui/react";
 import { FaKey } from "react-icons/fa"; // Importa el ícono de react-icons/fa
 import { users } from "../../../services/users/users";
@@ -22,23 +19,15 @@ import { ChangePasswordType } from "../../../types/usertype";
 import { useAuth } from "../../../context/AuthContext";
 
 const ChangePasswordModal = () => {
-  const OverlayTwo = () => (
-    <ModalOverlay
-      bg="none"
-      backdropFilter="auto"
-      backdropInvert="80%"
-      backdropBlur="2px"
-    />
-  );
-
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [overlay, setOverlay] = React.useState(<OverlayTwo />);
   const [oldpassword, setOldPassword] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const toast = useToast();
   const { dataUser } = useAuth();
-
+  
+  const iscompleted = oldpassword && password && confirmPassword ? false : true;
+  
   // Función para manejar el cambio de contraseña
   const handleChangePassword = async () => {
     if (password !== confirmPassword) {
@@ -82,27 +71,31 @@ const ChangePasswordModal = () => {
 
   return (
     <>
-      <Tooltip label="* Cambiar Password" openDelay={500}>
+      {/* <Tooltip label="* Cambiar Password" > */}
         <Button
-          bg="white"
-          color="black"
+          _hover={{ bg: "gray.100", color: "gray.800" }}
+          color={"gray.100"}
           leftIcon={<FaKey color="green" />}
-          border="1px solid" // Opcional: añadir un borde para que se vea más estilizado
-          borderColor="green.500" // Borde verde para hacer juego con el ícono
-          _hover={{ bg: "gray.100" }} // Efecto hover opcional
+          mr={4}
           onClick={() => {
-            setOverlay(<OverlayTwo />);
             onOpen();
           }}
-          mr={4}
+          variant={"outline"}
+          w={"100%"}
         >
           Cambiar Contraseña
         </Button>
-      </Tooltip>
+      {/* </Tooltip> */}
 
       <Modal isCentered isOpen={isOpen} onClose={onClose}>
-        {overlay}
-        <ModalContent>
+        <ModalContent
+          bg={"gray.600"}
+          borderColor={"gray.500"}
+          borderRadius="md"
+          borderWidth={"2px"}
+          p={4}
+          color="gray.200"
+        >
           <ModalHeader>ACTUALIZAR CREDENCIALES</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -133,15 +126,9 @@ const ChangePasswordModal = () => {
               />
             </FormControl>
           </ModalBody>
-          <br />
-          <br />
-          <Spacer></Spacer>
-          <Spacer marginBottom={3}></Spacer>
-          <ModalFooter>
-            <Button colorScheme="blue" mr={4} onClick={handleChangePassword}>
-              Cambiar
+            <Button isDisabled={iscompleted} colorScheme="orange" w={'90%'} mt={'2rem'} mx={'auto'} onClick={handleChangePassword}>
+              ACTUALIZAR CONTRASEÑA
             </Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </>
