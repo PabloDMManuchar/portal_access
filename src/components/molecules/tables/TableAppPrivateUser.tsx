@@ -50,9 +50,9 @@ const TableAppPrivateUser = () => {
 
   if (applications.length === 0) {
     return (
-      <Box textAlign="center" py={6}>
-        <Text>No tienes accesos a aplicaciones en este momento.</Text>
-      </Box>
+      <Text color="gray.200">
+        No tienes accesos a aplicaciones en este momento.
+      </Text>
     );
   }
 
