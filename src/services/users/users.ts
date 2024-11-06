@@ -13,6 +13,7 @@ import Cookies from "js-cookie";
 
 // URL de la API
 const API = import.meta.env.VITE_API_ACCESS + "/access/api";
+
 // Función para obtener el token de la cookie
 const getToken = () => Cookies.get("token");
 
@@ -38,10 +39,8 @@ const logout = async () => {
 
 const checkToken = async () => {
   // Verifico primero que el token exista
-  const token = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith("token="));
-
+  const token = getToken();
+  console.log(token);
   if (!token) {
     // Si el token no existe, devuelve una respuesta sin hacer la solicitud
     return {
@@ -51,7 +50,18 @@ const checkToken = async () => {
     };
   }
   try {
-    const resp = await api.post(`/checktoken`);
+    //const resp = await api.post(`/checktoken`);
+    const resp = await axios.post(
+      `${API}/checktoken`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Estándar de JWT
+        },
+      }
+    );
+
+    console.log(resp);
     if (resp.status != 200) {
       const respuesta = {
         tokenvalid: false,

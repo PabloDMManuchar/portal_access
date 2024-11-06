@@ -9,22 +9,24 @@ import Preloader from "./components/pages/Preloader/Preloader";
 import AdministratorPage from "./components/pages/AdministratorPage";
 import HomePage from "./components/pages/HomePage";
 import ProfileUserPage from "./components/pages/ProfileUserPage";
-import WelcomeScreen from "./components/pages/WelcomeScreen";
 import PrivateRoute from "./components/routes/PrivateRoute";
 import { useAuth } from "./context/AuthContext";
+import LoginPage from "./components/pages/login/LoginPage";
 
 function App() {
   const { isTokenValid, checktoken } = useAuth();
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
+  /*
   useEffect(() => {
     const verifyToken = async () => {
-      await checktoken();
-      setLoading(false); // Termina la precarga solo después de verificar el token
+      await checktoken(); // Ejecuta la función de verificación del token
+      setLoading(false); // Cambia loading a false después de verificar el token
     };
 
-    verifyToken();
+    verifyToken(); // Llama a verifyToken al cargar el componente
   }, [checktoken]);
+  */
 
   return (
     <Router>
@@ -36,7 +38,7 @@ function App() {
         ) : (
           <Routes>
             {/* Ruta pública */}
-            <Route path="/access/login" element={<WelcomeScreen />} />
+            <Route path="/access/login" element={<LoginPage />} />
             {/* Ruta para Home */}
             <Route path="/access/home" element={<HomePage />} />
             {/* Rutas protegidas */}

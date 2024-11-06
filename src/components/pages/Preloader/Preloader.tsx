@@ -5,7 +5,7 @@ import { useAuth } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const Preloader: React.FC = () => {
-  const { checktoken, isTokenValid } = useAuth();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   const styles = useSpring({
@@ -16,20 +16,18 @@ const Preloader: React.FC = () => {
   });
 
   useEffect(() => {
-    const verifyToken = async () => {
-      await checktoken();
+    const verifyAuth = async () => {
+      console.log(isAuthenticated);
 
-      setTimeout(() => {
-        if (isTokenValid) {
-          navigate("/access/home");
-        } else {
-          navigate("/access/login");
-        }
-      }, 4000); // Tiempo coincide con la duración de la animación
+      if (isAuthenticated) {
+        navigate("/access/home");
+      } else {
+        navigate("/access/login");
+      }
     };
 
-    verifyToken();
-  }, [checktoken, isTokenValid, navigate]);
+    verifyAuth();
+  }, [isAuthenticated, navigate]);
 
   return (
     <Flex
@@ -52,6 +50,10 @@ const Preloader: React.FC = () => {
         >
           Checkeando Token....
         </Text>
+        <footer className="footer absolute bottom-4 right-4">
+          <p className="text-white font-light font-sm"></p>
+          <img src={"/Mit.png"} alt="LogoIT" className="imagen-footer" />
+        </footer>
       </animated.div>
     </Flex>
   );

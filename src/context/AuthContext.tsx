@@ -66,26 +66,31 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const login = async (credentials: LoginCredentials) => {
     try {
       toast("Consultando usuario...", { duration: 2000 });
-      const response: LoginResponse = await users.login(credentials); // Llamada a la API
+      const response: LoginResponse = await users.login(credentials);
       const accessToken = response.token;
-      Cookies.set("token", accessToken, { expires: 7, sameSite: "lax" }); // Establecer SameSite
+      console.log(accessToken);
+      Cookies.set("token", accessToken, { expires: 7, sameSite: "lax" });
       toast.success("Bienvenido!! " + response.checkacceso.nombre);
+
+      setDataUSer(response.checkacceso);
+      // Establecer el estado de autenticación
       setIsAuthenticated(true);
       setIsTokenValid(true);
       setStatusPassword(response.statuspass);
-      if (statusPassword == "CAMBIOPASS") {
+
+      // Validación de contraseña
+      if (response.statuspass === "CAMBIOPASS") {
         toast.warning("Debe Cambiar su Password");
-      }
-      if (statusPassword == "VENCIDA") {
+      } else if (response.statuspass === "VENCIDA") {
         toast.warning("Contraseña Vencida!!!, Debe Cambiar su Password");
       }
 
-      setDataUSer(response.checkacceso);
-      checkauthapplications();
       return response;
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
       toast.error("Error al iniciar sesión. Inténtalo de nuevo.");
+      setIsAuthenticated(false);
+      setIsTokenValid(false);
       throw error;
     }
   };
@@ -105,31 +110,39 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   const checktoken = async () => {
+    const token = Cookies.get("token");
+    if (!token) {
+      setIsTokenValid(false);
+      setIsAuthenticated(false);
+      setLoading(false);
+      return;
+    }
+
     try {
       const resp = await users.checkToken();
 
-      if (resp.tokenvalid === true) {
+      if (resp.tokenvalid === "true") {
         const response = await users.UserById(resp.idusuario);
-        setIsTokenValid(true);
-        setIsAuthenticated(true);
+        setDataUSer(response[0]);
         setStatusPassword(resp.statuspass);
-        toast.success("Token Valido.. Restaurando la sesion");
-        const User: LoginDataUser = response[0];
-        console.log(User);
-        setDataUSer(User);
+        setIsAuthenticated(true);
+        setIsTokenValid(true);
         toast.success("Sesión recuperada.");
+
         checkauthapplications();
-        //return User;
       } else {
-        logout();
-        setIsTokenValid(false);
         setIsAuthenticated(false);
+        setIsTokenValid(false);
+        Cookies.remove("token");
+        toast.error("Token Invalido, vuelva a iniciar sesión.");
       }
     } catch (error) {
+      console.error("Error en la verificación del token:", error);
+      setIsAuthenticated(false);
       setIsTokenValid(false);
-      toast.error("Token Invalido, vuelva a iniciar sesion");
+      toast.error("Token Invalido, vuelva a iniciar sesión.");
     } finally {
-      setLoading(false); // Finaliza la carga después de verificar el token
+      setLoading(false);
     }
   };
 
