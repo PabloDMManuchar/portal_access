@@ -1,62 +1,60 @@
 import Layout from "../Layout/Layout";
-import { MenuAdmin } from "../molecules/menu/MenuAdmin";
 import { useState } from "react";
-import { Flex } from "@chakra-ui/react";
+import { Box, Divider, Text } from "@chakra-ui/react";
 import UsersContentPage from "../pages/usersadmin/userscontentpage";
 import HomeContentPage from "../pages/usersadmin/homecontentpage";
 import AplicationContentPage from "../pages/usersadmin/aplicationcontentpage";
 import Settingcontentpage from "./usersadmin/settingcontentpage";
 import Powerbicontentpage from "./usersadmin/powerbicontentpage";
+import { SegmentedControl } from "../ui/segmented-control";
 
 const AdministratorPage = () => {
-  //const [isOpenMenu, setIsOpenMenu] = useState(true);
   const [currentContent, setCurrentContent] = useState("home");
-
-  const handleMenuItemClick = (content: any) => {
-    setCurrentContent(content);
-    //setIsOpenMenu(false); // Cerrar el menú al seleccionar un item
+  const handleSegmentedControlChange = (value: string) => {
+    setCurrentContent(value.toLowerCase());
   };
+
   return (
     <Layout>
-      <Flex>
-        <MenuAdmin onMenuItemClick={handleMenuItemClick} />
-      </Flex>
-      {/* Contenido según el estado */}
-      <div className="px-4 z-10">
-        {currentContent === "home" && <HomeContent />}
-        {currentContent === "users" && <UsersContent />}
-        {currentContent === "app" && <AppContent />}
-        {currentContent === "powerbi" && <PowerBIContent />}
-        {currentContent === "settings" && <SettingsContent />}
-      </div>
+      <Box
+        px={4}
+        w={"100%"}
+        zIndex={1}
+        display={"flex"}
+        justifyContent={"center"}
+        flexDirection={"column"}
+      >
+        <Box
+          px={"1rem"}
+          display={"flex"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
+        >
+          <Text
+            fontWeight={"bold"}
+            fontSize={"2xl"}
+            px={"1rem"}
+            color={"gray.200"}
+          >
+            Panel Administrador
+          </Text>
+          <SegmentedControl
+            defaultValue="Home"
+            items={["Home", "Users", "App", "PowerBI", "Settings"]}
+            onChange={handleSegmentedControlChange}
+          />
+        </Box>
+        <Divider m={'1rem 0 2rem'} mx={'auto'} w={'90%'} />
+        <Box minH={"100vh"}>
+          {currentContent === "home" && <HomeContentPage />}
+          {currentContent === "users" && <UsersContentPage />}
+          {currentContent === "app" && <AplicationContentPage />}
+          {currentContent === "powerbi" && <Powerbicontentpage />}
+          {currentContent === "settings" && <Settingcontentpage />}
+        </Box>
+      </Box>
     </Layout>
   );
 };
-
-const HomeContent = () => (
-  <div>
-    <HomeContentPage />
-  </div>
-);
-const UsersContent = () => (
-  <div>
-    <UsersContentPage />
-  </div>
-);
-const AppContent = () => (
-  <div>
-    <AplicationContentPage />
-  </div>
-);
-const PowerBIContent = () => (
-  <div>
-    <Powerbicontentpage />
-  </div>
-);
-const SettingsContent = () => (
-  <div>
-    <Settingcontentpage />
-  </div>
-);
 
 export default AdministratorPage;

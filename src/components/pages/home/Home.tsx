@@ -39,17 +39,7 @@ const Home: React.FC = () => {
         <img src="/manucharlogo.png" alt="Manuchar Logo" width="240" />
 
         <div className="flex justify-center items-center">
-          <>
-            {isAuthenticated ? (
-              <>
-                <Navigationusers />
-              </>
-            ) : (
-              <>
-                <SesionInit />
-              </>
-            )}
-          </>
+          <>{isAuthenticated ? <Navigationusers /> : <SesionInit />}</>
         </div>
       </div>
 

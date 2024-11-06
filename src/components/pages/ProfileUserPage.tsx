@@ -8,6 +8,8 @@ import {
   StatNumber,
   List,
   ListItem,
+  Breadcrumb,
+  Divider,
 } from "@chakra-ui/react";
 import { useAuth } from "../../context/AuthContext"; // Importa el Context
 import ChangePasswordModal from "../molecules/modals/ChangePasswordModal";
@@ -17,76 +19,112 @@ import TableAppPrivateUser from "../molecules/tables/TableAppPrivateUser";
 const ProfileUserPage = () => {
   const { statusPassword, dataUser } = useAuth();
 
+  const newData = [
+    { label: "Email", value: dataUser.email },
+    { label: "Perfil", value: dataUser.perfil },
+    { label: "Tipo", value: dataUser.tipo },
+    { label: "Empresa", value: dataUser.empresa },
+    { label: "Sucursal", value: dataUser.sucursal },
+    { label: "Area", value: dataUser.area },
+    { label: "Status Password", value: statusPassword },
+    {
+      label: "Plazo Expira Password",
+      value:
+        dataUser.diasexpirapassword === 0
+          ? "No Expira"
+          : dataUser.diasexpirapassword + " dias",
+    },
+    {
+      label: "Fecha de vencimiento",
+      value:
+        dataUser.diasexpirapassword === 0
+          ? "Sin Vencimiento"
+          : dataUser.diasexpirapassword - dataUser.diascambiopassword + " dias",
+    },
+    { label: "Enlaces Autorizados", value: dataUser.cantappublic },
+    { label: "Enlaces Creados", value: dataUser.cantapprivate },
+  ];
+
   return (
     <Layout>
-      <Box maxW="1200px" mx="auto" p={5} textColor={"white"}>
-        <Box p={5} borderWidth={1} borderRadius="lg" w="full">
-          <Text fontSize="xl" fontWeight="bold">
-            MIS DATOS
-          </Text>
-          <Text fontWeight="bold" fontSize="lg" mb={1}>
-            {dataUser.nombre}
-          </Text>
-          <Text color="gray.500">{dataUser.email}</Text>
-          <Text color="gray.500" fontSize="sm">
-            {dataUser.perfil}
-          </Text>
-          <Text color="gray.500" fontSize="sm">
-            Tipo: {dataUser.tipo}
-          </Text>
-          <Text color="gray.500" fontSize="sm">
-            Empresa: {dataUser.empresa}
-          </Text>
-          <Text color="gray.500" fontSize="sm">
-            Sucursal: {dataUser.sucursal}
-          </Text>
-          <Text color="gray.500" fontSize="sm">
-            Area: {dataUser.area}
-          </Text>
-          <Text color="gray.600" fontSize="sm">
-            Status Password: {statusPassword}
-          </Text>
-          <Text color="gray.600" fontSize="sm">
-            Plazo Expira Password:{" "}
-            {dataUser.diasexpirapassword === 0
-              ? "No Expira"
-              : dataUser.diasexpirapassword}{" "}
-            dias
-          </Text>
-          <Text color="gray.600" fontSize="sm">
-            Debe Actualizar su password en:{" "}
-            {dataUser.diasexpirapassword === 0
-              ? "Sin Plazo de Vencimiento"
-              : dataUser.diasexpirapassword - dataUser.diascambiopassword}{" "}
-            dias
-          </Text>
+      <Box mx="auto" p={4} zIndex={1} display={"flex"} gap={10}>
+        <Box
+          bg={"gray.800"}
+          borderColor={"gray.700"}
+          borderRadius="md"
+          borderWidth={"2px"}
+          height={"fit-content"}
+          minW="24rem"
+          opacity={0.8}
+          p={4}
+          w="full"
+        >
+          <Box display={"flex"} justifyContent={"space-between"}>
+            <Text fontSize="xl" fontWeight="bold" color="gray.200">
+              MIS DATOS
+            </Text>
+            <Text fontWeight="ligth" fontSize="lg" mb={1} color="gray.200">
+              {dataUser.nombre}
+            </Text>
+          </Box>
+          <Divider my={4} mx={"auto"} w={"90%"} />
+          {newData.map((item, index) => (
+            <Box
+              w="full"
+              px={4}
+              display={"flex"}
+              justifyContent={"space-between"}
+              key={index}
+            >
+              <Text color="gray.200">{item.label}: </Text>
+              <Text color="gray.200">{item.value}</Text>
+            </Box>
+          ))}
+
+          <Grid
+            templateColumns="repeat(2, 1fr)"
+            gap={6}
+            mt={5}
+            color="gray.200"
+          >
+            <Stat>
+              <StatLabel>Enlaces Autorizados</StatLabel>
+              <StatNumber>{dataUser.cantappublic}</StatNumber>
+            </Stat>
+            <Stat>
+              <StatLabel>Enlaces Creados</StatLabel>
+              <StatNumber>{dataUser.cantapprivate}</StatNumber>
+            </Stat>
+          </Grid>
         </Box>
 
-        <Grid templateColumns="repeat(2, 1fr)" gap={6} mt={5}>
-          <Stat>
-            <StatLabel>Enlaces Autorizados</StatLabel>
-            <StatNumber>{dataUser.cantappublic}</StatNumber>
-          </Stat>
-          <Stat>
-            <StatLabel>Enlaces Creados</StatLabel>
-            <StatNumber>{dataUser.cantapprivate}</StatNumber>
-          </Stat>
-        </Grid>
-      </Box>
-      <Box>
-        <Text fontWeight="bold" mb={4}>
-          Opciones
-        </Text>
-        <List spacing={4}>
-          <ListItem cursor="pointer" _hover={{ color: "green.500" }}>
-            <ChangePasswordModal />
-          </ListItem>
-          <ListItem cursor="pointer" _hover={{ color: "blue.500" }}>
-            <AddPrivateApplicationModal />
-          </ListItem>
+        <Box
+          bg={"gray.800"}
+          borderColor={"gray.700"}
+          borderRadius="md"
+          borderWidth={"2px"}
+          height={"fit-content"}
+          minW="24rem"
+          opacity={0.8}
+          p={4}
+          w="full"
+        >
+          <Text fontSize="xl" fontWeight="bold" color="gray.200">
+            OPCIONES
+          </Text>
+          <Divider my={4} mx={"auto"} w={"90%"} />
 
-          <TableAppPrivateUser />
-        </List>
+          <List spacing={4}>
+            <ListItem cursor="pointer" _hover={{ color: "green.200" }}>
+              <ChangePasswordModal />
+            </ListItem>
+            <ListItem cursor="pointer" _hover={{ color: "blue.200" }}>
+              <AddPrivateApplicationModal />
+            </ListItem>
+
+            <TableAppPrivateUser />
+          </List>
+        </Box>
       </Box>
     </Layout>
   );

@@ -9,6 +9,7 @@ import {
   Alert,
   AlertIcon,
 } from "@chakra-ui/react";
+import { VscSend } from "react-icons/vsc";
 
 const API = `${import.meta.env.VITE_API_ACCESS}/chat/new`;
 
@@ -22,6 +23,8 @@ const Chat: React.FC = () => {
   const [input, setInput] = useState("");
   const [isServerAvailable, setIsServerAvailable] = useState(true); // Estado para la disponibilidad del servidor
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const isInputEmpty = input.trim() === "";
 
   const sendMessage = async () => {
     if (input.trim() === "") return;
@@ -76,9 +79,8 @@ const Chat: React.FC = () => {
   return (
     <Flex
       direction="column"
-      bg="gray.800"
+      bg="rgba(26, 32, 44, 0.8)" // gray.900 with transparency
       p={4}
-      // mt={20}
       rounded="md"
       boxShadow="lg"
       w="28rem"
@@ -86,23 +88,18 @@ const Chat: React.FC = () => {
       h="84vh"
       minW={"20rem"}
       maxH={"90%"}
-      // justifyContent="space-between"
       zIndex={1}
     >
-      <VStack
-        spacing={4}
-        overflowY="auto"
-        p={4}
-        bg="gray.700"
-        rounded="md"
-        h="70vh"
-        mb={4}
-      >
+      <VStack spacing={4} overflowY="auto" p={4} rounded="md" h="70vh" mb={4}>
         {messages.map((msg, index) => (
           <Box
             key={index}
             alignSelf={msg.sender === "bot" ? "flex-start" : "flex-end"}
-            bg={msg.sender === "bot" ? "blue.600" : "green.500"}
+            bg={
+              msg.sender === "bot"
+                ? "rgba(49, 130, 206, 0.8)"
+                : "rgba(72, 187, 120, 0.8)"
+            } // blue.600 and green.500 with transparency
             color="white"
             px={4}
             py={2}
@@ -121,8 +118,8 @@ const Chat: React.FC = () => {
           </Alert>
         )}
         <Textarea
-          placeholder="Escribe lo que quieras..."
-          bg="gray.600"
+          placeholder="Escribe para iniciar una comversación con chatgpt..."
+          bg="rgba(45, 55, 72, 0.8)" // gray.800 with transparency
           color="white"
           mb={2}
           value={input}
@@ -135,9 +132,10 @@ const Chat: React.FC = () => {
         <Button
           colorScheme="blue"
           onClick={sendMessage}
-          isDisabled={!isServerAvailable} // Deshabilitar el botón si el servidor no está disponible
+          isDisabled={isInputEmpty}
+          rightIcon={<VscSend />}
         >
-          Send
+          ENVIAR
         </Button>
       </Flex>
     </Flex>
