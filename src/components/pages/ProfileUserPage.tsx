@@ -8,7 +8,6 @@ import {
   StatNumber,
   List,
   ListItem,
-  Breadcrumb,
   Divider,
 } from "@chakra-ui/react";
 import { useAuth } from "../../context/AuthContext"; // Importa el Context

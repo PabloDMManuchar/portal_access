@@ -56,9 +56,9 @@ const Administrator = () => {
             </Flex>
             {/* Contenido según el estado */}
             <div>
-              {currentContent === "home" && <HomeContent />}
-              {currentContent === "users" && <UsersContent />}
-              {currentContent === "app" && <AppContent />}
+              {currentContent === "home" && <HomeContentPage />}
+              {currentContent === "users" && <UsersContentPage />}
+              {currentContent === "app" && <AplicationContentPage />}
               {currentContent === "powerbi" && <PowerBIContent />}
               {currentContent === "settings" && <SettingsContent />}
             </div>
@@ -71,21 +71,7 @@ const Administrator = () => {
   );
 };
 
-const HomeContent = () => (
-  <div>
-    <HomeContentPage />
-  </div>
-);
-const UsersContent = () => (
-  <div>
-    <UsersContentPage />
-  </div>
-);
-const AppContent = () => (
-  <div>
-    <AplicationContentPage />
-  </div>
-);
+
 const PowerBIContent = () => <div>Contenido de A Power BI</div>;
 const SettingsContent = () => <div>Contenido de Configuración</div>;
 

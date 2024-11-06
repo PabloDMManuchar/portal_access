@@ -70,7 +70,6 @@ const LoginForm: React.FC<LoginProps> = ({ onClose }) => {
         Login
       </Heading>
 
-      {/* Mostrar alerta si hay un error */}
       {error && (
         <Alert status="error" mb={4}>
           <AlertIcon />

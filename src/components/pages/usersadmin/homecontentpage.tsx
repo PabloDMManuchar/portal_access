@@ -90,7 +90,7 @@ const HomeContentPage = () => {
 
   return (
     <>
-      <SimpleGrid columns={{ base: 1, md: 7 }} mb={8} textColor={"white"} mx={'auto'} justifyItems="center">
+      <SimpleGrid columns={{ base: 1, md: 7 }} mb={8} textColor={"white"} mx={'auto'} justifyItems="center" >
         {dataStats.map((stat) => (
           <StatBox key={stat.label} label={stat.label} value={stat.value} />
         ))}

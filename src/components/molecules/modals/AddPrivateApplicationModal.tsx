@@ -15,7 +15,6 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
-  ModalFooter,
   useDisclosure,
   SimpleGrid,
   IconButton,
@@ -41,8 +40,8 @@ const AddPrivateApplicationModal: React.FC = () => {
   });
 
   const [isImageSelected, setIsImageSelected] = useState(true);
-  const [selectedIcon, setSelectedIcon] = useState<string>(""); // Guardar el ícono seleccionado
-  const [showIconList, setShowIconList] = useState<boolean>(true); // Controlar si se muestra la lista de íconos
+  const [selectedIcon, setSelectedIcon] = useState<string>(""); 
+  const [showIconList, setShowIconList] = useState<boolean>(true); 
   const [filter, setFilter] = useState("");
 
   const iscompleted =
@@ -59,19 +58,18 @@ const AddPrivateApplicationModal: React.FC = () => {
     setFormData({ ...formData, mostrarimagen: value });
     setIsImageSelected(value === "SI");
     if (value === "NO") {
-      setShowIconList(true); // Mostrar la lista de íconos si elige 'NO'
+      setShowIconList(true);
     } else {
-      setShowIconList(false); // Ocultar la lista de íconos si elige 'SI'
-      setSelectedIcon(""); // Resetear el ícono seleccionado
+      setShowIconList(false); 
+      setSelectedIcon("");
     }
   };
 
   const handleAdd = async () => {
     const result = newApplicationPrivateSchema.safeParse({
       ...formData,
-      //icon: selectedIcon, // Asegurarse de incluir el ícono seleccionado
-      icon: isImageSelected ? "" : selectedIcon, // Si se muestra imagen, el ícono es vacío; si no, se usa el ícono seleccionado
-      src: isImageSelected ? formData.src : "", // Si se selecciona imagen, usar el valor de src; si no, vacío
+      icon: isImageSelected ? "" : selectedIcon, 
+      src: isImageSelected ? formData.src : "", 
     });
 
     if (!result.success) {
@@ -99,7 +97,7 @@ const AddPrivateApplicationModal: React.FC = () => {
     icon: Icons[iconName as keyof typeof Icons], // Obteniendo la referencia del ícono
   }));
 
-  const filteredIcons = iconList.filter(({ name }) => name.includes(filter));
+  const filteredIcons = iconList.filter(({ name }) => name.toLowerCase().includes(filter.toLowerCase()));
 
   return (
     <>
@@ -157,7 +155,7 @@ const AddPrivateApplicationModal: React.FC = () => {
               display={"flex"}
               flexDirection={"row"}
               alignItems={"center"}
-              justifyContent={"space-between"}
+              // justifyContent={"space-between"}
               mb={4}
             >
               <RadioGroup
@@ -166,14 +164,16 @@ const AddPrivateApplicationModal: React.FC = () => {
                 onChange={handleMostrarImagenChange}
               >
                 <Stack direction="row">
-                  <Radio value="SI">Imagen URL</Radio>
+                  <Radio value="SI" w={"7rem"}>
+                    Imagen URL
+                  </Radio>
                   <Radio value="NO">Icon</Radio>
                 </Stack>
               </RadioGroup>
-              {selectedIcon && (
+              {showIconList && (
                 <Input
                   mx={4}
-                  w={"80%"}
+                  w={"100%"}
                   type="text"
                   placeholder="Filtrar en ingles"
                   value={filter}
@@ -194,19 +194,33 @@ const AddPrivateApplicationModal: React.FC = () => {
             ) : (
               <>
                 {showIconList ? (
-                  <Box maxH="200px" overflowY="auto">
+                    <Box maxH="212px" overflowY="auto" p={'0 1rem'} css={{
+                    '&::-webkit-scrollbar': {
+                      width: '8px',
+                    },
+                    '&::-webkit-scrollbar-thumb': {
+                      background: '#888',
+                      borderRadius: '4px',
+                    },
+                    '&::-webkit-scrollbar-thumb:hover': {
+                      background: '#555',
+                    },
+                    }}>
                     <SimpleGrid columns={5} spacing={4}>
                       {filteredIcons.map(({ name, icon: IconComponent }) => (
-                        <IconButton
-                          key={name}
-                          aria-label={name}
-                          icon={<IconComponent />}
-                          onClick={() => {
-                            setSelectedIcon(name); // Actualiza el ícono seleccionado
-                            setShowIconList(false); // Oculta la lista después de la selección
-                          }}
-                          colorScheme={selectedIcon === name ? "teal" : "gray"} // Cambiar color del ícono seleccionado
-                        />
+                        <Tooltip key={name} label={name}>
+                          <IconButton
+                            aria-label={name}
+                            icon={<IconComponent />}
+                            onClick={() => {
+                              setSelectedIcon(name); // Actualiza el ícono seleccionado
+                              setShowIconList(false); // Oculta la lista después de la selección
+                            }}
+                            colorScheme={
+                              selectedIcon === name ? "teal" : "gray"
+                            } // Cambiar color del ícono seleccionado
+                          />
+                        </Tooltip>
                       ))}
                     </SimpleGrid>
                   </Box>

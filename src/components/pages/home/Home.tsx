@@ -1,45 +1,26 @@
-import React, { useState, useEffect } from "react";
-import { Spinner } from "@chakra-ui/react";
+import React from "react";
 import Links from "../../organisms/Links/Links";
 import "./home.css";
 import Chat from "../../molecules/chatGpt/ChatGPT";
-import SesionInit from "../../templates/SesionInit";
-import { useAuth } from "../../../context/AuthContext";
+
 import Navigationusers from "../../templates/NavigationUsers";
+import { useNavigate } from "react-router-dom";
 
 const Home: React.FC = () => {
-  const { isAuthenticated, checktoken } = useAuth();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const checkToken = async () => {
-      const response = checktoken();
-      console.info(response);
-      setLoading(false); // Finalizar la carga
-    };
-
-    checkToken();
-  }, []);
-
-  if (loading) {
-    return (
-      <Spinner
-        thickness="4px"
-        speed="0.65s"
-        emptyColor="gray.200"
-        color="blue.500"
-        size="xl"
-      />
-    ); // O algún spinner de carga
-  }
+  const navigate = useNavigate();
 
   return (
     <div className="flex flex-col items-center min-h-screen relative overflow-hidden bg-slate-950">
       <div className="p-8 w-full text-start flex z-10 justify-between">
-        <img src="/manucharlogo.png" alt="Manuchar Logo" width="240" />
+        <img
+          src="/manucharlogo.png"
+          alt="Manuchar Logo"
+          width="240"
+          onClick={() => navigate("/access/inicio")}
+        />
 
         <div className="flex justify-center items-center">
-          <>{isAuthenticated ? <Navigationusers /> : <SesionInit />}</>
+          <Navigationusers />
         </div>
       </div>
 

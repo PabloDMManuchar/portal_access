@@ -18,7 +18,7 @@ const NavigationUsers = () => {
         <ButtonGroup gap="2">
           <Tooltip label="Inicio">
             <Link
-              to="/access"
+              to="/access/inicio"
               className="flex items-center"
               style={{ textDecoration: "none", color: "white" }}
             >
@@ -32,10 +32,10 @@ const NavigationUsers = () => {
             </Link>
           </Tooltip>
           <Tooltip label="Mi perfil">
-            <Link to="/access/myprofile" className="flex items-center ">
+            <Link to="/access/mi-perfil" className="flex items-center ">
               <CgProfile
                 className={
-                  currentPath === "/access/myprofile"
+                  currentPath === "/access/mi-perfil"
                     ? "text-white text-2xl"
                     : "text-gray-500 text-2xl"
                 }
