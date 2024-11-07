@@ -1,18 +1,11 @@
 import { useState, useEffect } from "react";
-import {
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-} from "@chakra-ui/react";
+import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import CardButtonLinkApp from "../molecules/cardbuttonlinkapp/CardButtonLinkApp";
 import { LinkApp } from "../../types/apptype";
 import { services } from "../../services";
 import { useAuth } from "../../context/AuthContext";
 import CardLinksLoaders from "../molecules/Loaders/CardLinks/CardLinksLoaders";
 import AddPrivateApplicationModal from "../molecules/modals/AddPrivateApplicationModal";
-
 
 const LinksApp: React.FC = () => {
   const [allLinks, setAllLinks] = useState<
@@ -66,10 +59,14 @@ const LinksApp: React.FC = () => {
         <TabPanels>
           <TabPanel>
             <>
-
               {allLinks?.publics ? (
-              <AddPrivateApplicationModal isAddButtonMyPrifile={false} />
-                <CardButtonLinkApp data={allLinks?.publics} />
+                <>
+                  <Box px={'3rem'} >
+
+                  <AddPrivateApplicationModal isAddButtonMyPrifile={false} />
+                  </Box>
+                  <CardButtonLinkApp data={allLinks?.publics} />
+                </>
               ) : (
                 <CardLinksLoaders />
               )}
