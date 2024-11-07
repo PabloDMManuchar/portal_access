@@ -1,4 +1,3 @@
-import Layout from "../Layout/Layout";
 import {
   Box,
   Text,
@@ -14,6 +13,7 @@ import { useAuth } from "../../context/AuthContext"; // Importa el Context
 import ChangePasswordModal from "../molecules/modals/ChangePasswordModal";
 import AddPrivateApplicationModal from "../molecules/modals/AddPrivateApplicationModal";
 import TableAppPrivateUser from "../molecules/tables/TableAppPrivateUser";
+import LayoutMotion from "../Layout/LayoutMotion";
 
 const ProfileUserPage = () => {
   const { statusPassword, dataUser } = useAuth();
@@ -45,87 +45,101 @@ const ProfileUserPage = () => {
   ];
 
   return (
-    <Layout>
-      <Box mx="auto" p={4} zIndex={1} display={"flex"} gap={10}>
-        <Box
-          bg={"gray.800"}
-          borderColor={"gray.700"}
-          borderRadius="md"
-          borderWidth={"2px"}
-          height={"fit-content"}
-          minW="24rem"
-          opacity={0.8}
-          p={4}
-          w="full"
+    <LayoutMotion>
+      <Box>
+        <Text
+          fontWeight={"200"}
+          fontSize={"2xl"}
+          px={"1rem"}
+          color={"gray.200"}
         >
-          <Box display={"flex"} justifyContent={"space-between"}>
-            <Text fontSize="xl" fontWeight="bold" color="gray.200">
-              MIS DATOS
-            </Text>
-            <Text fontWeight="ligth" fontSize="lg" mb={1} color="gray.200">
-              {dataUser.nombre}
-            </Text>
-          </Box>
-          <Divider my={4} mx={"auto"} w={"90%"} />
-          {newData.map((item, index) => (
-            <Box
-              w="full"
-              px={4}
-              display={"flex"}
-              justifyContent={"space-between"}
-              key={index}
-            >
-              <Text color="gray.200">{item.label}: </Text>
-              <Text color="gray.200">{item.value}</Text>
-            </Box>
-          ))}
-
-          <Grid
-            templateColumns="repeat(2, 1fr)"
-            gap={6}
-            mt={5}
-            color="gray.200"
+          <strong>Mi perfil </strong>| {dataUser.nombre}
+        </Text>
+        <Box mx="auto" p={4} zIndex={1} display={"flex"} gap={10}>
+          <Box
+            bg={"gray.800"}
+            borderColor={"gray.700"}
+            borderRadius="md"
+            borderWidth={"2px"}
+            height={"fit-content"}
+            minW="24rem"
+            opacity={0.8}
+            p={4}
+            w="full"
           >
-            <Stat>
-              <StatLabel>Enlaces Autorizados</StatLabel>
-              <StatNumber>{dataUser.cantappublic}</StatNumber>
-            </Stat>
-            <Stat>
-              <StatLabel>Enlaces Creados</StatLabel>
-              <StatNumber>{dataUser.cantapprivate}</StatNumber>
-            </Stat>
-          </Grid>
-        </Box>
+            <Box display={"flex"} justifyContent={"space-between"}>
+              <Text fontSize="xl" fontWeight="bold" color="gray.200">
+                MIS DATOS
+              </Text>
+              <Text fontWeight="ligth" fontSize="lg" mb={1} color="gray.200">
+                {dataUser.nombre}
+              </Text>
+            </Box>
+            <Divider my={4} mx={"auto"} w={"90%"} />
+            {newData.map((item, index) => (
+              <Box
+                w="full"
+                px={4}
+                display={"flex"}
+                justifyContent={"space-between"}
+                key={index}
+              >
+                <Text color="gray.200">{item.label}: </Text>
+                <Text color="gray.200">{item.value}</Text>
+              </Box>
+            ))}
 
-        <Box
-          bg={"gray.800"}
-          borderColor={"gray.700"}
-          borderRadius="md"
-          borderWidth={"2px"}
-          height={"fit-content"}
-          minW="24rem"
-          opacity={0.8}
-          p={4}
-          w="full"
-        >
-          <Text fontSize="xl" fontWeight="bold" color="gray.200">
-            OPCIONES
-          </Text>
-          <Divider my={4} mx={"auto"} w={"90%"} />
+            <Grid
+              templateColumns="repeat(2, 1fr)"
+              gap={6}
+              mt={5}
+              color="gray.200"
+            >
+              <Stat>
+                <StatLabel>Enlaces Autorizados</StatLabel>
+                <StatNumber>{dataUser.cantappublic}</StatNumber>
+              </Stat>
+              <Stat>
+                <StatLabel>Enlaces Creados</StatLabel>
+                <StatNumber>{dataUser.cantapprivate}</StatNumber>
+              </Stat>
+            </Grid>
+          </Box>
 
-          <List spacing={4}>
-            <ListItem cursor="pointer" _hover={{ color: "green.200" }}>
-              <ChangePasswordModal />
-            </ListItem>
-            <ListItem cursor="pointer" _hover={{ color: "blue.200" }}>
-              <AddPrivateApplicationModal />
-            </ListItem>
+          <Box
+            bg={"gray.800"}
+            borderColor={"gray.700"}
+            borderRadius="md"
+            borderWidth={"2px"}
+            height={"fit-content"}
+            minW="24rem"
+            opacity={0.8}
+            p={4}
+            w="full"
+          >
+            <Text fontSize="xl" fontWeight="bold" color="gray.200">
+              OPCIONES
+            </Text>
+            <Divider my={4} mx={"auto"} w={"90%"} />
+            {statusPassword != "OK" && (
+              <Text mb={2} color="red.400" textAlign={"end"}>
+                Se recomienda cambiar la contraseña
+              </Text>
+            )}
+            <List spacing={4}>
+              <ListItem cursor="pointer" _hover={{ color: "green.200" }}>
+                <ChangePasswordModal />
+              </ListItem>
+              <ListItem cursor="pointer" _hover={{ color: "blue.200" }}>
+                <AddPrivateApplicationModal />
+              </ListItem>
 
-            <TableAppPrivateUser />
-          </List>
+              <TableAppPrivateUser />
+            </List>
+          </Box>
         </Box>
       </Box>
-    </Layout>
+    </LayoutMotion>
   );
 };
 

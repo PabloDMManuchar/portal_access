@@ -30,7 +30,7 @@ const HomeContentPage = () => {
     usersByArea: [] as UsersbyArea[],
     lastEvents: [] as LastEvents[],
   });
-
+  
   const dataStats = [
     {
       label: "Total Usuarios",
@@ -90,7 +90,7 @@ const HomeContentPage = () => {
 
   return (
     <>
-      <SimpleGrid columns={{ base: 1, md: 7 }} mb={8} textColor={"white"} mx={'auto'} justifyItems="center" >
+      <SimpleGrid columns={{ base: 2, md: 4, lg: 5, xl: 6, '2xl': 7 }} mb={8} textColor={"white"} mx={'auto'} justifyItems="center" spacing={4}>
         {dataStats.map((stat) => (
           <StatBox key={stat.label} label={stat.label} value={stat.value} />
         ))}

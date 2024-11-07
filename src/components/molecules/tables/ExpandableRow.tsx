@@ -1,7 +1,7 @@
 // ExpandableRow.tsx
 import React from "react";
 import { UserType } from "../../../types/usertype";
-import { Box, Flex, IconButton } from "@chakra-ui/react";
+import { Box, Center, Flex, IconButton, Text } from "@chakra-ui/react";
 import { FaEdit, FaSync, FaUserCheck, FaUserTimes } from "react-icons/fa";
 
 interface ExpandableRowProps {
@@ -18,7 +18,13 @@ const ExpandableRow: React.FC<ExpandableRowProps> = ({
   onToggleUser,
 }) => {
   return (
-    <Box p={4}>
+    <Box >
+      <Center p={4} flexDirection={'column'}>
+        <Text> <strong>Nombre:</strong> {data.nombre} </Text>
+        <Text> <strong>Usuario:</strong> {data.usuario} </Text>
+        <Text> <strong>Email:</strong> {data.email} </Text>
+        <Text> <strong>Tipo:</strong> {data.tipo} </Text>
+      </Center>
       <Flex mb={2}>
         {/* Botón para editar */}
         <IconButton
