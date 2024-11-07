@@ -27,7 +27,13 @@ import { NewAplicacionPrivate } from "../../../types/apptype";
 import { services } from "../../../services/index";
 import { newApplicationPrivateSchema } from "../../../schemas/applicationSchema";
 
-const AddPrivateApplicationModal: React.FC = () => {
+interface AddPrivateApplicationModalProps {
+  isAddButtonMyPrifile: boolean;
+}
+
+const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
+  isAddButtonMyPrifile,
+}) => {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure(); // Para controlar la apertura/cierre del modal
 
@@ -105,19 +111,32 @@ const AddPrivateApplicationModal: React.FC = () => {
     <>
       {/* Botón para abrir el modal */}
       {/* <Tooltip label="* Agregar Aplicacion"> */}
-      <Button
-        _hover={{ bg: "gray.100", color: "gray.800" }}
-        color={"gray.100"}
-        leftIcon={<FaPlusCircle color="blue" />}
-        mr={4}
-        onClick={() => {
-          onOpen();
-        }}
-        variant={"outline"}
-        w={"100%"}
-      >
-        Agregar nueva aplicación
-      </Button>
+      {isAddButtonMyPrifile ? (
+        <Button
+          _hover={{ bg: "gray.100", color: "gray.800" }}
+          color={"gray.100"}
+          leftIcon={<FaPlusCircle color="blue" />}
+          mr={4}
+          onClick={() => {
+            onOpen();
+          }}
+          variant={"outline"}
+          w={"100%"}
+        >
+          Agregar nueva aplicación
+        </Button>
+      ) : (
+        <Button
+          bg="blue.500"
+          color="white"
+          leftIcon={<FaPlusCircle />}
+          onClick={onOpen}
+          variant="solid"
+          w="100%"
+        >
+          Mi Nuevo Acceso
+        </Button>
+      )}
       {/* </Tooltip> */}
 
       {/* Modal de Chakra UI */}

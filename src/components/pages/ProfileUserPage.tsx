@@ -119,7 +119,7 @@ const ProfileUserPage = () => {
               <ChangePasswordModal />
             </ListItem>
             <ListItem cursor="pointer" _hover={{ color: "blue.200" }}>
-              <AddPrivateApplicationModal />
+              <AddPrivateApplicationModal isAddButtonMyPrifile={true} />
             </ListItem>
 
             <TableAppPrivateUser />
