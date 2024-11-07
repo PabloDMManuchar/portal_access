@@ -106,6 +106,7 @@ const ProfileUserPage = () => {
             </Grid>
           </Box>
 
+
           <Box
             bg={"gray.800"}
             borderColor={"gray.700"}
@@ -126,13 +127,15 @@ const ProfileUserPage = () => {
                 Se recomienda cambiar la contraseña
               </Text>
             )}
-            <List spacing={4}>
-              <ListItem cursor="pointer" _hover={{ color: "green.200" }}>
-                <ChangePasswordModal />
-              </ListItem>
-              <ListItem cursor="pointer" _hover={{ color: "blue.200" }}>
-                <AddPrivateApplicationModal />
-              </ListItem>
+
+          <List spacing={4}>
+            <ListItem cursor="pointer" _hover={{ color: "green.200" }}>
+              <ChangePasswordModal />
+            </ListItem>
+            <ListItem cursor="pointer" _hover={{ color: "blue.200" }}>
+              <AddPrivateApplicationModal isAddButtonMyPrifile={true} />
+            </ListItem>
+
 
               <TableAppPrivateUser />
             </List>

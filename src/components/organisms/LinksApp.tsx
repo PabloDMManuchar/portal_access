@@ -11,6 +11,8 @@ import { LinkApp } from "../../types/apptype";
 import { services } from "../../services";
 import { useAuth } from "../../context/AuthContext";
 import CardLinksLoaders from "../molecules/Loaders/CardLinks/CardLinksLoaders";
+import AddPrivateApplicationModal from "../molecules/modals/AddPrivateApplicationModal";
+
 
 const LinksApp: React.FC = () => {
   const [allLinks, setAllLinks] = useState<
@@ -64,7 +66,9 @@ const LinksApp: React.FC = () => {
         <TabPanels>
           <TabPanel>
             <>
+
               {allLinks?.publics ? (
+              <AddPrivateApplicationModal isAddButtonMyPrifile={false} />
                 <CardButtonLinkApp data={allLinks?.publics} />
               ) : (
                 <CardLinksLoaders />
