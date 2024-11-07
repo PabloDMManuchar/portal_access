@@ -4,7 +4,6 @@ import {
   Button,
   Input,
   Flex,
-  Heading,
   Stack,
   Text,
   Alert,
@@ -18,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { useSpring, animated } from "@react-spring/web";
 import { useAuth } from "../../../context/AuthContext";
 import { LoginCredentials } from "../../../types/authtype";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 const LoginPage = () => {
   const [loginVisible, setLoginVisible] = useState(false);
@@ -28,12 +28,11 @@ const LoginPage = () => {
     password: "",
   });
   const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(true);
 
   useEffect(() => {
     setLoginVisible(true);
     const verifyAuth = async () => {
-      // console.log(isAuthenticated);
-
       if (isAuthenticated) {
         navigate("/access/inicio");
       } else {
@@ -47,10 +46,7 @@ const LoginPage = () => {
   const fadeIn = useSpring({
     opacity: loginVisible ? 1 : 0,
     from: { opacity: 0 },
-  });
-  const scaleUp = useSpring({
-    transform: loginVisible ? "scale(1)" : "scale(0.9)",
-    from: { transform: "scale(0.9)" },
+    config: { duration: 1000 },
   });
 
   const footerAnimation = useSpring({
@@ -90,41 +86,50 @@ const LoginPage = () => {
     }
   };
 
+  const isDisabled = !credentials.username || !credentials.password;
+
   return (
     <Flex
       height="100vh"
       alignItems="center"
       justifyContent="flex-start"
-      bgImage="url('/welcomeimg.png')"
+      bgImage="url('/welcomeimg2.png')"
       bgPosition="center"
       bgSize="cover"
       bgRepeat="no-repeat"
       position="relative"
-      px={10}
     >
-      <Box position="absolute" width="100%" height="100%" bg="blackAlpha.300" />
-
-      <animated.div style={fadeIn}>
+      <Box
+        opacity={0.4}
+        position="absolute"
+        top="20px"
+        left="20px"
+        padding="10px"
+      >
+        <Image src="/manucharlogo.png" alt="Logo" width="200px" height="40px" />
+      </Box>
+      <animated.div style={{ ...fadeIn, width: "50%", display:'flex', justifyContent:'center' }}>
         <Flex
+          maxW={"18rem"}
+          minW={"18rem"}
+          w={"full"}
           direction="column"
-          align="flex-start"
           justify="center"
           color="white"
-          zIndex="2"
-          width="400px"
+          // p={4}
         >
-          <Box position="absolute" top="20px" left="20px" padding="10px">
-            <Image
-              src="/manucharlogo.png"
-              alt="Logo"
-              width="200px"
-              height="80px"
-            />
-          </Box>
-          <Heading as="h1" size="2xl" mb={4} bg="white.900">
-            Bienvenido
-          </Heading>
-          <Text mb={6} bg="white.900">
+          <Text
+            fontSize={"36px"}
+            mb={4}
+            bg="white.900"
+            textShadow="0px 0px 24px rgba(8, 182, 212, 0.781)"
+            color="white"
+            textAlign={"center"}
+          >
+            <strong>PORTAL</strong> ACCESS
+          </Text>
+
+          <Text mb={6} textAlign={"center"}>
             Accede a tu cuenta
           </Text>
 
@@ -142,30 +147,51 @@ const LoginPage = () => {
             </Alert>
           )}
 
-          <animated.div style={scaleUp}>
+          <animated.div>
             <Stack spacing={4} width="100%">
               <Input
                 placeholder="Usuario"
                 variant="filled"
-                bg="whiteAlpha.800"
-                color="black"
+                bg="whiteAlpha.200"
+                color="gray.200"
                 name="username"
                 value={credentials.username}
                 onChange={handleChange}
-                _hover={{ bg: "whiteAlpha.900" }}
+                _hover={{
+                  bg: "gray.800",
+                  boxShadow: "0px 0px 14px rgba(60, 217, 245, 0.404)",
+                }}
               />
-              <Input
-                placeholder="Contraseña"
-                type="password"
-                variant="filled"
-                bg="whiteAlpha.800"
-                color="black"
-                name="password"
-                value={credentials.password}
-                onChange={handleChange}
-                _hover={{ bg: "whiteAlpha.900" }}
-              />
-              <Button colorScheme="teal" onClick={handleLogin}>
+              <Flex >
+                <Input
+                  placeholder="Contraseña"
+                  type={showPassword ? "password" : "text"}
+                  variant="filled"
+                  bg="whiteAlpha.200"
+                  color="gray.200"
+                  name="password"
+                  value={credentials.password}
+                  onChange={handleChange}
+                  _hover={{
+                    bg: "gray.800",
+                    boxShadow: "0px 0px 14px rgba(60, 217, 245, 0.404)",
+                  }}
+                />
+                  <Button
+                    colorScheme="white"
+                    // position={"relative"}
+                    // right={0}
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                  </Button>
+              </Flex>
+              
+              <Button
+                isDisabled={isDisabled}
+                colorScheme="red"
+                onClick={handleLogin}
+              >
                 Iniciar Sesión
               </Button>
             </Stack>
@@ -173,17 +199,17 @@ const LoginPage = () => {
         </Flex>
       </animated.div>
 
-      {/* Ajuste en el footer para asegurar posición derecha */}
       <animated.div
         style={{
           ...footerAnimation,
           position: "absolute",
           bottom: "20px",
-          right: "20px", // Esta propiedad lo ubicará a la derecha
-          zIndex: 3, // Asegúrate de que esté por encima de otros elementos si fuera necesario
+          left: "20px",
+          opacity: 0.4,
+          // zIndex: 3,
         }}
       >
-        <Image src="/Mit.png" alt="LogoIT" width="60px" height="60px" />
+        <Image src="/Mit.png" alt="LogoIT" width="60px" height="45px" />
       </animated.div>
     </Flex>
   );

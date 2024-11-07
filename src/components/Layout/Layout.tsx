@@ -1,8 +1,6 @@
 // src/components/layout/Layout.tsx
 import React from "react";
 import NavigationUsers from "../templates/NavigationUsers"; // Importa la navegación
-import SesionInit from "../templates/SesionInit";
-import { useAuth } from "../../context/AuthContext";
 import { Box } from "@chakra-ui/react";
 import "./style.css";
 
@@ -11,16 +9,13 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const { isAuthenticated } = useAuth();
-
-  // console.log("Esto es layout" + isAuthenticated);
 
   return (
     <Box className="flex flex-col items-center min-h-screen relative overflow-hidden bg-slate-950">
       <header className="p-8 w-full text-start flex z-10 justify-between">
-        <img src="/manucharlogo.png" alt="Manuchar Logo" width="240" />
+        <img src="/manucharlogo.png" alt="Manuchar Logo" width="180" />
         <div className="flex justify-center items-center">
-          <>{isAuthenticated ? <NavigationUsers /> : <SesionInit />}</>
+          <NavigationUsers /> 
         </div>
       </header>
 
@@ -32,7 +27,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <img src={"/Mit.png"} alt="LogoIT" className="imagen-footer" />
       </footer>
 
-      {/* El SVG decorativo */}
       <div className="absolute bottom-0 w-full z-0">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
           <path

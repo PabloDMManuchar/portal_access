@@ -1,23 +1,39 @@
 import { useEffect, useState } from "react";
-import { Flex, Input, Button, Box, Toast, Icon } from "@chakra-ui/react";
+import {
+  Flex,
+  Input,
+  Button,
+  Box,
+  Toast,
+  Icon,
+  Table,
+  Thead,
+  Tr,
+  Th,
+  Tbody,
+  Td,
+  TableContainer,
+} from "@chakra-ui/react";
 import { UserType } from "../../../types/usertype";
 import { users } from "../../../services/users/users";
-import DataTable from "react-data-table-component";
 import { FaTimes } from "react-icons/fa";
 import AddUserModal from "../modals/AddUserModal";
 import UpdateUserModal from "../modals/UpdateUserModal";
+import Dialog from "../Dialog/Dialog";
 import ExpandableRow from "./ExpandableRow"; // Importa el nuevo componente
 
 const TableUsers = () => {
-  const [usersdata, setUsersData] = useState<UserType[]>([]); // Estado para almacenar los usuarios
+  const [usersdata, setUsersData] = useState<UserType[]>([]);
   const [filterText, setFilterText] = useState("");
-  const [editUserId, setEditUserId] = useState<number | null>(null); // ID del usuario a editar
+  const [editUserId, setEditUserId] = useState<number | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [filterUsers, setFilterUsers] = useState<UserType[]>([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await users.AllUsers();
+        setFilterUsers(response);
         setUsersData(response);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -27,83 +43,85 @@ const TableUsers = () => {
     fetchUsers();
   }, []);
 
-  useEffect(() => {
-    const filtered = usersdata.filter((item) =>
-      item.nombre.toLowerCase().includes(filterText.toLowerCase())
-    );
-    setFilteredData(filtered);
-  }, [usersdata, filterText]);
-
-  //Datatable info
-
-  const columns = [
+  const columns: {
+    label: string;
+    name: keyof UserType | "Info";
+    sortable: boolean;
+    width?: string;
+  }[] = [
     {
-      name: "Nombre",
-      selector: (row: UserType) => row.nombre,
+      label: "Nombre",
+      name: "nombre",
       sortable: true,
+      width: "200px",
     },
     {
-      name: "Usuario",
-      selector: (row: UserType) => row.usuario,
+      label: "Usuario",
+      name: "usuario",
       sortable: true,
+      width: "200px",
     },
     {
-      name: "Email",
-      selector: (row: UserType) => row.email,
+      label: "Email",
+      name: "email",
       sortable: true,
-    },
-    { name: "Tipo", selector: (row: UserType) => row.tipo, sorteable: true },
-    {
-      name: "Empresa",
-      selector: (row: UserType) => row.empresa,
-      sorteable: true,
+      width: "200px",
     },
     {
-      name: "Sucursal",
-      selector: (row: UserType) => row.sucursal,
-      sorteable: true,
-    },
-    {
-      name: "Area",
-      selector: (row: UserType) => row.area,
-      sorteable: true,
-    },
-    {
-      name: "Perfil",
-      selector: (row: UserType) => row.perfil,
+      label: "Tipo",
+      name: "tipo",
       sortable: true,
+      width: "200px",
     },
     {
-      name: "Expiración de contraseña",
-      selector: (row: UserType) => row.diasexpirapassword, // Columna para los días de expiración
-      cell: (row: UserType) =>
-        row.diasexpirapassword === 0
-          ? "Nunca" // Si el valor es 0, mostrar "Nunca"
-          : `${row.diasexpirapassword} días`, // Mostrar el número de días si no es 0
+      label: "Empresa",
+      name: "empresa",
       sortable: true,
+      width: "200px",
     },
     {
-      name: "Último Cambio de Contraseña",
-      selector: (row: UserType) =>
-        new Date(row.feultimocambiopassword).toISOString(),
-      cell: (row: UserType) =>
-        new Date(row.feultimocambiopassword).toLocaleDateString(),
+      label: "Sucursal",
+      name: "sucursal",
       sortable: true,
+      width: "200px",
     },
     {
-      name: "Último Ingreso",
-      selector: (row: UserType) => new Date(row.feultimoingreso).toISOString(),
-      cell: (row: UserType) =>
-        new Date(row.feultimoingreso).toLocaleDateString(),
+      label: "Area",
+      name: "area",
       sortable: true,
+      width: "200px",
     },
     {
+      label: "Perfil",
+      name: "perfil",
       sortable: true,
+      width: "200px",
+    },
+    {
+      label: "Expiración de contraseña",
+      name: "diasexpirapassword",
+      sortable: true,
+      width: "200px",
+    },
+    {
+      label: "Último Cambio de Contraseña",
+      name: "feultimocambiopassword",
+      sortable: true,
+      width: "200px",
+    },
+    {
+      label: "Último Ingreso",
+      name: "feultimoingreso",
+      sortable: true,
+      width: "200px",
+    },
+    {
+      label: "Info",
+      name: "Info",
+      sortable: true,
+      width: "200px",
     },
   ];
-
-  const data = usersdata;
-  const [filteredData, setFilteredData] = useState(data);
 
   // Función para editar un usuario
   const handleEditUser = (userId: number) => {
@@ -150,11 +168,32 @@ const TableUsers = () => {
   };
 
   const handleFilter = (e: any) => {
-    setFilterText(e.target.value);
+    const text = e.target.value.toLowerCase();
+
+    setFilterText(text);
+
+    const newFilter = usersdata.filter((user) => {
+      return (
+        user.nombre.toLowerCase().includes(text) ||
+        user.usuario.toLowerCase().includes(text) ||
+        user.email.toLowerCase().includes(text) ||
+        user.tipo.toLowerCase().includes(text) ||
+        user.empresa.toLowerCase().includes(text) ||
+        user.sucursal.toLowerCase().includes(text) ||
+        user.area.toLowerCase().includes(text) ||
+        user.perfil.toLowerCase().includes(text) ||
+        user.diasexpirapassword.toString().includes(text) ||
+        user.feultimocambiopassword.toString().includes(text) ||
+        user.feultimoingreso.toString().includes(text)
+      );
+    });
+
+    setFilterUsers(newFilter);
   };
 
   const clearFilter = () => {
     setFilterText("");
+    setFilterUsers(usersdata);
   };
 
   return (
@@ -165,14 +204,15 @@ const TableUsers = () => {
           <AddUserModal />
         </Box>
 
-        <Flex alignItems={'center'}>
+        <Flex alignItems={"center"}>
           <Input
             w={"14rem"}
-            placeholder="Filtrar por nombre"
+            placeholder="Buscar..."
             value={filterText}
             onChange={handleFilter}
             borderRadius="0"
             height="34px"
+            color={"gray.200"}
           />
           <Button
             borderTopLeftRadius="0"
@@ -180,30 +220,61 @@ const TableUsers = () => {
             borderTopRightRadius="5px"
             borderBottomRightRadius="5px"
             height="34px"
-            width="42px"
-            leftIcon={<Icon as={FaTimes} boxSize={6} />}
+            width="20px"
             onClick={clearFilter}
-          />
+          >
+            <Icon as={FaTimes} boxSize={4} />
+          </Button>
         </Flex>
       </Flex>
 
-      <DataTable
-        columns={columns}
-        data={filteredData}
-        selectableRows
-        pagination
-        expandableRows
-        expandableRowsComponent={(props) => (
-          <ExpandableRow
-            {...props}
-            onEdit={handleEditUser}
-            onRefreshPassword={handleRefreshPassword}
-            onToggleUser={handleToggleUser}
-          />
-        )}
-        subHeader
-        persistTableHead
-      />
+      <TableContainer
+        bg={"gray.800"}
+        borderColor={"gray.700"}
+        borderRadius="md"
+        borderWidth={"2px"}
+        height={"fit-content"}
+        opacity={0.8}
+        color={"gray.200"}
+        p={2}
+      >
+        <Table>
+          <Thead>
+            <Tr>
+              {columns &&
+                columns.map((column, index) => (
+                  <Th key={index}>{column.label}</Th>
+                ))}
+            </Tr>
+          </Thead>
+          <Tbody>
+            {filterUsers.map((user, index) => (
+              <Tr key={index}>
+                {columns.map((column, index) => {
+                  if (column.name === "Info") {
+                    return (
+                      <Dialog buttonLabel={"ver mas"}>
+                        <ExpandableRow
+                          data={user}
+                          onEdit={() => handleEditUser(user.idusuario)}
+                          onRefreshPassword={() =>
+                            handleRefreshPassword(user.idusuario)
+                          }
+                          onToggleUser={() =>
+                            handleToggleUser(user.idusuario, !user.hab)
+                          }
+                        />
+                      </Dialog>
+                    );
+                  }
+                  return <Td key={index}>{user[column.name]}</Td>;
+                })}
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </TableContainer>
+
       {isEditModalOpen && editUserId && (
         <UpdateUserModal
           userId={editUserId}
