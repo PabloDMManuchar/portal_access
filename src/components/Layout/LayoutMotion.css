@@ -11,6 +11,7 @@
     opacity: 0.6;
     filter: blur(50px); /* Efecto de desenfoque */
     transition: transform 4s ease-out; /* Transición más lenta para el movimiento */
+    /* z-index: 1;  */
   }
   
   .circle1 {

@@ -113,6 +113,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const checkauthapplications = async () => {
     const token = Cookies.get("token"); // Cambia "token" al nombre exacto de la cookie que contiene el token
 
+    
     if (!token) {
       // Si no existe el token, cierra la sesión directamente
       logout();

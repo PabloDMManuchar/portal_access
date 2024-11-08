@@ -90,14 +90,11 @@ const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
       });
       return;
     }
-    const resp = await services.applications.CreateApplicationPrivate(formData);
-    console.info(resp);
-    // Si todo está bien, proceder con la lógica
+     await services.applications.CreateApplicationPrivate(formData);
     onClose();
     setShowIconList(true); // Resetear para que el ícono se pueda volver a elegir si es necesario
   };
 
-  // Obtener la lista de todos los íconos disponibles de FontAwesome
   const iconList = Object.keys(Icons).map((iconName) => ({
     name: iconName,
     icon: Icons[iconName as keyof typeof Icons], // Obteniendo la referencia del ícono
@@ -107,8 +104,6 @@ const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
 
   return (
     <>
-      {/* Botón para abrir el modal */}
-      {/* <Tooltip label="* Agregar Aplicacion"> */}
       {isAddButtonMyPrifile ? (
         <Button
           _hover={{ bg: "gray.100", color: "gray.800" }}
@@ -125,14 +120,14 @@ const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
         </Button>
       ) : (
         <Button
-          bg="blue.500"
-          color="white"
+          colorScheme="blue.500"
+          color={'blue.500'}
           leftIcon={<FaPlusCircle />}
           onClick={onOpen}
-          variant="solid"
+          variant="outline"
           w="100%"
         >
-          Mi Nuevo Acceso
+          AÑADIR NUEVO ACCESO
         </Button>
       )}
       {/* </Tooltip> */}
