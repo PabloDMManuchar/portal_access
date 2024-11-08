@@ -29,7 +29,6 @@ const AllApplications = async () => {
 const ApplicationById = async (id: number) => {
   try {
     const response = await api.get(`/applicationbyid/${id}`);
-
     return response.data.apps;
   } catch (error) {
     console.error("Error fetching user", error);
@@ -41,7 +40,6 @@ const ApplicationById = async (id: number) => {
 const AllApplicationPrivateByIdusuario = async (id: number) => {
   try {
     const response = await api.get(`/applicationsprivatebyidusuario/${id}`);
-    console.info(response);
     return response.data.apps;
   } catch (error) {
     console.error("Error fetching user", error);
@@ -53,7 +51,6 @@ const AllApplicationPrivateByIdusuario = async (id: number) => {
 const AllApplicationAuthByIdusuario = async (id: number) => {
   try {
     const response = await api.get(`/applicationsauthbyidusuario/${id}`);
-
     return response.data.apps;
   } catch (error) {
     console.error("Error fetching user", error);
@@ -64,7 +61,6 @@ const AllApplicationAuthByIdusuario = async (id: number) => {
 const AllGroupApp = async () => {
   try {
     const response = await api.get("/allgroupapp");
-
     return response.data.group;
   } catch (error) {
     console.error("Error fetching groups", error);
@@ -99,7 +95,7 @@ const CreateApplicationPrivate = async ({
       src,
     });
     return response;
-  } catch (error) {}
+  } catch (error) { }
 };
 
 // Función para obtener las aplicaciones private y public x idusuario

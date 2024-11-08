@@ -1,28 +1,38 @@
 import { useEffect } from "react";
-import Layout from "../Layout/Layout";
 import LinksApp from "../organisms/LinksApp";
 import Chat from "../molecules/chatGpt/ChatGPT";
 import { useAuth } from "../../context/AuthContext";
+import LayoutMotion from "../Layout/LayoutMotion";
+import { Text } from "@chakra-ui/react";
+import GoogleSearch from "../atoms/GoogleSearch/GoogleSearch";
 
 const HomePage = () => {
-  const { checkauthapplications, dataUser } = useAuth();
+  const { dataUser } = useAuth();
 
-  useEffect(() => {
-    if (dataUser.idusuario) {
-      checkauthapplications(); // Ejecuta solo si el ID de usuario está disponible
-    }
-  }, [dataUser.idusuario]); // Ejecuta el efecto solo cuando `idusuario` cambia
+
 
   return (
-    <Layout>
-      <div className="w-full flex flex-col md:flex-row justify-center">
-        <LinksApp />
-
-        <div className="px-4 z-10">
+    <LayoutMotion>
+      <div className="w-full flex flex-col md:flex-row justify-center gap-8">
+        <div >
+          {dataUser.nombre && (
+        <Text
+          fontSize={"32px"}
+          textAlign={"center"}
+          color={"gray.200"}
+          fontWeight={"200"}
+        >
+          ¡Hola, <strong>{dataUser.nombre}!</strong>
+        </Text>
+          )}
+          <LinksApp />
+        </div>
+        <div>
+          <GoogleSearch />
           <Chat />
         </div>
       </div>
-    </Layout>
+    </LayoutMotion>
   );
 };
 

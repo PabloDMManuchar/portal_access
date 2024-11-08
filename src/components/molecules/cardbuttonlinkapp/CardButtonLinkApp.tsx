@@ -27,7 +27,7 @@ const CardButtonLinkApp: React.FC<{ data: LinkApp[] }> = ({ data }) => {
   };
 
   return (
-    <div className="flex flex-wrap justify-center">
+    <div className="flex flex-wrap justify-center ">
       {data?.map((card, index) => (
         <Tooltip
           key={index}
@@ -61,17 +61,10 @@ const CardButtonLinkApp: React.FC<{ data: LinkApp[] }> = ({ data }) => {
                   </div>
                 )}
               </div>
-              <div className="w-full absolute bottom-0 z-20 m-0 pb-4 transition duration-300 ease-in-out group-hover:-translate-y-2">
-                <p className="text-xs text-white text-center relative">
-                  {card?.descripcion}
-                </p>
-              </div>
             </div>
-            {card?.type === "powerBi" && (
-              <p className="text-xs text-white text-center relative">
-                {card?.nombre}
-              </p>
-            )}
+            <p style={{maxWidth:'120px'}} className=" text-xs text-white text-center relative">
+              {card?.nombre} 
+            </p>
           </a>
         </Tooltip>
       ))}

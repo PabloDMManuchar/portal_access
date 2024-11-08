@@ -11,7 +11,7 @@ const GoogleSearch: React.FC = () => {
   }, []);
 
   return (
-    <div style={{ width: "420px", margin:'0 auto', zIndex:999 }}>
+    <div style={{ width: "32rem", margin:'1rem auto', zIndex:999 }}>
       <div className="gcse-search" />
     </div>
   );

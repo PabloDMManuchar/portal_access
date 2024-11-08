@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
-import GoogleSearch from "../atoms/GoogleSearch/GoogleSearch";
+import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import CardButtonLinkApp from "../molecules/cardbuttonlinkapp/CardButtonLinkApp";
 import { LinkApp } from "../../types/apptype";
 import { services } from "../../services";
 import { useAuth } from "../../context/AuthContext";
+import CardLinksLoaders from "../molecules/Loaders/CardLinks/CardLinksLoaders";
+import AddPrivateApplicationModal from "../molecules/modals/AddPrivateApplicationModal";
 
 const LinksApp: React.FC = () => {
   const [allLinks, setAllLinks] = useState<
@@ -32,9 +33,9 @@ const LinksApp: React.FC = () => {
     //const privates: LinkApp[] = dataprivate;
     //const add = data.filter((item) => item.type === "add");
 
-    const puclicsAdd = [...publicsapp, ...privates];
+    const publicsAdd = [...publicsapp, ...privates];
 
-    const all = { publics: puclicsAdd, powerBi: powerBi };
+    const all = { publics: publicsAdd, powerBi: powerBi };
 
     if (all) {
       setAllLinks(all);
@@ -47,7 +48,7 @@ const LinksApp: React.FC = () => {
 
   return (
     <div style={{ maxWidth: "46rem" }}>
-      <GoogleSearch />
+      {/* <GoogleSearch /> */}
 
       <Tabs align="center">
         <TabList>
@@ -58,16 +59,30 @@ const LinksApp: React.FC = () => {
         <TabPanels>
           <TabPanel>
             <>
-              {allLinks?.publics && (
-                <CardButtonLinkApp data={allLinks?.publics} />
+              {allLinks?.publics ? (
+                <>
+                  <Box px={"3rem"}>
+                    <AddPrivateApplicationModal isAddButtonMyPrifile={false} />
+                  </Box>
+                  <CardButtonLinkApp data={allLinks?.publics} />
+                </>
+              ) : (
+                <CardLinksLoaders />
               )}
             </>
           </TabPanel>
 
           <TabPanel>
             <TabPanel>
-              {allLinks?.powerBi && (
-                <CardButtonLinkApp data={allLinks?.powerBi} />
+              {allLinks?.powerBi ? (
+                <>
+                  <Box px={"3rem"}>
+                    <AddPrivateApplicationModal isAddButtonMyPrifile={false} />
+                  </Box>
+                  <CardButtonLinkApp data={allLinks?.powerBi} />
+                </>
+              ) : (
+                <CardLinksLoaders />
               )}
             </TabPanel>
           </TabPanel>
