@@ -41,7 +41,7 @@ const LayoutMotion: React.FC<LayoutProps> = ({ children }) => {
   }, []);
 
   return (
-    <Box className="flex-col relative overflow-auto layout-motion" style={{ scrollbarWidth: 'thin', scrollbarColor: '#888 #444' }}>
+    <Box className="layout-motion" style={{ scrollbarWidth: 'thin', scrollbarColor: '#888 #444' }}>
       <div className="circle circle1" />
       <div className="circle circle2" />
       <div className="circle circle3" />

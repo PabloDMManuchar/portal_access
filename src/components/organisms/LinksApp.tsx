@@ -61,9 +61,8 @@ const LinksApp: React.FC = () => {
             <>
               {allLinks?.publics ? (
                 <>
-                  <Box px={'3rem'} >
-
-                  <AddPrivateApplicationModal isAddButtonMyPrifile={false} />
+                  <Box px={"3rem"}>
+                    <AddPrivateApplicationModal isAddButtonMyPrifile={false} />
                   </Box>
                   <CardButtonLinkApp data={allLinks?.publics} />
                 </>
@@ -76,7 +75,12 @@ const LinksApp: React.FC = () => {
           <TabPanel>
             <TabPanel>
               {allLinks?.powerBi ? (
-                <CardButtonLinkApp data={allLinks?.powerBi} />
+                <>
+                  <Box px={"3rem"}>
+                    <AddPrivateApplicationModal isAddButtonMyPrifile={false} />
+                  </Box>
+                  <CardButtonLinkApp data={allLinks?.powerBi} />
+                </>
               ) : (
                 <CardLinksLoaders />
               )}

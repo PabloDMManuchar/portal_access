@@ -7,13 +7,9 @@ import { Text } from "@chakra-ui/react";
 import GoogleSearch from "../atoms/GoogleSearch/GoogleSearch";
 
 const HomePage = () => {
-  const { checkauthapplications, dataUser } = useAuth();
+  const { dataUser } = useAuth();
 
-  useEffect(() => {
-    if (dataUser.idusuario) {
-      checkauthapplications(); 
-    }
-  }, [dataUser.idusuario]); 
+
 
   return (
     <LayoutMotion>
