@@ -2,7 +2,13 @@
 import { Button, ButtonGroup } from "@chakra-ui/react";
 import { useState } from "react";
 
-export const SegmentedControl = ({ items, defaultValue, onChange }) => {
+interface SegmentedControlProps {
+  items: any[];
+  defaultValue: any;
+  onChange?: (item: any) => void;
+}
+
+export const SegmentedControl = ({ items, defaultValue, onChange }: SegmentedControlProps) => {
   const [selected, setSelected] = useState(defaultValue);
 
   const handleClick = (item: any) => {

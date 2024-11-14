@@ -1,8 +1,8 @@
 .layout-motion {
   position: relative;
   background: #000; /* Fondo oscuro */
-  height: 100%; /* Ajusta según sea necesario */
-  /*overflow: hidden; /* Para ocultar el desbordamiento de las luces */
+  min-height: 100vh; /* Asegura que cubra al menos el 100% del viewport */
+  overflow: hidden; /* Oculta cualquier contenido que sobrepase el contenedor */
 }
 
 .circle {
@@ -22,7 +22,7 @@
     rgba(255, 0, 0, 0.5),
     rgba(255, 255, 0, 0.5)
   );
-  top: 20%;
+  top: 10%; /* Ajusta la posición para que no sobrepase el contenedor */
   left: 30%;
 }
 
@@ -34,7 +34,7 @@
     rgba(0, 255, 0, 0.5),
     rgba(0, 255, 255, 0.5)
   );
-  top: 50%;
+  top: 40%; /* Ajusta la posición para que no sobrepase el contenedor */
   left: 60%;
 }
 
@@ -46,6 +46,6 @@
     rgba(0, 0, 255, 0.5),
     rgba(255, 0, 255, 0.5)
   );
-  top: 70%;
-  left: 40%;
+  top: 70%; /* Ajusta la posición para que no sobrepase el contenedor */
+  left: 20%;
 }

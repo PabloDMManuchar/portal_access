@@ -275,7 +275,7 @@ const TableUsers = () => {
                       </Dialog>
                     );
                   }
-                  return <Td key={index}>{user[column.name]}</Td>;
+                  return <Td key={index}>{String(user[column.name])}</Td>;
                 })}
               </Tr>
             ))}

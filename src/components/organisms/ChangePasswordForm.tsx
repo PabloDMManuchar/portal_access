@@ -58,7 +58,7 @@ const ChangePasswordForm: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-md p-4 bg-gray-700 border rounded-md border-gray-500">
+    <div className="w-full max-w-md max-h-96 p-4 bg-gray-700 border rounded-md border-gray-500">
       <FormControl isRequired mb={4}>
         <FormLabel color="gray.200">Contraseña actual</FormLabel>
         <Input
