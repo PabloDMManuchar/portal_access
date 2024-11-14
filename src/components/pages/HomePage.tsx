@@ -11,7 +11,7 @@ const HomePage = () => {
 
   return (
     <LayoutMotion>
-      <div className="w-full flex flex-col md:flex-row justify-center gap-8">
+      <div className=" w-full flex flex-col md:flex-row justify-center gap-8">
         <div>
           {dataUser.nombre && (
             <Text
@@ -24,13 +24,17 @@ const HomePage = () => {
             </Text>
           )}
 
-          {statusPassword === "OK" ? <LinksApp /> : <ChangePasswordForm />}
+        <LinksApp />
         </div>
 
-        <div>
-          <GoogleSearch />
-          <Chat />
-        </div>
+        {statusPassword !== "OK" ? (
+          <ChangePasswordForm />
+        ) : (
+          <div>
+            <GoogleSearch />
+            <Chat />
+          </div>
+        )}
       </div>
     </LayoutMotion>
   );
