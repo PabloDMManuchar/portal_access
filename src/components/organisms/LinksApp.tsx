@@ -26,12 +26,6 @@ const LinksApp: React.FC = () => {
     const publicsapp = data.filter((item: LinkApp) => item.type === "public");
     const powerBi = data.filter((item: LinkApp) => item.type === "powerBi");
     const privates = data.filter((item: LinkApp) => item.type === "private");
-    //const dataprivate: LinkApp[] =
-    // await services.applications.AllApplicationPrivateByIdusuario(
-    //    dataUser.idusuario
-    //  );
-    //const privates: LinkApp[] = dataprivate;
-    //const add = data.filter((item) => item.type === "add");
 
     const publicsAdd = [...publicsapp, ...privates];
 
