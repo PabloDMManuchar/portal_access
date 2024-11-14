@@ -346,16 +346,16 @@ const refreshpassword = async (idusuario: number) => {
   } catch (error) {}
 };
 
-const disableduser = async (id: number) => {
+const disableduser = async (idusuario: number) => {
   try {
-    const response = await api.post("/disableduser", id);
+    const response = await api.post("/disableduser", { idusuario });
     return response;
   } catch (error) {}
 };
 
-const enableduser = async (id: number) => {
+const enableduser = async (idusuario: number) => {
   try {
-    const response = await api.post("/enableduser", id);
+    const response = await api.post("/enableduser", { idusuario });
     return response;
   } catch (error) {}
 };

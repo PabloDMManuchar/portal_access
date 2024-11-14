@@ -17,7 +17,7 @@ const Chat: React.FC = () => {
   const [messages, setMessages] = useState([
     {
       sender: "bot",
-      text: "Hola, soy tu asistente virtual, en que te puedo ayudar hoy?",
+      text: "Hola, soy el Chat IA de Manuchar powered by GPT-4o. ¿En qué puedo ayudarte?",
     },
   ]);
   const [input, setInput] = useState("");
@@ -83,14 +83,13 @@ const Chat: React.FC = () => {
       p={4}
       rounded="md"
       boxShadow="lg"
-      w="28rem"
+      w="32rem"
       mx="auto"
-      h="84vh"
-      minW={"20rem"}
+      h="66vh"
+      minW={"22rem"}
       maxH={"90%"}
-      zIndex={1}
     >
-      <VStack spacing={4} overflowY="auto" p={4} rounded="md" h="70vh" mb={4}>
+      <VStack spacing={4} overflowY="auto" p={4} rounded="md" h="70vh" mb={4} zIndex={10}>
         {messages.map((msg, index) => (
           <Box
             key={index}

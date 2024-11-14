@@ -8,10 +8,11 @@ const CardButtonLinkApp: React.FC<{ data: LinkApp[] }> = ({ data }) => {
 
   const handleClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
-    auth: number,
+    auth: string,
     url: string | undefined
   ) => {
-    if (auth === 0) {
+    console.log(auth);
+    if (auth === "false") {
       e.preventDefault(); // Evita la navegación si no está autorizado
       toast({
         title: "Acceso Denegado",
@@ -27,7 +28,7 @@ const CardButtonLinkApp: React.FC<{ data: LinkApp[] }> = ({ data }) => {
   };
 
   return (
-    <div className="flex flex-wrap justify-center">
+    <div className="flex flex-wrap justify-center ">
       {data?.map((card, index) => (
         <Tooltip
           key={index}
@@ -40,7 +41,7 @@ const CardButtonLinkApp: React.FC<{ data: LinkApp[] }> = ({ data }) => {
         >
           <a
             className="m-4"
-            href={card?.auth === 1 ? card?.url : "#"}
+            href={card?.auth === "true" ? card?.url : "#"}
             onClick={(e) => handleClick(e, card?.auth, card?.url)}
             target={card.type !== "add" ? "_blank" : "_top"}
           >
@@ -61,17 +62,13 @@ const CardButtonLinkApp: React.FC<{ data: LinkApp[] }> = ({ data }) => {
                   </div>
                 )}
               </div>
-              <div className="w-full absolute bottom-0 z-20 m-0 pb-4 transition duration-300 ease-in-out group-hover:-translate-y-2">
-                <p className="text-xs text-white text-center relative">
-                  {card?.descripcion}
-                </p>
-              </div>
             </div>
-            {card?.type === "powerBi" && (
-              <p className="text-xs text-white text-center relative">
-                {card?.nombre}
-              </p>
-            )}
+            <p
+              style={{ maxWidth: "120px" }}
+              className=" text-xs text-white text-center relative"
+            >
+              {card?.nombre}
+            </p>
           </a>
         </Tooltip>
       ))}
