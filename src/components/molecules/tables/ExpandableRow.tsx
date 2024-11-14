@@ -8,7 +8,7 @@ interface ExpandableRowProps {
   data: UserType; // Propiedad que recibe los datos del usuario
   onEdit: (id: number) => void; // Función para manejar la edición
   onRefreshPassword: (id: number) => void; // Función para manejar el refresco de la contraseña
-  onToggleUser: (id: number, status: boolean) => void; // Función para habilitar/deshabilitar el usuario
+  onToggleUser: (id: number, status: string) => void; // Función para habilitar/deshabilitar el usuario
 }
 
 const ExpandableRow: React.FC<ExpandableRowProps> = ({
@@ -18,12 +18,24 @@ const ExpandableRow: React.FC<ExpandableRowProps> = ({
   onToggleUser,
 }) => {
   return (
-    <Box >
-      <Center p={4} flexDirection={'column'}>
-        <Text> <strong>Nombre:</strong> {data.nombre} </Text>
-        <Text> <strong>Usuario:</strong> {data.usuario} </Text>
-        <Text> <strong>Email:</strong> {data.email} </Text>
-        <Text> <strong>Tipo:</strong> {data.tipo} </Text>
+    <Box>
+      <Center p={4} flexDirection={"column"}>
+        <Text>
+          {" "}
+          <strong>Nombre:</strong> {data.nombre}{" "}
+        </Text>
+        <Text>
+          {" "}
+          <strong>Usuario:</strong> {data.usuario}{" "}
+        </Text>
+        <Text>
+          {" "}
+          <strong>Email:</strong> {data.email}{" "}
+        </Text>
+        <Text>
+          {" "}
+          <strong>Tipo:</strong> {data.tipo}{" "}
+        </Text>
       </Center>
       <Flex mb={2}>
         {/* Botón para editar */}
@@ -44,7 +56,7 @@ const ExpandableRow: React.FC<ExpandableRowProps> = ({
         <IconButton
           icon={data.hab ? <FaUserTimes /> : <FaUserCheck />}
           aria-label={data.hab ? "Deshabilitar usuario" : "Habilitar usuario"}
-          onClick={() => onToggleUser(data.idusuario, !data.hab)}
+          onClick={() => onToggleUser(data.idusuario, data.hab)}
           colorScheme={data.hab == "NO" ? "red" : "green"}
         />
       </Flex>

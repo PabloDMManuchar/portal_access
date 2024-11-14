@@ -8,10 +8,11 @@ const CardButtonLinkApp: React.FC<{ data: LinkApp[] }> = ({ data }) => {
 
   const handleClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
-    auth: number,
+    auth: string,
     url: string | undefined
   ) => {
-    if (auth === 0) {
+    console.log(auth);
+    if (auth === "false") {
       e.preventDefault(); // Evita la navegación si no está autorizado
       toast({
         title: "Acceso Denegado",
@@ -40,7 +41,7 @@ const CardButtonLinkApp: React.FC<{ data: LinkApp[] }> = ({ data }) => {
         >
           <a
             className="m-4"
-            href={card?.auth === 1 ? card?.url : "#"}
+            href={card?.auth === "true" ? card?.url : "#"}
             onClick={(e) => handleClick(e, card?.auth, card?.url)}
             target={card.type !== "add" ? "_blank" : "_top"}
           >
@@ -62,8 +63,11 @@ const CardButtonLinkApp: React.FC<{ data: LinkApp[] }> = ({ data }) => {
                 )}
               </div>
             </div>
-            <p style={{maxWidth:'120px'}} className=" text-xs text-white text-center relative">
-              {card?.nombre} 
+            <p
+              style={{ maxWidth: "120px" }}
+              className=" text-xs text-white text-center relative"
+            >
+              {card?.nombre}
             </p>
           </a>
         </Tooltip>

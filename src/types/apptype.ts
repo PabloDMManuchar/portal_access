@@ -10,7 +10,7 @@ export interface LinkApp {
   idaplicaciones: number;
   idusuariogenero: number;
   idusuario: number;
-  auth: number;
+  auth: string;
 }
 
 export interface Aplicacion {
@@ -37,7 +37,9 @@ export interface NewAplicacion {
   nombre: string;
   descripcion: string;
   url: string;
-  src: string; // URL de la imagen
+  mostrarimagen: string;
+  icon: string;
+  src: string;
   type: string;
   idgrupoaplicaciones: number;
 }
@@ -69,3 +71,12 @@ export interface Grupo {
 }
 
 export interface GrupoType {}
+
+export interface AuthAppType {
+  nombre: string;
+  usuario: string;
+  auth: string;
+  hab: string;
+  idaplicaciones: number;
+  idusuario: number;
+}

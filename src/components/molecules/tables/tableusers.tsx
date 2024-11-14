@@ -21,6 +21,7 @@ import AddUserModal from "../modals/AddUserModal";
 import UpdateUserModal from "../modals/UpdateUserModal";
 import Dialog from "../Dialog/Dialog";
 import ExpandableRow from "./ExpandableRow"; // Importa el nuevo componente
+import { services } from "../../../services";
 
 const TableUsers = () => {
   const [usersdata, setUsersData] = useState<UserType[]>([]);
@@ -148,9 +149,16 @@ const TableUsers = () => {
   };
 
   // Función para habilitar/deshabilitar un usuario
-  const handleToggleUser = async (userId: number, newStatus: boolean) => {
+  const handleToggleUser = async (userId: number, newStatus: string) => {
     try {
       console.info(userId);
+      if (newStatus == "NO") {
+        services.users.enableduser(userId);
+      }
+      if (newStatus == "SI") {
+        services.users.disableduser(userId);
+      }
+
       Toast({
         title: `Usuario ${
           newStatus ? "habilitado" : "deshabilitado"
@@ -261,7 +269,7 @@ const TableUsers = () => {
                             handleRefreshPassword(user.idusuario)
                           }
                           onToggleUser={() =>
-                            handleToggleUser(user.idusuario, !user.hab)
+                            handleToggleUser(user.idusuario, user.hab)
                           }
                         />
                       </Dialog>
