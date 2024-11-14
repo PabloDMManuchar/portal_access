@@ -1,5 +1,4 @@
 import { useAuth } from "../../context/AuthContext"; // Importa el Context
-import ChangePasswordModal from "../molecules/modals/ChangePasswordModal"; //Importa el Modal para cambiar contraseña
 import {
   Flex,
   Spacer,
@@ -40,15 +39,13 @@ const NavigationUsers = () => {
             </Link>
           </Tooltip>
           <Box>
-            {statusPassword != "OK" && (
-              <Circle
-                bg={"red"}
-                size={"0.6rem"}
-                position={"relative"}
-                top={2}
-                right={-4}
-              />
-            )}
+            <Circle
+              bg={statusPassword ? "black" : "red"}
+              size={"0.6rem"}
+              position={"relative"}
+              top={statusPassword ? -4 : 2}
+              right={-4}
+            />
 
             <Tooltip label="Mi perfil">
               <Link to="/access/mi-perfil" className="flex items-center ">

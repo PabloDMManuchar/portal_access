@@ -27,7 +27,7 @@ import { services } from "../../../services/index";
 import { newApplicationPrivateSchema } from "../../../schemas/applicationSchema";
 
 interface AddPrivateApplicationModalProps {
-  isAddButtonMyPrifile: boolean;
+  isAddButtonMyPrifile?: boolean;
 }
 
 const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
@@ -250,7 +250,7 @@ const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
                         <Text>Icon seleccionado:</Text>
                         <Text fontSize={"2rem"} textAlign={"center"}>
                           {selectedIcon &&
-                            React.createElement(Icons[selectedIcon])}
+                            React.createElement((Icons as any)[selectedIcon])}
                         </Text>
                       </Box>
                       <Button

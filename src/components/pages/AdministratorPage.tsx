@@ -5,6 +5,7 @@ import HomeContentPage from "../pages/usersadmin/homecontentpage";
 import AplicationContentPage from "../pages/usersadmin/aplicationcontentpage";
 import Settingcontentpage from "./usersadmin/settingcontentpage";
 // import Powerbicontentpage from "./usersadmin/powerbicontentpage";
+import Authorizationcontentpage from "./usersadmin/authorizationcontentpage";
 import { SegmentedControl } from "../ui/segmented-control";
 import LayoutMotion from "../Layout/LayoutMotion";
 
@@ -42,7 +43,13 @@ const AdministratorPage = () => {
           </Text>
           <SegmentedControl
             defaultValue="Inicio"
-            items={["Inicio", "Usuarios", "Aplicaciones", "Configuraciones"]}
+            items={[
+              "Inicio",
+              "Usuarios",
+              "Aplicaciones",
+              "Autorizaciones",
+              "Configuraciones",
+            ]}
             onChange={handleSegmentedControlChange}
           />
         </Box>
@@ -51,7 +58,7 @@ const AdministratorPage = () => {
           {currentContent === "Inicio" && <HomeContentPage />}
           {currentContent === "Usuarios" && <UsersContentPage />}
           {currentContent === "Aplicaciones" && <AplicationContentPage />}
-          {/* {currentContent === "powerbi" && <Powerbicontentpage />} */}
+          {currentContent === "Autorizaciones" && <Authorizationcontentpage />}
           {currentContent === "Configuraciones" && <Settingcontentpage />}
         </Box>
       </Box>

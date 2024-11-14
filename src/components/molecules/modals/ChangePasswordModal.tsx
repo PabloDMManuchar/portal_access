@@ -9,7 +9,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Tooltip,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
@@ -25,9 +24,9 @@ const ChangePasswordModal = () => {
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const toast = useToast();
   const { dataUser } = useAuth();
-  
+
   const iscompleted = oldpassword && password && confirmPassword ? false : true;
-  
+
   // Función para manejar el cambio de contraseña
   const handleChangePassword = async () => {
     if (password !== confirmPassword) {
@@ -72,19 +71,19 @@ const ChangePasswordModal = () => {
   return (
     <>
       {/* <Tooltip label="* Cambiar Password" > */}
-        <Button
-          _hover={{ bg: "gray.100", color: "gray.800" }}
-          color={"gray.100"}
-          leftIcon={<FaKey color="green" />}
-          mr={4}
-          onClick={() => {
-            onOpen();
-          }}
-          variant={"outline"}
-          w={"100%"}
-        >
-          Cambiar Contraseña
-        </Button>
+      <Button
+        _hover={{ bg: "gray.100", color: "gray.800" }}
+        color={"gray.100"}
+        leftIcon={<FaKey color="green" />}
+        mr={4}
+        onClick={() => {
+          onOpen();
+        }}
+        variant={"outline"}
+        w={"100%"}
+      >
+        Cambiar Contraseña
+      </Button>
       {/* </Tooltip> */}
 
       <Modal isCentered isOpen={isOpen} onClose={onClose}>
@@ -126,9 +125,16 @@ const ChangePasswordModal = () => {
               />
             </FormControl>
           </ModalBody>
-            <Button isDisabled={iscompleted} colorScheme="orange" w={'90%'} mt={'2rem'} mx={'auto'} onClick={handleChangePassword}>
-              ACTUALIZAR CONTRASEÑA
-            </Button>
+          <Button
+            isDisabled={iscompleted}
+            colorScheme="orange"
+            w={"90%"}
+            mt={"2rem"}
+            mx={"auto"}
+            onClick={handleChangePassword}
+          >
+            ACTUALIZAR CONTRASEÑA
+          </Button>
         </ModalContent>
       </Modal>
     </>
