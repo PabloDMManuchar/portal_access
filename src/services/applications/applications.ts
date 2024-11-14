@@ -1,7 +1,12 @@
 import axios from "axios";
 
 import Cookies from "js-cookie";
-import { Grupo, NewAplicacionPrivate } from "../../types/apptype";
+import {
+  AuthAppType,
+  Grupo,
+  NewAplicacion,
+  NewAplicacionPrivate,
+} from "../../types/apptype";
 
 //const API = import.meta.env.API_ACCESS;
 // Función para obtener el token de la cookie
@@ -77,6 +82,31 @@ const AllEnabledGroupApp = async (): Promise<Grupo[]> => {
   }
 };
 
+const CreateApplication = async ({
+  nombre,
+  descripcion,
+  url,
+  mostrarimagen,
+  icon,
+  src,
+  type,
+  idgrupoaplicaciones,
+}: NewAplicacion) => {
+  try {
+    const response = await api.post("/createapplication", {
+      nombre,
+      descripcion,
+      url,
+      mostrarimagen,
+      icon,
+      src,
+      type,
+      idgrupoaplicaciones,
+    });
+    return response;
+  } catch (error) {}
+};
+
 const CreateApplicationPrivate = async ({
   nombre,
   descripcion,
@@ -95,7 +125,7 @@ const CreateApplicationPrivate = async ({
       src,
     });
     return response;
-  } catch (error) { }
+  } catch (error) {}
 };
 
 // Función para obtener las aplicaciones private y public x idusuario
@@ -112,6 +142,49 @@ const CheckAuthAplicationsByIdAplicaciones = async (id: number) => {
   }
 };
 
+//Autorizaciones
+
+// Función para obtener los usuarios x aplicacion x su id
+const AuthApplicationByIdAplicaciones = async (id: number) => {
+  try {
+    const response = await api.get(`/authappbyidaplicaciones/${id}`);
+    return response.data.app;
+  } catch (error) {
+    console.error("Error fetching user", error);
+    return null;
+  }
+};
+
+// Función para obtener las aplicaciones x usuario x su id
+const AuthApplicationByIdUsuario = async (id: number) => {
+  try {
+    const response = await api.get(`/authappbyidusuario/${id}`);
+    return response.data.app;
+  } catch (error) {
+    console.error("Error fetching user", error);
+    return null;
+  }
+};
+
+const UpdateAuthApplication = async ({
+  idusuario,
+  usuario,
+  idaplicaciones,
+  nombre,
+  hab,
+}: AuthAppType) => {
+  try {
+    const response = await api.post("/authorizationapp", {
+      idusuario,
+      usuario,
+      idaplicaciones,
+      nombre,
+      hab,
+    });
+    return response;
+  } catch (error) {}
+};
+
 export const applications = {
   AllApplications,
   ApplicationById,
@@ -119,6 +192,10 @@ export const applications = {
   AllApplicationAuthByIdusuario,
   AllGroupApp,
   AllEnabledGroupApp,
+  CreateApplication,
   CreateApplicationPrivate,
   CheckAuthAplicationsByIdAplicaciones,
+  AuthApplicationByIdAplicaciones,
+  AuthApplicationByIdUsuario,
+  UpdateAuthApplication,
 };

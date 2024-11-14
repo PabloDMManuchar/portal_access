@@ -20,7 +20,9 @@ const NewAplicationForm: React.FC = () => {
   const [formData, setFormData] = useState<NewAplicacion>({
     nombre: "",
     descripcion: "",
+    mostrarimagen: "SI",
     url: "",
+    icon: "",
     src: "",
     idgrupoaplicaciones: 0, // Inicialmente sin grupo seleccionado
     type: "public", // Default value for the new "type" field
@@ -55,8 +57,9 @@ const NewAplicationForm: React.FC = () => {
   };
 
   // Manejar el envío del formulario
-  const handleAdd = () => {
-    setFormData(formData); // Aquí puedes llamar a una API o manejar la lógica para agregar la nueva aplicación
+  const handleAdd = async () => {
+    setFormData(formData);
+    await services.applications.CreateApplication(formData);
   };
 
   // Manejar la adición de un nuevo grupo
