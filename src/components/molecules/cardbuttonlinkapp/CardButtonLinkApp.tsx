@@ -1,9 +1,15 @@
 import React from "react";
 import { Tooltip, useToast } from "@chakra-ui/react";
 import { LinkApp } from "../../../types/apptype";
-import * as Icons from "react-icons/fa"; // Asegúrate de importar los íconos de FontAwesome u otros
+import * as Icons from "react-icons/fa";
+interface CardButtonLinkAppProps {
+  data: LinkApp[];
+}
 
-const CardButtonLinkApp: React.FC<{ data: LinkApp[] }> = ({ data }) => {
+const CardButtonLinkApp: React.FC<CardButtonLinkAppProps> = ({ data }) => {
+
+
+
   const toast = useToast();
 
   const handleClick = (
@@ -11,7 +17,6 @@ const CardButtonLinkApp: React.FC<{ data: LinkApp[] }> = ({ data }) => {
     auth: string,
     url: string | undefined
   ) => {
-    console.log(auth);
     if (auth === "false") {
       e.preventDefault(); // Evita la navegación si no está autorizado
       toast({
@@ -22,13 +27,16 @@ const CardButtonLinkApp: React.FC<{ data: LinkApp[] }> = ({ data }) => {
         isClosable: true,
       });
     } else {
-      // Si está autorizado, permite la navegación normal
       window.open(url, "_blank"); // Abre la URL en una nueva pestaña
     }
   };
+  if (!data)
+    return (
+      <div className="group relative m-0 flex h-28 w-32 rounded-xl shadow-xl bg-slate-600 sm:mx-auto sm:max-w-lg cursor-pointer animate-pulse" />
+    );
 
   return (
-    <div className="flex flex-wrap justify-center ">
+    <div className="flex flex-wrap justify-center">
       {data?.map((card, index) => (
         <Tooltip
           key={index}
@@ -55,10 +63,13 @@ const CardButtonLinkApp: React.FC<{ data: LinkApp[] }> = ({ data }) => {
                   />
                 ) : (
                   <div className="flex justify-center items-center h-full w-full">
-                    {React.createElement(
-                      Icons[card.icon as keyof typeof Icons], // Render dinámico del ícono
-                      { className: "text-4xl text-white" }
-                    )}
+                    {card.icon &&
+                      React.createElement(
+                        Icons[card.icon as keyof typeof Icons],
+                        {
+                          className: "text-6xl text-white",
+                        }
+                      )}
                   </div>
                 )}
               </div>

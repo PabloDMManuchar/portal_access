@@ -51,6 +51,12 @@ const TableUsers = () => {
     width?: string;
   }[] = [
     {
+      label: "Info",
+      name: "Info",
+      sortable: true,
+      width: "200px",
+    },
+    {
       label: "Nombre",
       name: "nombre",
       sortable: true,
@@ -116,12 +122,7 @@ const TableUsers = () => {
       sortable: true,
       width: "200px",
     },
-    {
-      label: "Info",
-      name: "Info",
-      sortable: true,
-      width: "200px",
-    },
+
   ];
 
   // Función para editar un usuario
@@ -257,7 +258,7 @@ const TableUsers = () => {
           </Thead>
           <Tbody>
             {filterUsers.map((user, index) => (
-              <Tr key={index}>
+              <Tr key={index} display={'flex'} alignItems={'center'} >
                 {columns.map((column, index) => {
                   if (column.name === "Info") {
                     return (
