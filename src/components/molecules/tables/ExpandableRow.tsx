@@ -1,7 +1,7 @@
 // ExpandableRow.tsx
 import React from "react";
 import { UserType } from "../../../types/usertype";
-import { Box, Center, Flex, IconButton, Text } from "@chakra-ui/react";
+import { Box, Flex, IconButton, Text, Tooltip } from "@chakra-ui/react";
 import { FaEdit, FaSync, FaUserCheck, FaUserTimes } from "react-icons/fa";
 
 interface ExpandableRowProps {
@@ -19,7 +19,7 @@ const ExpandableRow: React.FC<ExpandableRowProps> = ({
 }) => {
   return (
     <Box>
-      <Center p={4} flexDirection={"column"}>
+      <Box p={4} flexDirection={"column"}>
         <Text>
           {" "}
           <strong>Nombre:</strong> {data.nombre}{" "}
@@ -36,29 +36,37 @@ const ExpandableRow: React.FC<ExpandableRowProps> = ({
           {" "}
           <strong>Tipo:</strong> {data.tipo}{" "}
         </Text>
-      </Center>
+      </Box>
       <Flex mb={2}>
         {/* Botón para editar */}
-        <IconButton
-          icon={<FaEdit />}
-          aria-label="Editar usuario"
-          onClick={() => onEdit(data.idusuario)}
-          mr={2}
-        />
+        <Tooltip label="Editar usuario">
+          <IconButton
+            icon={<FaEdit />}
+            aria-label="Editar usuario"
+            onClick={() => onEdit(data.idusuario)}
+            mr={2}
+          />
+        </Tooltip>
+
         {/* Botón para refrescar la contraseña */}
-        <IconButton
-          icon={<FaSync />}
-          aria-label="Refrescar contraseña"
-          onClick={() => onRefreshPassword(data.idusuario)}
-          mr={2}
-        />
+        <Tooltip label="Refrescar contraseña">
+          <IconButton
+            icon={<FaSync />}
+            aria-label="Refrescar contraseña"
+            onClick={() => onRefreshPassword(data.idusuario)}
+            mr={2}
+          />
+        </Tooltip>
+
         {/* Botón para habilitar/deshabilitar */}
+        <Tooltip label={data.hab.toUpperCase() === 'SI' ? 'Deshabilitar usuario' : 'Habilitar usuario'}>
         <IconButton
           icon={data.hab ? <FaUserTimes /> : <FaUserCheck />}
           aria-label={data.hab ? "Deshabilitar usuario" : "Habilitar usuario"}
           onClick={() => onToggleUser(data.idusuario, data.hab)}
           colorScheme={data.hab == "NO" ? "red" : "green"}
-        />
+          />
+          </Tooltip>
       </Flex>
       {/* Aquí puedes incluir otros detalles que desees mostrar */}
     </Box>

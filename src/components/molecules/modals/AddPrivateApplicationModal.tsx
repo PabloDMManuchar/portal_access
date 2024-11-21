@@ -130,9 +130,7 @@ const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
           AÑADIR NUEVO ACCESO
         </Button>
       )}
-      {/* </Tooltip> */}
 
-      {/* Modal de Chakra UI */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent
@@ -146,8 +144,6 @@ const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
           <ModalHeader>Nueva Aplicacion</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {/* Formulario dentro del modal */}
-
             <FormLabel>Nombre</FormLabel>
             <Input
               name="nombre"
