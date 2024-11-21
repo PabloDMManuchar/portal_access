@@ -1,10 +1,10 @@
-import LinksApp from "../organisms/LinksApp";
 import Chat from "../molecules/chatGpt/ChatGPT";
 import { useAuth } from "../../context/AuthContext";
 import ChangePasswordForm from "../organisms/ChangePasswordForm";
 import LayoutMotion from "../Layout/LayoutMotion";
 import { Text } from "@chakra-ui/react";
 import GoogleSearch from "../atoms/GoogleSearch/GoogleSearch";
+import LinksApp from "../organisms/Links/LinksApp";
 
 const HomePage = () => {
   const { dataUser, statusPassword } = useAuth();

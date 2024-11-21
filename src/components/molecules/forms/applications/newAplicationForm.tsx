@@ -9,24 +9,29 @@ import {
   RadioGroup,
   Stack,
   Radio,
+  Divider,
+  Text,
 } from "@chakra-ui/react";
 import { FaCheckCircle, FaPlus } from "react-icons/fa";
 import { NewAplicacion, Grupo } from "../../../../types/apptype";
 import { services } from "../../../../services/index";
 import React from "react";
+import { toast } from "sonner";
 
 const NewAplicationForm: React.FC = () => {
   // Tipar el estado con la interfaz FormData
-  const [formData, setFormData] = useState<NewAplicacion>({
+  const initData = {
     nombre: "",
     descripcion: "",
     mostrarimagen: "SI",
     url: "",
     icon: "",
     src: "",
-    idgrupoaplicaciones: 0, // Inicialmente sin grupo seleccionado
-    type: "public", // Default value for the new "type" field
-  });
+    idgrupoaplicaciones: 0,
+    type: "public",
+  };
+
+  const [formData, setFormData] = useState<NewAplicacion>(initData);
 
   const [grupos, setGrupos] = useState<Grupo[]>([]);
 
@@ -58,34 +63,48 @@ const NewAplicationForm: React.FC = () => {
 
   // Manejar el envío del formulario
   const handleAdd = async () => {
-    setFormData(formData);
-    await services.applications.CreateApplication(formData);
+    try {
+      await services.applications.CreateApplication(formData);
+      toast.success("Aplicación creada con éxito");
+      setFormData(initData);
+      return;
+    } catch (error) {
+      toast.error("Error creating application");
+      console.error("Error creating application:", error);
+    }
   };
 
-  // Manejar la adición de un nuevo grupo
-  const handleAddGroup = () => {
-    // Implementar la lógica para agregar un nuevo grupo (quizá abrir un modal)
-  };
 
   return (
-    <Box borderWidth="1px" borderRadius="lg" p="6" maxW="sm">
-      <FormLabel>Nombre</FormLabel>
+    <Box borderWidth="1px" borderRadius="lg" p="6" maxW="sm" color={"gray.200"}>
+      <Text textAlign={"center"}>Datos del acceso</Text>
+      <FormLabel fontSize={12} mt={4}>
+        Nombre
+      </FormLabel>
       <Input name="nombre" value={formData.nombre} onChange={handleChange} />
 
-      <FormLabel>Descripcion</FormLabel>
+      <FormLabel fontSize={12} mt={4}>
+        Descripcion
+      </FormLabel>
       <Input
         name="descripcion"
         value={formData.descripcion}
         onChange={handleChange}
       />
 
-      <FormLabel>URL Imagen</FormLabel>
+      <FormLabel fontSize={12} mt={4}>
+        URL Imagen
+      </FormLabel>
       <Input name="src" value={formData.src} onChange={handleChange} />
 
-      <FormLabel>URL</FormLabel>
+      <FormLabel fontSize={12} mt={4}>
+        URL
+      </FormLabel>
       <Input name="url" value={formData.url} onChange={handleChange} />
 
-      <FormLabel>Grupo</FormLabel>
+      <FormLabel fontSize={12} mt={4}>
+        Grupo
+      </FormLabel>
       <Flex alignItems="center">
         {/* Select para los grupos */}
         <Select
@@ -105,32 +124,37 @@ const NewAplicationForm: React.FC = () => {
         </Select>
 
         {/* Botón para agregar un nuevo grupo */}
-        <Button
+        {/* <Button
           ml={4}
           onClick={handleAddGroup}
           colorScheme="teal"
           leftIcon={<FaPlus />}
         >
           Add Grupo
-        </Button>
+        </Button> */}
       </Flex>
-
-      {/* Radio buttons para seleccionar el tipo */}
-      <FormLabel mt="4">Tipo</FormLabel>
+      <Text mt={4} textAlign={"center"}>
+        Seccion de Links
+      </Text>
       <RadioGroup name="type" value={formData.type} onChange={handleTypeChange}>
-        <Stack direction="row">
-          <Radio value="public">Public</Radio>
-          <Radio value="powerbi">Power BI </Radio>
+        <Stack color={"gray.200"}>
+          <Radio value="public">Mis accesos</Radio>
+          {/* <Radio value="private">Mis accesos - Privados</Radio> */}
+          <Radio value="powerbiA">Mis BI - Corporativos</Radio>
+          <Radio value="powerbiB">Mis BI - Areas</Radio>
+          <Radio value="powerbiC">Mis BI - Privados</Radio>
         </Stack>
       </RadioGroup>
 
       <Button
+        isDisabled={!formData.nombre || !formData.descripcion || !formData.url}
         onClick={handleAdd}
         mt="4"
         colorScheme="teal"
+        w={"100%"}
         leftIcon={<FaCheckCircle />}
       >
-        Agregar Aplicación
+        CREAR ACCESO
       </Button>
     </Box>
   );
