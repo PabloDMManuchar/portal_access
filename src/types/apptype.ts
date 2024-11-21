@@ -6,7 +6,7 @@ export interface LinkApp {
   mostrarimagen: string;
   icon: string;
   src: string;
-  type: "public" | "private" | "powerBi" | "desktop" | "add";
+  type: "public" | "private" | "powerBiA" | "powerBiB" | "powerBiC" | "desktop" 
   idaplicaciones: number;
   idusuariogenero: number;
   idusuario: number;
