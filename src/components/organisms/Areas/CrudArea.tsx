@@ -48,7 +48,7 @@ const CrudArea = ({
         Lista de Areas
       </Box>
       <TableContainer>
-        <Table variant="striped" colorScheme="teal">
+        <Table colorScheme="teal">
           <Thead>
             <Tr>
               <Th>ID</Th>

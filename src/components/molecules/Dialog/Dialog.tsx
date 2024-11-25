@@ -18,14 +18,14 @@ const Dialog: FC<{ children: React.ReactNode; buttonLabel: string }> = ({
 
   return (
     <>
-      <Button onClick={onOpen} variant="outline" size="sm" color={'gray.200'}>
+      <Button onClick={onOpen} variant="outline" size="sm" color={"gray.200"}>
         {buttonLabel ? buttonLabel : "Open Dialog"}
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent bg={"gray.800"} color={"gray.200"}>
-          <ModalHeader>Dialog Title</ModalHeader>
+          <ModalHeader>Modificar Usuario</ModalHeader>
           <ModalCloseButton />
           <ModalBody bg={"gray.800"}>
             {children ? children : "Dialog Content"}

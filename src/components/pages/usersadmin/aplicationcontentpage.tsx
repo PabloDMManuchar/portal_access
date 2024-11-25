@@ -1,12 +1,12 @@
-import { SubTitlecontent } from "../../atoms/title/subtitlecontent";
-import AplicationList from "../../molecules/forms/applications/aplicationList";
+import AddApplicationModal from "../../molecules/modals/AddApplicationModal";
+import TableApplications from "../../molecules/tables/TableApplications";
 
 const AplicationContentPage = () => {
   return (
     <>
-      <SubTitlecontent>APLICACIONES</SubTitlecontent>
-
-      <AplicationList />
+      <AddApplicationModal typeform="public" />
+      <AddApplicationModal typeform="powerBi" />
+      <TableApplications />
     </>
   );
 };
