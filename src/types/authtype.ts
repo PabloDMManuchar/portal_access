@@ -17,6 +17,7 @@ export interface LoginDataUser {
   idusuario: number;
   nombre: string;
   usuario: string;
+  avatar: "";
   email: string;
   tipo: string;
   empresa: string;

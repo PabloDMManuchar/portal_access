@@ -3,9 +3,12 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import {
   AuthAppType,
+  EnabledDisabledApplication,
   Grupo,
+  CheckUrlApplication,
   NewAplicacion,
   NewAplicacionPrivate,
+  UpAplicacion,
 } from "../../types/apptype";
 
 //const API = import.meta.env.API_ACCESS;
@@ -82,6 +85,15 @@ const AllEnabledGroupApp = async (): Promise<Grupo[]> => {
   }
 };
 
+const CheckurlApplication = async ({ url }: CheckUrlApplication) => {
+  try {
+    const response = await api.post("/checkurlapplication", {
+      url,
+    });
+    return response;
+  } catch (error) {}
+};
+
 const CreateApplication = async ({
   nombre,
   descripcion,
@@ -107,6 +119,35 @@ const CreateApplication = async ({
   } catch (error) {}
 };
 
+const UpdateApplication = async ({
+  idaplicaciones,
+  nombre,
+  descripcion,
+  url,
+  mostrarimagen,
+  icon,
+  src,
+  type,
+  idgrupoaplicaciones,
+}: UpAplicacion) => {
+  try {
+    const response = await api.post("/updateapplication", {
+      idaplicaciones,
+      nombre,
+      descripcion,
+      url,
+      mostrarimagen,
+      icon,
+      src,
+      type,
+      idgrupoaplicaciones,
+    });
+    return response;
+  } catch (error) {
+    console.log(error + " ");
+  }
+};
+
 const CreateApplicationPrivate = async ({
   nombre,
   descripcion,
@@ -126,6 +167,76 @@ const CreateApplicationPrivate = async ({
     });
     return response;
   } catch (error) {}
+};
+
+const CreateAccessPowerBiPrivate = async ({
+  nombre,
+  descripcion,
+  url,
+}: NewAplicacionPrivate) => {
+  try {
+    const response = await api.post("/createapplicationprivate", {
+      nombre,
+      descripcion,
+      url,
+    });
+    return response;
+  } catch (error) {}
+};
+
+const CreateAccessPowerBiPublic = async ({
+  nombre,
+  descripcion,
+  url,
+  type,
+  idgrupoaplicaciones,
+}: NewAplicacion) => {
+  try {
+    const response = await api.post("/createaccesspowerbipublic", {
+      nombre,
+      descripcion,
+      url,
+      type,
+      idgrupoaplicaciones,
+    });
+    return response;
+    console.log(response);
+  } catch (error) {}
+};
+
+const EnabledApplication = async ({
+  idaplicaciones,
+  nombre,
+  hab,
+}: EnabledDisabledApplication) => {
+  try {
+    const response = await api.post("/enabledapplication", {
+      idaplicaciones,
+      nombre,
+      hab,
+    });
+    return response;
+  } catch (error) {
+    console.info(error);
+  }
+};
+
+const DisabledApplication = async ({
+  idaplicaciones,
+  nombre,
+  hab,
+}: EnabledDisabledApplication) => {
+  try {
+    const response = await api.post("/disabledapplication", {
+      idaplicaciones,
+      nombre,
+      hab,
+    });
+
+    return response;
+  } catch (error) {
+    console.info(error);
+  }
 };
 
 // Función para obtener las aplicaciones private y public x idusuario
@@ -192,10 +303,16 @@ export const applications = {
   AllApplicationAuthByIdusuario,
   AllGroupApp,
   AllEnabledGroupApp,
+  CheckurlApplication,
   CreateApplication,
   CreateApplicationPrivate,
+  CreateAccessPowerBiPrivate,
+  CreateAccessPowerBiPublic,
   CheckAuthAplicationsByIdAplicaciones,
   AuthApplicationByIdAplicaciones,
   AuthApplicationByIdUsuario,
   UpdateAuthApplication,
+  UpdateApplication,
+  EnabledApplication,
+  DisabledApplication,
 };

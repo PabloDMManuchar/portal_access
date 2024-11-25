@@ -35,6 +35,7 @@ const InitialdataUser: LoginDataUser = {
   idusuario: 0, // valor inicial o predeterminado
   nombre: "",
   usuario: "",
+  avatar: "",
   email: "",
   perfil: "",
   idperfil: 0,
@@ -113,7 +114,6 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const checkauthapplications = async () => {
     const token = Cookies.get("token"); // Cambia "token" al nombre exacto de la cookie que contiene el token
 
-    
     if (!token) {
       // Si no existe el token, cierra la sesión directamente
       logout();
@@ -181,10 +181,8 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     }
   };
 
-  
-
   useEffect(() => {
-    checktoken(); 
+    checktoken();
   }, []);
 
   return (

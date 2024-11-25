@@ -65,7 +65,20 @@ const AuthorizationModal: React.FC<AuthorizationModalProps> = ({
       ...authItem,
       auth: authItem.auth === "true" ? "false" : "true",
     };
-    await services.applications.UpdateAuthApplication(updatedAuth);
+    if (authItem.auth === "true") {
+      updatedAuth.hab = "NO";
+      updatedAuth.auth = "false";
+    }
+    if (authItem.auth === "false") {
+      updatedAuth.hab = "SI";
+      updatedAuth.auth = "true";
+    }
+    updatedAuth.idaplicaciones = authItem.idaplicaciones;
+    updatedAuth.idusuario = authItem.idusuario;
+    updatedAuth.nombre = authItem.nombre;
+    updatedAuth.usuario = authItem.usuario;
+    const resp = await services.applications.UpdateAuthApplication(updatedAuth);
+    console.log(resp);
     setAuthorizations((prevAuth) =>
       prevAuth.map((item) =>
         item.idaplicaciones === authItem.idaplicaciones &&

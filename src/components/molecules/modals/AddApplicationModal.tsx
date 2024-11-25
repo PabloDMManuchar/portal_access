@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   FormLabel,
@@ -19,29 +19,31 @@ import {
   SimpleGrid,
   IconButton,
   Text,
+  Select,
 } from "@chakra-ui/react";
 import * as Icons from "react-icons/fa"; // Importa todos los iconos de FontAwesome
 import { FaCheckCircle, FaPlusCircle } from "react-icons/fa";
 import {
   CheckUrlApplication,
-  NewAplicacionPrivate,
+  NewAplicacion,
+  Grupo,
 } from "../../../types/apptype";
 import { services } from "../../../services/index";
-import { newApplicationPrivateSchema } from "../../../schemas/applicationSchema";
+import { newApplicationSchema } from "../../../schemas/applicationSchema";
 
 interface AddPrivateApplicationModalProps {
   isAddButtonMyPrifile?: boolean;
-  type?: string;
+  typeform?: string;
 }
 
-const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
+const AddApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
   isAddButtonMyPrifile,
-  type,
+  typeform,
 }) => {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const [formData, setFormData] = useState<NewAplicacionPrivate>({
+  const [groups, setGroups] = useState<Grupo[]>([]);
+  const [formData, setFormData] = useState<NewAplicacion>({
     nombre: "",
     descripcion: "",
     url: "",
@@ -49,6 +51,7 @@ const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
     icon: "",
     src: "",
     type: "",
+    idgrupoaplicaciones: 0,
   });
 
   const [isImageSelected, setIsImageSelected] = useState(true);
@@ -59,7 +62,7 @@ const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
   const iscompleted =
     formData.nombre && formData.descripcion && formData.url ? false : true;
 
-  const initialFormData: NewAplicacionPrivate = {
+  const initialFormData: NewAplicacion = {
     nombre: "",
     descripcion: "",
     url: "",
@@ -67,13 +70,38 @@ const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
     icon: "",
     src: "",
     type: "",
+    idgrupoaplicaciones: 0,
   };
+  //carga de grupos
+  useEffect(() => {
+    const fetchGroups = async () => {
+      try {
+        const response = await services.applications.AllEnabledGroupApp(); // Cambia según tu API
+        setGroups(response);
+      } catch (error) {
+        toast({
+          title: "Error al cargar grupos",
+          description: "No se pudieron cargar los grupos, intente nuevamente.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    };
+
+    fetchGroups();
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+
+    setFormData({
+      ...formData,
+      [name]: name === "idgrupoaplicaciones" ? Number(value) : value,
+    });
+    console.log(formData);
   };
 
   const handleMostrarImagenChange = (value: string) => {
@@ -87,12 +115,16 @@ const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
     }
   };
 
+  const handletypeChange = (value: string) => {
+    setFormData({ ...formData, type: value });
+    console.log(formData);
+  };
+
   const handleAdd = async () => {
-    const result = newApplicationPrivateSchema.safeParse({
+    const result = newApplicationSchema.safeParse({
       ...formData,
       icon: isImageSelected ? "" : selectedIcon,
       src: isImageSelected ? formData.src : "",
-      type: type,
     });
 
     if (!result.success) {
@@ -122,11 +154,12 @@ const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
           isClosable: true,
         });
       } else {
-        if (type === "private") {
-          await services.applications.CreateApplicationPrivate(formData);
+        if (formData.type === "public" || formData.type === "sugest") {
+          await services.applications.CreateApplication(formData);
         } else {
-          await services.applications.CreateAccessPowerBiPrivate(formData);
+          await services.applications.CreateAccessPowerBiPublic(formData);
         }
+
         onClose();
         setFormData(initialFormData); // Restablece el formulario
         setShowIconList(true); // Reinicia la lista de iconos
@@ -173,7 +206,7 @@ const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
           variant={"outline"}
           w={"100%"}
         >
-          {type === "private" ? "NUEVO ACCESO" : "NUEVO POWER BI PRIVADO"}
+          {typeform === "private" ? "NUEVO ACCESO" : "NUEVO POWER BI PRIVADO"}
         </Button>
       ) : (
         <Button
@@ -184,7 +217,9 @@ const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
           variant="outline"
           w="100%"
         >
-          {type === "private" ? "AÑADIR NUEVO ACCESO" : "AÑADIR NUEVO POWER BI"}
+          {typeform === "public"
+            ? "AÑADIR NUEVO ACCESO"
+            : "AÑADIR NUEVO POWER BI"}
         </Button>
       )}
 
@@ -199,7 +234,7 @@ const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
           color="gray.200"
         >
           <ModalHeader>
-            {type === "private" ? "Nuevo Acceso" : "Nuevo PBI privado"}
+            {typeform === "public" ? "Nuevo Acceso" : "Nuevo PBI"}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -218,17 +253,70 @@ const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
             />
             <FormLabel>URL</FormLabel>
             <Input name="url" value={formData.url} onChange={handleChange} />
-            {type === "powerBiC" && (
-              <Input
-                type="hidden"
-                name="src"
-                value="https://cdn-icons-png.flaticon.com/512/13435/13435075.png"
-                onChange={handleChange} // Esto no es estrictamente necesario en campos ocultos
-              />
-            )}
-            {type !== "powerBiC" && (
+            <FormLabel>Grupo</FormLabel>
+            <Box display="flex" alignItems="center" mb={4}>
+              <Select
+                placeholder="Seleccione un grupo"
+                name="idgrupoaplicaciones"
+                value={formData.idgrupoaplicaciones}
+                onChange={handleChange}
+                bg="white"
+                color="black"
+              >
+                {groups.map((group) => (
+                  <option
+                    key={group.idgrupoaplicaciones}
+                    value={group.idgrupoaplicaciones}
+                  >
+                    {group.grupo}
+                  </option>
+                ))}
+              </Select>
+              {/*<AddGrupoModal />*/}
+            </Box>
+
+            {typeform === "powerBi" && (
               <>
-                <FormLabel mt="4">¿Mostrar Imagen?</FormLabel>
+                <Box display="flex" flexDirection="column" gap={4} mt={4}>
+                  <Box>
+                    <FormLabel>¿Tipo de acceso?</FormLabel>
+                    <RadioGroup
+                      name="type"
+                      value={formData.type}
+                      onChange={(value) => handletypeChange(value)}
+                    >
+                      <Stack direction="row" spacing={6}>
+                        <Radio value="powerBiA">POWER BI CORPORATIVO</Radio>
+                        <Radio value="powerBiB">POWER BI AREA</Radio>
+                      </Stack>
+                    </RadioGroup>
+                  </Box>
+                </Box>
+                <Input
+                  type="hidden"
+                  name="src"
+                  value="https://cdn-icons-png.flaticon.com/512/13435/13435075.png"
+                  onChange={handleChange} // Esto no es estrictamente necesario en campos ocultos
+                />
+              </>
+            )}
+            {typeform !== "powerBi" && (
+              <>
+                <Box display="flex" flexDirection="column" gap={4} mt={4}>
+                  <Box>
+                    <FormLabel>¿Tipo de acceso?</FormLabel>
+                    <RadioGroup
+                      name="type"
+                      value={formData.type}
+                      onChange={(value) => handletypeChange(value)}
+                    >
+                      <Stack direction="row" spacing={6}>
+                        <Radio value="sugest">SUGERENCIA</Radio>
+                        <Radio value="public">MIS ACCESOS</Radio>
+                      </Stack>
+                    </RadioGroup>
+                  </Box>
+                </Box>
                 <Box
                   display={"flex"}
                   flexDirection={"row"}
@@ -236,6 +324,8 @@ const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
                   // justifyContent={"space-between"}
                   mb={4}
                 >
+                  <FormLabel mt="4">¿Mostrar Imagen?</FormLabel>
+
                   <RadioGroup
                     name="mostrarimagen"
                     value={formData.mostrarimagen}
@@ -248,6 +338,7 @@ const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
                       <Radio value="NO">Icon</Radio>
                     </Stack>
                   </RadioGroup>
+
                   {showIconList && (
                     <Input
                       mx={4}
@@ -365,4 +456,4 @@ const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
   );
 };
 
-export default AddPrivateApplicationModal;
+export default AddApplicationModal;
