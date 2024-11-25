@@ -93,7 +93,7 @@ const Authorizationcontentpage = () => {
           <Spinner size="lg" color="teal.500" />
         </Center>
       ) : selectedOption === "Aplicaciones" ? (
-        <Table variant="striped" colorScheme="teal" size="sm">
+        <Table colorScheme="teal" size="sm">
           <Thead>
             <Tr>
               <Th>ID</Th>
@@ -122,7 +122,7 @@ const Authorizationcontentpage = () => {
           </Tbody>
         </Table>
       ) : (
-        <Table variant="striped" colorScheme="blue" size="sm">
+        <Table colorScheme="blue" size="sm">
           <Thead>
             <Tr>
               <Th>ID</Th>

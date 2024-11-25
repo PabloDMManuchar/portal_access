@@ -2,14 +2,19 @@ import {
   Box,
   Text,
   Grid,
-  Stat,
-  StatLabel,
-  StatNumber,
-  List,
-  ListItem,
+ 
+  Avatar,
+  Stack,
   Divider,
+  Heading,
+  
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
 } from "@chakra-ui/react";
-import { useAuth } from "../../context/AuthContext"; // Importa el Context
+import { useAuth } from "../../context/AuthContext";
 import ChangePasswordModal from "../molecules/modals/ChangePasswordModal";
 import AddPrivateApplicationModal from "../molecules/modals/AddPrivateApplicationModal";
 import TableAppPrivateUser from "../molecules/tables/TableAppPrivateUser";
@@ -18,128 +23,125 @@ import LayoutMotion from "../Layout/LayoutMotion";
 const ProfileUserPage = () => {
   const { statusPassword, dataUser } = useAuth();
 
-  const newData = [
+  const userDetails = [
+    { label: "Avatar", value: dataUser.avatar },
     { label: "Email", value: dataUser.email },
     { label: "Perfil", value: dataUser.perfil },
     { label: "Tipo", value: dataUser.tipo },
     { label: "Empresa", value: dataUser.empresa },
     { label: "Sucursal", value: dataUser.sucursal },
-    { label: "Area", value: dataUser.area },
+    { label: "Área", value: dataUser.area },
     { label: "Status Password", value: statusPassword },
     {
       label: "Plazo Expira Password",
       value:
         dataUser.diasexpirapassword === 0
           ? "No Expira"
-          : dataUser.diasexpirapassword + " dias",
+          : `${dataUser.diasexpirapassword} días`,
     },
     {
       label: "Fecha de vencimiento",
       value:
         dataUser.diasexpirapassword === 0
           ? "Sin Vencimiento"
-          : dataUser.diasexpirapassword - dataUser.diascambiopassword + " dias",
+          : `${dataUser.diasexpirapassword - dataUser.diascambiopassword} días`,
     },
-    { label: "Enlaces Autorizados", value: dataUser.cantappublic },
-    { label: "Enlaces Creados", value: dataUser.cantapprivate },
   ];
 
   return (
     <LayoutMotion>
-      <Box>
-        <Text
-          fontWeight={"200"}
-          fontSize={"2xl"}
-          px={"1rem"}
-          color={"gray.200"}
-        >
-          <strong>Mi perfil </strong>| {dataUser.nombre}
-        </Text>
-        <Box mx="auto" p={4} zIndex={1} display={"flex"} gap={10}>
-          <Box
-            bg={"gray.800"}
-            borderColor={"gray.700"}
-            borderRadius="md"
-            borderWidth={"2px"}
-            height={"fit-content"}
-            minW="24rem"
-            opacity={0.8}
-            p={4}
-            w="full"
-          >
-            <Box display={"flex"} justifyContent={"space-between"}>
-              <Text fontSize="xl" fontWeight="bold" color="gray.200">
-                MIS DATOS
-              </Text>
-              <Text fontWeight="ligth" fontSize="lg" mb={1} color="gray.200">
-                {dataUser.nombre}
-              </Text>
-            </Box>
-            <Divider my={4} mx={"auto"} w={"90%"} />
-            {newData.map((item, index) => (
-              <Box
-                w="full"
-                px={4}
-                display={"flex"}
-                justifyContent={"space-between"}
-                key={index}
-              >
-                <Text color="gray.200">{item.label}: </Text>
-                <Text color="gray.200">{item.value}</Text>
-              </Box>
-            ))}
+      <Box maxW="1200px" mx="auto" p={6} color="white">
+        {/* Sección del encabezado */}
+        <Box textAlign="center" mb={8}>
+          <Avatar size="2xl" bg="teal.500" color="white" mb={4}>
+            {dataUser.avatar}
+          </Avatar>
+          <Heading size="lg">{dataUser.nombre}</Heading>
+          <Text fontSize="lg" color="gray.300">
+            {dataUser.perfil}
+          </Text>
+        </Box>
 
-            <Grid
-              templateColumns="repeat(2, 1fr)"
-              gap={6}
-              mt={5}
-              color="gray.200"
-            >
-              <Stat>
-                <StatLabel>Enlaces Autorizados</StatLabel>
-                <StatNumber>{dataUser.cantappublic}</StatNumber>
-              </Stat>
-              <Stat>
-                <StatLabel>Enlaces Creados</StatLabel>
-                <StatNumber>{dataUser.cantapprivate}</StatNumber>
-              </Stat>
-            </Grid>
+        {/* Grid para distribuir la información */}
+        <Grid templateColumns={["1fr", null, "2fr 1fr"]} gap={6}>
+          {/* Datos personales */}
+          <Box
+            bg="gray.800"
+            borderColor="gray.700"
+            borderRadius="md"
+            borderWidth="1px"
+            p={6}
+          >
+            <Heading size="md" mb={4}>
+              Información Personal
+            </Heading>
+            <Divider my={4} />
+            <Stack spacing={4}>
+              {userDetails.map((item, index) => (
+                <Box
+                  key={index}
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <Text fontWeight="bold">{item.label}:</Text>
+                  <Text>{item.value}</Text>
+                </Box>
+              ))}
+            </Stack>
           </Box>
 
-
+          {/* Opciones */}
           <Box
-            bg={"gray.800"}
-            borderColor={"gray.700"}
+            bg="gray.800"
+            borderColor="gray.700"
             borderRadius="md"
-            borderWidth={"2px"}
-            height={"fit-content"}
-            minW="24rem"
-            opacity={0.8}
-            p={4}
-            w="full"
+            borderWidth="1px"
+            p={6}
           >
-            <Text fontSize="xl" fontWeight="bold" color="gray.200">
-              OPCIONES
-            </Text>
-            <Divider my={4} mx={"auto"} w={"90%"} />
-            {statusPassword != "OK" && (
-              <Text mb={2} color="red.400" textAlign={"end"}>
-                Se recomienda cambiar la contraseña
-              </Text>
-            )}
-
-          <List spacing={4}>
-            <ListItem cursor="pointer" _hover={{ color: "green.200" }}>
+            <Heading size="md" mb={4}>
+              Opciones
+            </Heading>
+            <Divider my={4} />
+            <Stack spacing={4}>
+              {statusPassword !== "OK" && (
+                <Text color="red.400" fontSize="sm" textAlign="center">
+                  Se recomienda cambiar la contraseña
+                </Text>
+              )}
               <ChangePasswordModal />
-            </ListItem>
-            <ListItem cursor="pointer" _hover={{ color: "blue.200" }}>
-              <AddPrivateApplicationModal isAddButtonMyPrifile={true} />
-            </ListItem>
-
-
-              <TableAppPrivateUser />
-            </List>
+              <AddPrivateApplicationModal
+                isAddButtonMyPrifile={true}
+                type="private"
+              />
+              <AddPrivateApplicationModal
+                isAddButtonMyPrifile={true}
+                type="powerBiC"
+              />
+            </Stack>
           </Box>
+        </Grid>
+
+        {/* Tabs para contenido adicional */}
+        <Box mt={8}>
+          <Tabs isFitted variant="enclosed">
+            <TabList>
+              <Tab>Mis Aplicaciones</Tab>
+              <Tab>Configuraciones</Tab>
+            </TabList>
+
+            <TabPanels>
+              {/* Panel de tabla */}
+              <TabPanel>
+                <TableAppPrivateUser />
+              </TabPanel>
+
+              {/* Panel de configuraciones */}
+              <TabPanel>
+                <Text>Opciones avanzadas de usuario (próximamente).</Text>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
         </Box>
       </Box>
     </LayoutMotion>

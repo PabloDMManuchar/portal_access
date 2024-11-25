@@ -7,9 +7,6 @@ interface CardButtonLinkAppProps {
 }
 
 const CardButtonLinkApp: React.FC<CardButtonLinkAppProps> = ({ data }) => {
-
-
-
   const toast = useToast();
 
   const handleClick = (
@@ -17,8 +14,9 @@ const CardButtonLinkApp: React.FC<CardButtonLinkAppProps> = ({ data }) => {
     auth: string,
     url: string | undefined
   ) => {
+    e.preventDefault();
+
     if (auth === "false") {
-      e.preventDefault(); // Evita la navegación si no está autorizado
       toast({
         title: "Acceso Denegado",
         description: "No estás autorizado para acceder a este enlace.",
@@ -40,7 +38,7 @@ const CardButtonLinkApp: React.FC<CardButtonLinkAppProps> = ({ data }) => {
       {data?.map((card, index) => (
         <Tooltip
           key={index}
-          label={card?.nombre}
+          label={card?.descripcion}
           placement="top"
           fontSize="sm"
           bg="gray.300"
@@ -51,7 +49,9 @@ const CardButtonLinkApp: React.FC<CardButtonLinkAppProps> = ({ data }) => {
             className="m-4"
             href={card?.auth === "true" ? card?.url : "#"}
             onClick={(e) => handleClick(e, card?.auth, card?.url)}
-            target={card.type !== "public" ? "_blank" : "_top"}
+
+            //target={card.type !== "public" ? "_blank" : "_top"}
+            //target={"_blank"}
           >
             <div className="group relative m-0 flex h-28 w-32 rounded-xl shadow-xl ring-gray-900/5 sm:mx-auto sm:max-w-lg cursor-pointer">
               <div className="z-10 h-full w-full overflow-hidden rounded-xl border border-gray-200 opacity-80 transition duration-300 ease-in-out group-hover:opacity-100 dark:border-gray-700 dark:opacity-70">
