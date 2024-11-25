@@ -5,7 +5,7 @@ dotenv.config();
 export default defineConfig({
     base: '/',
     plugins: [react()],
-    server: {
-        port: process.env.VITE_PORT ? parseInt(process.env.VITE_PORT) : 3000, // Usa la variable de entorno o un valor por defecto
-    },
+    // server: {
+    //     port: process.env.VITE_PORT ? parseInt(process.env.VITE_PORT) : 3000, 
+    // },
 });
