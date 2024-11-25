@@ -1,6 +1,7 @@
 export interface UserType {
   nombre: string;
   usuario: string;
+  avatar: string;
   email: string;
   tipo: "int" | "ext";
   empresa: string;

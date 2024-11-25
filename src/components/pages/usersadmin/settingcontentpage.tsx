@@ -103,7 +103,7 @@ const CRUDGroups = ({
         Listado de Grupos de App
       </Text>
       <TableContainer>
-        <Table variant="striped" colorScheme="teal">
+        <Table colorScheme="teal">
           <Thead>
             <Tr>
               <Th>ID</Th>

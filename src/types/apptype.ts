@@ -6,7 +6,14 @@ export interface LinkApp {
   mostrarimagen: string;
   icon: string;
   src: string;
-  type: "public" | "private" | "powerBiA" | "powerBiB" | "powerBiC" | "desktop" 
+  type:
+    | "public"
+    | "private"
+    | "powerBiA"
+    | "powerBiB"
+    | "powerBiC"
+    | "desktop"
+    | "sugest";
   idaplicaciones: number;
   idusuariogenero: number;
   idusuario: number;
@@ -25,6 +32,7 @@ export interface Aplicacion {
   cantuser: number;
   mostrarimagen: string;
   hab: "SI" | "NO";
+  auth: "true" | "false";
   genero: string;
   fechagenero: string;
   modifico: string;
@@ -33,7 +41,23 @@ export interface Aplicacion {
   idusuariogenero: number;
 }
 
+export interface CheckUrlApplication {
+  url: string;
+}
+
 export interface NewAplicacion {
+  nombre: string;
+  descripcion: string;
+  url: string;
+  mostrarimagen: string;
+  icon: string;
+  src: string;
+  type: string;
+  idgrupoaplicaciones: number;
+}
+
+export interface UpAplicacion {
+  idaplicaciones: number;
   nombre: string;
   descripcion: string;
   url: string;
@@ -50,12 +74,24 @@ export interface NewAplicacionPrivate {
   url: string;
   mostrarimagen: string;
   icon: string;
-  src: string; // URL de la imagen
+  src: string;
+  type: string;
+}
+
+export interface EnabledDisabledApplication {
+  idaplicaciones: number;
+  nombre: string;
+  hab: string;
 }
 
 export interface NewGrupo {
   grupo: string;
   descripcion: string;
+}
+
+export interface GrupoSelect {
+  idgrupoaplicaciones: number;
+  grupo: string;
 }
 
 export interface Grupo {

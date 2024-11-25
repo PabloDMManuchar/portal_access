@@ -56,7 +56,7 @@ const CrudCompanyBranch = ({
         Lista de Empresas - Sucursal
       </Text>
       <TableContainer>
-        <Table variant="striped" colorScheme="teal">
+        <Table colorScheme="teal">
           <Thead>
             <Tr>
               <Th>ID</Th>

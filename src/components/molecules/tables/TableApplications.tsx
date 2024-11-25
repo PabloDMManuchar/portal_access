@@ -20,39 +20,26 @@ import {
   IconButton,
   Image,
   useToast,
-  Button,
 } from "@chakra-ui/react";
 import { FaCheck, FaTimes, FaEdit } from "react-icons/fa";
 import { services } from "../../../services/index";
-import {
-  Aplicacion,
-  EnabledDisabledApplication,
-  AuthAppType,
-} from "../../../types/apptype";
-import { useAuth } from "../../../context/AuthContext";
+import { Aplicacion, EnabledDisabledApplication } from "../../../types/apptype";
+
 import EditApplicationModal from "../modals/EditApplicationModal";
 
-const TableAppPrivateUserTabs = () => {
+const TableApplications = () => {
   const [applications, setApplications] = useState<Aplicacion[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [filter, setFilter] = useState("");
   const [selectedApp, setSelectedApp] = useState<Aplicacion | null>(null); // App seleccionada para editar
   const toast = useToast();
-  const { dataUser } = useAuth();
-  const [authorizations, setAuthorizations] = useState<AuthAppType[]>([]);
+
   // Fetch applications from the server
   const fetchApplications = async () => {
     try {
       setIsLoading(true);
-      const data: Aplicacion[] =
-        // await services.applications.AllApplicationPrivateByIdusuario(
-        //  dataUser.idusuario
-        //);
-        await services.applications.AllApplicationAuthByIdusuario(
-          dataUser.idusuario
-        );
+      const data: Aplicacion[] = await services.applications.AllApplications();
       setApplications(data);
-      console.info(authorizations);
     } catch (error) {
       console.error("Error fetching applications:", error);
       toast({
@@ -118,34 +105,6 @@ const TableAppPrivateUserTabs = () => {
     setSelectedApp(app);
   };
 
-  const handleAuthToggle = async (authItem: AuthAppType) => {
-    const updatedAuth = {
-      ...authItem,
-      auth: authItem.auth === "true" ? "false" : "true",
-    };
-    if (authItem.auth === "true") {
-      updatedAuth.hab = "NO";
-      updatedAuth.auth = "false";
-    }
-    if (authItem.auth === "false") {
-      updatedAuth.hab = "SI";
-      updatedAuth.auth = "true";
-    }
-    updatedAuth.idaplicaciones = authItem.idaplicaciones;
-    updatedAuth.idusuario = authItem.idusuario;
-    updatedAuth.nombre = authItem.nombre;
-    updatedAuth.usuario = authItem.usuario;
-    await services.applications.UpdateAuthApplication(updatedAuth);
-    setAuthorizations((prevAuth) =>
-      prevAuth.map((item) =>
-        item.idaplicaciones === authItem.idaplicaciones &&
-        item.idusuario === authItem.idusuario
-          ? updatedAuth
-          : item
-      )
-    );
-  };
-
   const filteredApplications = applications.filter((app) =>
     app.nombre.toLowerCase().includes(filter)
   );
@@ -185,48 +144,27 @@ const TableAppPrivateUserTabs = () => {
               <Td>{app.nombre}</Td>
               <Td>{app.descripcion}</Td>
               <Td>{app.hab}</Td>
-              {type !== "sugest" && ( // Ocultar botones si es 'sugest'
-                <Td>
-                  <Tooltip label="Cambiar estado">
-                    <IconButton
-                      aria-label="Cambiar estado"
-                      size="sm"
-                      colorScheme={app.hab === "SI" ? "green" : "red"}
-                      onClick={() => toggleHab(app)}
-                      icon={app.hab === "SI" ? <FaCheck /> : <FaTimes />}
-                      mr={2}
-                    />
-                  </Tooltip>
-                  <Tooltip label="Editar aplicación">
-                    <IconButton
-                      aria-label="Editar aplicación"
-                      size="sm"
-                      colorScheme="blue"
-                      onClick={() => handleEdit(app)}
-                      icon={<FaEdit />}
-                    />
-                  </Tooltip>
-                </Td>
-              )}
-              {type === "sugest" && (
-                <Td>
-                  <Button
-                    colorScheme={app.auth === "true" ? "green" : "red"}
-                    onClick={() =>
-                      handleAuthToggle({
-                        nombre: app.nombre,
-                        usuario: dataUser.usuario,
-                        auth: app.auth,
-                        hab: app.hab,
-                        idaplicaciones: app.idaplicaciones,
-                        idusuario: dataUser.idusuario,
-                      })
-                    }
-                  >
-                    {app.auth === "true" ? "Quitar Autorización" : "Autorizar"}
-                  </Button>
-                </Td>
-              )}
+              <Td>
+                <Tooltip label="Cambiar estado">
+                  <IconButton
+                    aria-label="Cambiar estado"
+                    size="sm"
+                    colorScheme={app.hab === "SI" ? "green" : "red"}
+                    onClick={() => toggleHab(app)}
+                    icon={app.hab === "SI" ? <FaCheck /> : <FaTimes />}
+                    mr={2}
+                  />
+                </Tooltip>
+                <Tooltip label="Editar aplicación">
+                  <IconButton
+                    aria-label="Editar aplicación"
+                    size="sm"
+                    colorScheme="blue"
+                    onClick={() => handleEdit(app)}
+                    icon={<FaEdit />}
+                  />
+                </Tooltip>
+              </Td>
             </Tr>
           ))}
         </Tbody>
@@ -256,13 +194,15 @@ const TableAppPrivateUserTabs = () => {
       />
       <Tabs variant="soft-rounded" colorScheme="teal">
         <TabList>
-          <Tab>Privadas</Tab>
-          <Tab>Power BI</Tab>
+          <Tab>Publicas</Tab>
+          <Tab>Power BI A</Tab>
+          <Tab>Power BI B</Tab>
           <Tab>Sugerencias</Tab>
         </TabList>
         <TabPanels>
-          <TabPanel>{renderTable("private")}</TabPanel>
-          <TabPanel>{renderTable("powerBiC")}</TabPanel>
+          <TabPanel>{renderTable("public")}</TabPanel>
+          <TabPanel>{renderTable("powerBiA")}</TabPanel>
+          <TabPanel>{renderTable("powerBiB")}</TabPanel>
           <TabPanel>{renderTable("sugest")}</TabPanel>
         </TabPanels>
       </Tabs>
@@ -278,4 +218,4 @@ const TableAppPrivateUserTabs = () => {
   );
 };
 
-export default TableAppPrivateUserTabs;
+export default TableApplications;
