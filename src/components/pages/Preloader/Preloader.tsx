@@ -8,9 +8,9 @@ const Preloader: React.FC = () => {
   useEffect(() => {
     const verifyAuth = async () => {
       if (!isAuthenticated) {
-        //   navigate("/access/inicio");
+        //   navigate("/");
         // } else {
-        // navigate("/access/login");
+        // navigate("/login");
       }
     };
 

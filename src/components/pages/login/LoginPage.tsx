@@ -34,9 +34,9 @@ const LoginPage = () => {
     setLoginVisible(true);
     const verifyAuth = async () => {
       if (isAuthenticated) {
-        navigate("/access/inicio");
+        navigate("/");
       } else {
-        navigate("/access/login");
+        navigate("/login");
       }
     };
 
@@ -74,7 +74,7 @@ const LoginPage = () => {
       await login(credentials);
       if (isAuthenticated) {
         setLoginVisible(false);
-        navigate("/access/inicio");
+        navigate("/");
       } else {
         setError("Login fallido. Verifica tus credenciales.");
         setLoginVisible(true);

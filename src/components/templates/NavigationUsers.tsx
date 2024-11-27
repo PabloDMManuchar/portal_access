@@ -25,7 +25,7 @@ const NavigationUsers = () => {
         <ButtonGroup gap="2">
           <Tooltip label="Inicio">
             <Link
-              to="/access/inicio"
+              to="/"
               className="flex items-center"
               style={{ textDecoration: "none", color: "white" }}
             >
@@ -48,10 +48,10 @@ const NavigationUsers = () => {
             />
 
             <Tooltip label="Mi perfil">
-              <Link to="/access/mi-perfil" className="flex items-center ">
+              <Link to="/mi-perfil" className="flex items-center ">
                 <CgProfile
                   className={
-                    currentPath === "/access/mi-perfil"
+                    currentPath === "/mi-perfil"
                       ? "text-white text-2xl"
                       : "text-gray-500 text-2xl"
                   }
@@ -62,10 +62,10 @@ const NavigationUsers = () => {
 
           {dataUser.idperfil === 1 && (
             <Tooltip label="Administrador">
-              <Link to="/access/administrator" className="flex items-center">
+              <Link to="/administrator" className="flex items-center">
                 <MdOutlineAdminPanelSettings
                   className={
-                    currentPath === "/access/administrator"
+                    currentPath === "/administrator"
                       ? "text-white text-2xl"
                       : "text-gray-500 text-2xl"
                   }
