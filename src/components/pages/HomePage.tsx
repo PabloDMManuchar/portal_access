@@ -9,10 +9,17 @@ import LinksApp from "../organisms/Links/LinksApp";
 const HomePage = () => {
   const { dataUser, statusPassword } = useAuth();
 
+
   return (
     <LayoutMotion>
-      <div className=" w-full flex flex-col md:flex-row justify-center gap-8">
-        <div>
+      <div
+        className="w-full mx-auto flex flex-col md:flex-row justify-center"
+        style={{ minHeight: "100vh", height: "100%" }}
+      >
+        <div
+          className="mx-auto "
+          style={{ minWidth: "30rem", maxWidth: "46rem" }}
+        >
           {dataUser.nombre && (
             <Text
               fontSize={"32px"}
@@ -24,17 +31,27 @@ const HomePage = () => {
             </Text>
           )}
 
-        <LinksApp />
+          <LinksApp />
         </div>
-
-        {statusPassword !== "OK" ? (
-          <ChangePasswordForm />
-        ) : (
-          <div>
-            <GoogleSearch />
-            <Chat />
-          </div>
-        )}
+        <div
+          className="flex-grow mx-auto w-full sm:w-11/12 md:max-w-2xl sm:max-w-sm"
+          style={{
+            marginBottom: "4rem",
+            maxWidth: "32rem",
+            position: "sticky",
+            top: "1rem",
+            zIndex: 10,
+          }}
+        >
+          {statusPassword !== "OK" ? (
+            <ChangePasswordForm />
+          ) : (
+            <div>
+              <GoogleSearch />
+              <Chat />
+            </div>
+          )}
+        </div>
       </div>
     </LayoutMotion>
   );
