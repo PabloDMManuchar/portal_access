@@ -155,7 +155,7 @@ const UpdateApplication = async ({
     });
     return response;
   } catch (error) {
-    console.log(error + " ");
+    console.info(error + " ");
   }
 };
 
@@ -211,7 +211,6 @@ const CreateAccessPowerBiPublic = async ({
       idgrupoaplicaciones,
     });
     return response;
-    console.log(response);
   } catch (error) {}
 };
 

@@ -101,7 +101,6 @@ const AddApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
       ...formData,
       [name]: name === "idgrupoaplicaciones" ? Number(value) : value,
     });
-    console.log(formData);
   };
 
   const handleMostrarImagenChange = (value: string) => {
@@ -117,7 +116,6 @@ const AddApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
 
   const handletypeChange = (value: string) => {
     setFormData({ ...formData, type: value });
-    console.log(formData);
   };
 
   const handleAdd = async () => {
@@ -144,7 +142,7 @@ const AddApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
       const chkexisteurl = await services.applications.CheckurlApplication(
         checkurl
       );
-      console.log(chkexisteurl?.data.existe);
+
       if (chkexisteurl?.data.existe === true) {
         toast({
           title: "Error!!!",

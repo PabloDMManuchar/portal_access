@@ -112,7 +112,7 @@ const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
       const chkexisteurl = await services.applications.CheckurlApplication(
         checkurl
       );
-      console.log(chkexisteurl?.data.existe);
+
       if (chkexisteurl?.data.existe === true) {
         toast({
           title: "Error!!!",

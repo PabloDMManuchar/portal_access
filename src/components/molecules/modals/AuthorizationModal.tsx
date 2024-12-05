@@ -88,7 +88,6 @@ const AuthorizationModal: React.FC<AuthorizationModalProps> = ({
       const resp = await services.applications.UpdateAuthApplication(
         updatedAuth
       );
-      console.log(resp);
     } else {
       updatedAuth.idaplicaciones = authItem.idaplicaciones;
       updatedAuth.idarea = authItem.idarea;
@@ -97,7 +96,6 @@ const AuthorizationModal: React.FC<AuthorizationModalProps> = ({
       const resp = await services.applications.UpdateAuthApplicationPowerBiB(
         updatedAuth
       );
-      console.log(resp);
     }
 
     setAuthorizations((prevAuth) =>

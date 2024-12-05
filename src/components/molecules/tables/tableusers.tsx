@@ -18,6 +18,7 @@ import { UserType } from "../../../types/usertype";
 import { users } from "../../../services/users/users";
 import { FaTimes, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import AddUserModal from "../modals/AddUserModal";
+import UpdateUserModal from "../modals/UpdateUserModal";
 import Dialog from "../Dialog/Dialog";
 import ExpandableRow from "./ExpandableRow";
 import { toast } from "sonner";
@@ -28,6 +29,9 @@ const TableUsers = () => {
   const [filteredUsers, setFilteredUsers] = useState<UserType[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10; // Número de filas por página
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<UserType | null>(null);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -72,15 +76,16 @@ const TableUsers = () => {
     setFilteredUsers(usersdata);
   };
 
-  const handleEditUser = (id: number) => {
-    console.log(`Editar usuario con ID: ${id}`);
+  const handleEditUser = (user: UserType) => {
+    setSelectedUser(user);
+    setIsEditModalOpen(true);
   };
 
   const handleRefreshPassword = async (id: number) => {
     try {
       // Llamada a la API para refrescar la contraseña
       const result = await users.refreshpassword(id);
-      console.log(result);
+
       // Suponiendo que la API devuelve una respuesta exitosa
       toast.success(
         `La contraseña para el usuario con ID ${id} ha sido actualizada correctamente.`,
@@ -99,7 +104,6 @@ const TableUsers = () => {
   };
 
   const handleToggleUser = async (id: number, status: string) => {
-    console.log(`Cambiar estado del usuario con ID: ${id} a: ${status}`);
     try {
       if (status === "SI") {
         const result = await users.disableduser(id);
@@ -177,7 +181,7 @@ const TableUsers = () => {
                   <Dialog buttonLabel={"ver más"}>
                     <ExpandableRow
                       data={user}
-                      onEdit={() => handleEditUser(user.idusuario)}
+                      onEdit={() => handleEditUser(user)}
                       onRefreshPassword={() =>
                         handleRefreshPassword(user.idusuario)
                       }
@@ -225,6 +229,11 @@ const TableUsers = () => {
       </Flex>
 
       {/* Modal de edición */}
+      <UpdateUserModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        user={selectedUser}
+      />
     </Box>
   );
 };

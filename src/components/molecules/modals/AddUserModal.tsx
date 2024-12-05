@@ -105,6 +105,13 @@ const AddUserModal = () => {
       setPerfil("2");
 
       onClose();
+      Toast({
+        title: "Alta de Usuario",
+        description: "Usuario Agregado",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
     } catch (error) {
       Toast({
         title: "Error",
