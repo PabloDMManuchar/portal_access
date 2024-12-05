@@ -18,6 +18,7 @@ export interface LinkApp {
   idusuariogenero: number;
   idusuario: number;
   auth: string;
+  hab: string;
 }
 
 export interface Aplicacion {
@@ -111,8 +112,10 @@ export interface GrupoType {}
 export interface AuthAppType {
   nombre: string;
   usuario: string;
+  area: string;
   auth: string;
   hab: string;
   idaplicaciones: number;
   idusuario: number;
+  idarea: number;
 }

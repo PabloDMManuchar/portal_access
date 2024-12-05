@@ -29,4 +29,5 @@ export interface LoginDataUser {
   diasexpirapassword: number;
   cantapprivate: number;
   cantappublic: number;
+  idarea: number;
 }

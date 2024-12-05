@@ -33,6 +33,7 @@ interface AuthContextType {
 //inicializo DataUser
 const InitialdataUser: LoginDataUser = {
   idusuario: 0, // valor inicial o predeterminado
+  idarea: 0,
   nombre: "",
   usuario: "",
   avatar: "",

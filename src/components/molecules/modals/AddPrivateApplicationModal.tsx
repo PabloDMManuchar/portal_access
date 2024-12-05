@@ -112,7 +112,7 @@ const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
       const chkexisteurl = await services.applications.CheckurlApplication(
         checkurl
       );
-      console.log(chkexisteurl?.data.existe);
+
       if (chkexisteurl?.data.existe === true) {
         toast({
           title: "Error!!!",
@@ -176,16 +176,21 @@ const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
           {type === "private" ? "NUEVO ACCESO" : "NUEVO POWER BI PRIVADO"}
         </Button>
       ) : (
-        <Button
-          colorScheme="blue.500"
-          color={"blue.500"}
-          leftIcon={<FaPlusCircle />}
-          onClick={onOpen}
-          variant="outline"
-          w="100%"
-        >
-          {type === "private" ? "AÑADIR NUEVO ACCESO" : "AÑADIR NUEVO POWER BI"}
-        </Button>
+        <Tooltip label="Añadir acceso privado">
+          <Button
+            m={4}
+            opacity={0.6}
+            colorScheme="blue.500"
+            color={"blue.500"}
+            onClick={onOpen}
+            variant="outline"
+            w="6rem"
+            h="6rem"
+            _hover={{ opacity: 1 }}
+          >
+            <FaPlusCircle fontSize={30} />
+          </Button>
+        </Tooltip>
       )}
 
       <Modal isOpen={isOpen} onClose={onClose}>

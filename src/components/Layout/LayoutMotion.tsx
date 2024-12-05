@@ -56,8 +56,8 @@ const LayoutMotion: React.FC<LayoutProps> = ({ children }) => {
         {children}
       </main>
 
-      <footer className="footer sticky bottom-4  flex justify-end p-4" >
-        <img width={'80px'} src={"/Mit.png"} alt="LogoIT" className="imagen-footer" />
+      <footer className="footer fixed bottom-4 flex justify-end right-8" >
+        <img width={'40px'} src={"/Mit.png"} alt="LogoIT" className="imagen-footer" />
       </footer>
     </Box>
   );
