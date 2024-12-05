@@ -69,11 +69,11 @@ const UpdateUserModal: React.FC<EditUserModalProps> = ({
     fetchEmpresas();
     fetchAreas();
     if (userId) {
-      services.users.UserById(userId).then(setUserData).catch(console.error);
+      setUserData(null);
     }
   }, [userId]);
 
-  if (!userData) return null;
+  if (!userId) return null;
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -82,8 +82,8 @@ const UpdateUserModal: React.FC<EditUserModalProps> = ({
         <ModalHeader>Editar Usuario</ModalHeader>
         <ModalBody pb={4}>
           <FormControl>
-            <FormLabel>Nombre: {userData.nombre}</FormLabel>
-            <Input value={userData.nombre} /* actualizar datos aquí */ />
+            <FormLabel>Nombre:{userData?.nombre} </FormLabel>
+            <Input value="" /* actualizar datos aquí */ />
           </FormControl>
 
           <FormControl mb={2}>
