@@ -81,7 +81,7 @@ const Authorizationcontentpage = () => {
     type: "Aplicacion" | "Usuario" | "Area"
   ) => {
     setSelectedData(item);
-    console.log(item);
+
     setModalType(type);
     onOpen();
   };

@@ -318,6 +318,7 @@ const createUser = async ({
 
 const updateUser = async ({
   idusuario,
+  usuario,
   email,
   idempresasucursal,
   idarea,
@@ -326,8 +327,9 @@ const updateUser = async ({
   tipo,
 }: UpdateUserType) => {
   try {
-    const response = await api.post("/createuser", {
+    const response = await api.post("/updateuser", {
       idusuario,
+      usuario,
       email,
       idempresasucursal,
       idarea,

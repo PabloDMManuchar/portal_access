@@ -124,23 +124,10 @@ const CRUDGroups = ({
                   <Td>{data.hab}</Td>
                   <Td>{data.cantapp}</Td>
                   <Td>
-                    <Button
-                      colorScheme="blue"
-                      mr={2}
-                      onClick={
-                        () => {}
-                        //console.log("Editando", data.idgrupoaplicaciones)
-                      }
-                    >
+                    <Button colorScheme="blue" mr={2} onClick={() => {}}>
                       Editar
                     </Button>
-                    <Button
-                      colorScheme="red"
-                      onClick={
-                        () => {}
-                        //console.log("Eliminando", data.idgrupoaplicaciones)
-                      }
-                    >
+                    <Button colorScheme="red" onClick={() => {}}>
                       Eliminar
                     </Button>
                   </Td>

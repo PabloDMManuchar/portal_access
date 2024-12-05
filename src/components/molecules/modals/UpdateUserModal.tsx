@@ -11,38 +11,47 @@ import {
   FormControl,
   FormLabel,
   Select,
-  Toast,
+  useToast,
 } from "@chakra-ui/react";
 import { services } from "../../../services/index";
-import { UserType, AreaType, CompanyBranchType } from "../../../types/usertype";
+import {
+  UserType,
+  UpdateUserType,
+  AreaType,
+  CompanyBranchType,
+} from "../../../types/usertype";
 
 interface EditUserModalProps {
-  userId: number | null;
+  user: UserType | null;
   isOpen: boolean;
   onClose: () => void;
 }
 
 const UpdateUserModal: React.FC<EditUserModalProps> = ({
-  userId,
+  user,
   isOpen,
   onClose,
 }) => {
-  const [userData, setUserData] = useState<UserType | null>(null);
-  //const [diasExpiraClave, setDiasExpiraClave] = useState("30");
-  //const [perfil, setPerfil] = useState("2");
-
   const [empresa, setEmpresa] = useState("");
   const [listaEmpresas, setListaEmpresas] = useState<CompanyBranchType[]>([]);
+  const [email, setEmail] = useState(user?.email || "");
   const [area, setArea] = useState("");
+  const [tipo, setTipo] = useState<"int" | "ext">(user?.tipo || "int");
+  const [diasexpirapassword, setDiasExpiraClave] = useState(
+    user?.diasexpirapassword || 0
+  );
+  const [perfil, setPerfil] = useState(user?.idperfil || 2);
   const [listaAreas, setListaAreas] = useState<AreaType[]>([]);
+
+  const toast = useToast();
 
   useEffect(() => {
     const fetchEmpresas = async () => {
       try {
-        const response = await services.users.allEnabledCompanyBranchs(); // Llama a la API de empresas
-        setListaEmpresas(response); // Almacena las empresas en el estado
+        const response = await services.users.allEnabledCompanyBranchs();
+        setListaEmpresas(response);
       } catch (error) {
-        Toast({
+        toast({
           title: "Error al cargar empresas",
           description: "Hubo un problema al cargar el listado de empresas.",
           status: "error",
@@ -51,14 +60,15 @@ const UpdateUserModal: React.FC<EditUserModalProps> = ({
         });
       }
     };
+
     const fetchAreas = async () => {
       try {
-        const response = await services.users.allEnabledAreas(); // Llama a la API de empresas
-        setListaAreas(response); // Almacena las empresas en el estado
+        const response = await services.users.allEnabledAreas();
+        setListaAreas(response);
       } catch (error) {
-        Toast({
-          title: "Error al cargar areas",
-          description: "Hubo un problema al cargar el listado de areas.",
+        toast({
+          title: "Error al cargar áreas",
+          description: "Hubo un problema al cargar el listado de áreas.",
           status: "error",
           duration: 5000,
           isClosable: true,
@@ -66,14 +76,50 @@ const UpdateUserModal: React.FC<EditUserModalProps> = ({
       }
     };
 
-    fetchEmpresas();
-    fetchAreas();
-    if (userId) {
-      setUserData(null);
+    if (isOpen) {
+      fetchEmpresas();
+      fetchAreas();
     }
-  }, [userId]);
+  }, [isOpen, toast]);
 
-  if (!userId) return null;
+  const HandlerUpdate = async () => {
+    if (!user) return;
+
+    try {
+      const upUser: UpdateUserType = {
+        idusuario: user.idusuario,
+        usuario: user.usuario,
+        email: email.trim(),
+        diasexpirapassword: diasexpirapassword,
+        idperfil: perfil,
+        idempresasucursal: parseInt(empresa, 10),
+        idarea: parseInt(area, 10),
+        tipo,
+      };
+
+      await services.users.updateUser(upUser);
+
+      toast({
+        title: "Usuario modificado",
+        description: "El usuario ha sido modificado con éxito.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+
+      onClose();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Hubo un problema al modificar el usuario.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+
+  if (!user) return null;
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -82,12 +128,22 @@ const UpdateUserModal: React.FC<EditUserModalProps> = ({
         <ModalHeader>Editar Usuario</ModalHeader>
         <ModalBody pb={4}>
           <FormControl>
-            <FormLabel>Nombre:{userData?.nombre} </FormLabel>
-            <Input value="" /* actualizar datos aquí */ />
+            <FormLabel>Nombre: {user.nombre}</FormLabel>
+            <FormLabel>Usuario: {user.usuario}</FormLabel>
           </FormControl>
-
           <FormControl mb={2}>
-            <FormLabel>Empresa-Sucursal</FormLabel>
+            <FormLabel>Email</FormLabel>
+            <Input
+              type="email"
+              placeholder="Correo electrónico"
+              value={user.email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </FormControl>
+          <FormControl mb={2}>
+            <FormLabel>
+              Empresa-Sucursal: {user.empresa} - {user.sucursal}
+            </FormLabel>
             <Select
               placeholder="Selecciona una empresa"
               value={empresa}
@@ -103,11 +159,10 @@ const UpdateUserModal: React.FC<EditUserModalProps> = ({
               ))}
             </Select>
           </FormControl>
-
           <FormControl mb={2}>
-            <FormLabel>Area</FormLabel>
+            <FormLabel>Área: {user.area}</FormLabel>
             <Select
-              placeholder="Selecciona un Area"
+              placeholder="Selecciona un área"
               value={area}
               onChange={(e) => setArea(e.target.value)}
             >
@@ -118,11 +173,43 @@ const UpdateUserModal: React.FC<EditUserModalProps> = ({
               ))}
             </Select>
           </FormControl>
-          {/* Repite esto para otros campos */}
+          <FormControl mb={2}>
+            <FormLabel>Tipo</FormLabel>
+            <Select
+              value={user.tipo}
+              onChange={(e) => setTipo(e.target.value as "int" | "ext")}
+            >
+              <option value="int">Interno</option>
+              <option value="ext">Externo</option>
+            </Select>
+          </FormControl>
+          <FormControl mb={2}>
+            <FormLabel>Días Expiración de Clave</FormLabel>
+            <Select
+              value={diasexpirapassword}
+              onChange={(e) => setDiasExpiraClave(parseInt(e.target.value, 10))}
+            >
+              <option value="0">Nunca</option>
+              <option value="30">30 días</option>
+              <option value="60">60 días</option>
+              <option value="90">90 días</option>
+              <option value="120">120 días</option>
+            </Select>
+          </FormControl>
+          <FormControl mb={2}>
+            <FormLabel>Perfil: {user.perfil}</FormLabel>
+            <Select
+              value={perfil}
+              onChange={(e) => setPerfil(parseInt(e.target.value, 10))}
+            >
+              <option value={1}>Administrador</option>
+              <option value={2}>Usuario</option>
+            </Select>
+          </FormControl>
         </ModalBody>
-        <ModalFooter pb={4}>
+        <ModalFooter>
           <Button onClick={onClose}>Cancelar</Button>
-          <Button colorScheme="blue" /* handler para guardar cambios */>
+          <Button colorScheme="blue" onClick={HandlerUpdate}>
             Guardar
           </Button>
         </ModalFooter>

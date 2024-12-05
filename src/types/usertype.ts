@@ -88,6 +88,7 @@ export interface CreateUserType {
 
 export interface UpdateUserType {
   idusuario: number;
+  usuario: string;
   email: string;
   idempresasucursal: number;
   idarea: number;

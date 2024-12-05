@@ -78,9 +78,7 @@ const LinksApp: React.FC = () => {
           sugest: sugested,
           powerBi: { A: powerBiA, B: powerBiB, C: powerBiC },
         });
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     };
     getData();
   }, [dataUser.idusuario]);
