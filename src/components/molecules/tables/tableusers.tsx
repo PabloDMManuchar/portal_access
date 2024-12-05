@@ -74,7 +74,6 @@ const TableUsers = () => {
 
   const handleEditUser = (id: number) => {
     console.log(`Editar usuario con ID: ${id}`);
-    // Lógica para editar usuario
   };
 
   const handleRefreshPassword = async (id: number) => {
@@ -99,9 +98,35 @@ const TableUsers = () => {
     }
   };
 
-  const handleToggleUser = (id: number, status: string) => {
+  const handleToggleUser = async (id: number, status: string) => {
     console.log(`Cambiar estado del usuario con ID: ${id} a: ${status}`);
-    // Lógica para habilitar/deshabilitar usuario
+    try {
+      if (status === "SI") {
+        const result = await users.disableduser(id);
+        console.info(result);
+        toast.success(`El usuario con ID ${id} ha sido deshabilitado.`, {
+          duration: 2000,
+          closeButton: true,
+        });
+      }
+      if (status === "NO") {
+        const result = await users.enableduser(id);
+        console.info(result);
+        toast.success(`El usuario con ID ${id} ha sido rehabilitado.`, {
+          duration: 2000,
+          closeButton: true,
+        });
+      }
+    } catch (error: any) {
+      console.error(
+        `Error al modificar el estado para el usuario con ID: ${id}`,
+        error
+      );
+      toast.warning(
+        `Error al modificar el estado para el usuario con ID: ${id}.`,
+        { duration: 2000, closeButton: true }
+      );
+    }
   };
 
   const totalPages = Math.ceil(filteredUsers.length / rowsPerPage);
@@ -200,7 +225,6 @@ const TableUsers = () => {
       </Flex>
 
       {/* Modal de edición */}
-      {/* Implementa UpdateUserModal como en tu código original */}
     </Box>
   );
 };
