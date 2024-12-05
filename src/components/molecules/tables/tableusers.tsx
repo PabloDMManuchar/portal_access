@@ -19,8 +19,8 @@ import { users } from "../../../services/users/users";
 import { FaTimes, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import AddUserModal from "../modals/AddUserModal";
 import Dialog from "../Dialog/Dialog";
-
 import ExpandableRow from "./ExpandableRow";
+import { toast } from "sonner";
 
 const TableUsers = () => {
   const [usersdata, setUsersData] = useState<UserType[]>([]);
@@ -77,9 +77,26 @@ const TableUsers = () => {
     // Lógica para editar usuario
   };
 
-  const handleRefreshPassword = (id: number) => {
-    console.log(`Refrescar contraseña para el usuario con ID: ${id}`);
-    // Lógica para refrescar contraseña
+  const handleRefreshPassword = async (id: number) => {
+    try {
+      // Llamada a la API para refrescar la contraseña
+      const result = await users.refreshpassword(id);
+      console.log(result);
+      // Suponiendo que la API devuelve una respuesta exitosa
+      toast.success(
+        `La contraseña para el usuario con ID ${id} ha sido actualizada correctamente.`,
+        { duration: 2000, closeButton: true }
+      );
+    } catch (error: any) {
+      console.error(
+        `Error al refrescar contraseña para el usuario con ID: ${id}`,
+        error
+      );
+      toast.warning(
+        `No se pudo actualizar la contraseña para el usuario con ID ${id}.`,
+        { duration: 2000, closeButton: true }
+      );
+    }
   };
 
   const handleToggleUser = (id: number, status: string) => {

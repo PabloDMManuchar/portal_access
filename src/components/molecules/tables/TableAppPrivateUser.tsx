@@ -21,8 +21,15 @@ import {
   Image,
   useToast,
   Button,
+  useDisclosure,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
 } from "@chakra-ui/react";
-import { FaCheck, FaTimes, FaEdit } from "react-icons/fa";
+import { FaCheck, FaTimes, FaEdit, FaTrash } from "react-icons/fa";
 import { services } from "../../../services/index";
 import {
   Aplicacion,
@@ -37,17 +44,22 @@ const TableAppPrivateUserTabs = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [filter, setFilter] = useState("");
   const [selectedApp, setSelectedApp] = useState<Aplicacion | null>(null); // App seleccionada para editar
+  const [appToDelete, setAppToDelete] = useState<Aplicacion | null>(null);
   const toast = useToast();
   const { dataUser } = useAuth();
   const [authorizations, setAuthorizations] = useState<AuthAppType[]>([]);
+  const {
+    isOpen: isDeleteDialogOpen,
+    onOpen: openDeleteDialog,
+    onClose: closeDeleteDialog,
+  } = useDisclosure();
+  const cancelRef = React.useRef<HTMLButtonElement>(null);
+
   // Fetch applications from the server
   const fetchApplications = async () => {
     try {
       setIsLoading(true);
       const data: Aplicacion[] =
-        // await services.applications.AllApplicationPrivateByIdusuario(
-        //  dataUser.idusuario
-        //);
         await services.applications.AllApplicationAuthByIdusuario(
           dataUser.idusuario
         );
@@ -118,6 +130,43 @@ const TableAppPrivateUserTabs = () => {
     setSelectedApp(app);
   };
 
+  const handleDelete = (app: Aplicacion) => {
+    setAppToDelete(app);
+    openDeleteDialog();
+  };
+
+  const confirmDelete = async () => {
+    if (appToDelete) {
+      try {
+        await services.applications.DeleteApplication({
+          idaplicaciones: appToDelete.idaplicaciones,
+          nombre: appToDelete.nombre,
+          hab: appToDelete.hab,
+        });
+        toast({
+          title: "Aplicación eliminada",
+          description: `La aplicación "${appToDelete.nombre}" se eliminó con éxito.`,
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        fetchApplications();
+      } catch (error) {
+        console.error("Error al eliminar la aplicación:", error);
+        toast({
+          title: "Error",
+          description: "No se pudo eliminar la aplicación.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      } finally {
+        setAppToDelete(null);
+        closeDeleteDialog();
+      }
+    }
+  };
+
   const handleAuthToggle = async (authItem: AuthAppType) => {
     const updatedAuth = {
       ...authItem,
@@ -168,7 +217,7 @@ const TableAppPrivateUserTabs = () => {
             <Th>Imagen/Icono</Th>
             <Th>Nombre</Th>
             <Th>Descripción</Th>
-            <Th>Habilitado</Th>
+            <Th>Mostrar/Ocultar</Th>
             <Th>Acciones</Th>
           </Tr>
         </Thead>
@@ -184,29 +233,43 @@ const TableAppPrivateUserTabs = () => {
               </Td>
               <Td>{app.nombre}</Td>
               <Td>{app.descripcion}</Td>
-              <Td>{app.hab}</Td>
               {type !== "sugest" && ( // Ocultar botones si es 'sugest'
-                <Td>
-                  <Tooltip label="Cambiar estado">
-                    <IconButton
-                      aria-label="Cambiar estado"
-                      size="sm"
-                      colorScheme={app.hab === "SI" ? "green" : "red"}
-                      onClick={() => toggleHab(app)}
-                      icon={app.hab === "SI" ? <FaCheck /> : <FaTimes />}
-                      mr={2}
-                    />
-                  </Tooltip>
-                  <Tooltip label="Editar aplicación">
-                    <IconButton
-                      aria-label="Editar aplicación"
-                      size="sm"
-                      colorScheme="blue"
-                      onClick={() => handleEdit(app)}
-                      icon={<FaEdit />}
-                    />
-                  </Tooltip>
-                </Td>
+                <>
+                  <Td>
+                    {" "}
+                    <Tooltip label="mostrar/ocultar">
+                      <IconButton
+                        aria-label="mostrar/ocultar"
+                        size="sm"
+                        colorScheme={app.hab === "SI" ? "green" : "red"}
+                        onClick={() => toggleHab(app)}
+                        icon={app.hab === "SI" ? <FaCheck /> : <FaTimes />}
+                        mr={2}
+                      />
+                    </Tooltip>
+                  </Td>
+
+                  <Td>
+                    <Tooltip label="Editar aplicación">
+                      <IconButton
+                        aria-label="Editar aplicación"
+                        size="sm"
+                        colorScheme="blue"
+                        onClick={() => handleEdit(app)}
+                        icon={<FaEdit />}
+                      />
+                    </Tooltip>
+                    <Tooltip label="Eliminar aplicación">
+                      <IconButton
+                        aria-label="Eliminar aplicación"
+                        size="sm"
+                        colorScheme="red"
+                        onClick={() => handleDelete(app)}
+                        icon={<FaTrash />}
+                      />
+                    </Tooltip>
+                  </Td>
+                </>
               )}
               {type === "sugest" && (
                 <Td>
@@ -216,10 +279,12 @@ const TableAppPrivateUserTabs = () => {
                       handleAuthToggle({
                         nombre: app.nombre,
                         usuario: dataUser.usuario,
+                        area: "",
                         auth: app.auth,
                         hab: app.hab,
                         idaplicaciones: app.idaplicaciones,
                         idusuario: dataUser.idusuario,
+                        idarea: 0,
                       })
                     }
                   >
@@ -274,6 +339,31 @@ const TableAppPrivateUserTabs = () => {
           onSave={fetchApplications}
         />
       )}
+      <AlertDialog
+        isOpen={isDeleteDialogOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={closeDeleteDialog}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Eliminar Aplicación
+            </AlertDialogHeader>
+            <AlertDialogBody>
+              ¿Estás seguro que deseas eliminar la aplicación{" "}
+              {appToDelete?.nombre}? Esta acción no se puede deshacer.
+            </AlertDialogBody>
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={closeDeleteDialog}>
+                Cancelar
+              </Button>
+              <Button colorScheme="red" onClick={confirmDelete} ml={3}>
+                Eliminar
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </Box>
   );
 };

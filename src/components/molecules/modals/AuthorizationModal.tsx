@@ -23,7 +23,7 @@ type AuthorizationModalProps = {
   isOpen: boolean;
   onClose: () => void;
   data: any | null;
-  type: "Aplicacion" | "Usuario";
+  type: "Aplicacion" | "Usuario" | "Area";
 };
 
 const AuthorizationModal: React.FC<AuthorizationModalProps> = ({
@@ -45,9 +45,16 @@ const AuthorizationModal: React.FC<AuthorizationModalProps> = ({
               data.idaplicaciones
             );
         } else {
-          response = await services.applications.AuthApplicationByIdUsuario(
-            data.idusuario
-          );
+          if (type === "Usuario") {
+            response = await services.applications.AuthApplicationByIdUsuario(
+              data.idusuario
+            );
+          } else {
+            response =
+              await services.applications.AuthApplicationPowerbybByIdArea(
+                data.idarea
+              );
+          }
         }
         setAuthorizations(response);
       } catch (error) {
@@ -73,12 +80,26 @@ const AuthorizationModal: React.FC<AuthorizationModalProps> = ({
       updatedAuth.hab = "SI";
       updatedAuth.auth = "true";
     }
-    updatedAuth.idaplicaciones = authItem.idaplicaciones;
-    updatedAuth.idusuario = authItem.idusuario;
-    updatedAuth.nombre = authItem.nombre;
-    updatedAuth.usuario = authItem.usuario;
-    const resp = await services.applications.UpdateAuthApplication(updatedAuth);
-    console.log(resp);
+    if (type != "Area") {
+      updatedAuth.idaplicaciones = authItem.idaplicaciones;
+      updatedAuth.idusuario = authItem.idusuario;
+      updatedAuth.nombre = authItem.nombre;
+      updatedAuth.usuario = authItem.usuario;
+      const resp = await services.applications.UpdateAuthApplication(
+        updatedAuth
+      );
+      console.log(resp);
+    } else {
+      updatedAuth.idaplicaciones = authItem.idaplicaciones;
+      updatedAuth.idarea = authItem.idarea;
+      updatedAuth.nombre = authItem.nombre;
+      updatedAuth.area = authItem.area;
+      const resp = await services.applications.UpdateAuthApplicationPowerBiB(
+        updatedAuth
+      );
+      console.log(resp);
+    }
+
     setAuthorizations((prevAuth) =>
       prevAuth.map((item) =>
         item.idaplicaciones === authItem.idaplicaciones &&
@@ -96,9 +117,11 @@ const AuthorizationModal: React.FC<AuthorizationModalProps> = ({
         <ModalHeader>
           {type === "Aplicacion"
             ? `Usuarios con acceso a ${data?.nombre || "la aplicación"}`
-            : `Aplicaciones a las que tiene acceso ${
+            : type === "Usuario"
+            ? `Aplicaciones a las que tiene acceso ${
                 data?.nombre || "el usuario"
-              }`}
+              }`
+            : `Aplicaciones a las que tiene acceso el área ${data?.area || ""}`}
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>

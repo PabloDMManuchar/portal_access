@@ -40,7 +40,7 @@ const CardButtonLinkApp: React.FC<CardButtonLinkAppProps> = ({ data }) => {
           key={index}
           label={card?.descripcion}
           placement="top"
-          fontSize="sm"
+          fontSize="12px"
           bg="gray.300"
           color="black"
           hasArrow
@@ -49,11 +49,8 @@ const CardButtonLinkApp: React.FC<CardButtonLinkAppProps> = ({ data }) => {
             className="m-4"
             href={card?.auth === "true" ? card?.url : "#"}
             onClick={(e) => handleClick(e, card?.auth, card?.url)}
-
-            //target={card.type !== "public" ? "_blank" : "_top"}
-            //target={"_blank"}
           >
-            <div className="group relative m-0 flex h-28 w-32 rounded-xl shadow-xl ring-gray-900/5 sm:mx-auto sm:max-w-lg cursor-pointer">
+            <div className="group relative m-0 flex h-20 w-28 rounded-xl shadow-xl ring-gray-900/5 sm:mx-auto sm:max-w-lg cursor-pointer">
               <div className="z-10 h-full w-full overflow-hidden rounded-xl border border-gray-200 opacity-80 transition duration-300 ease-in-out group-hover:opacity-100 dark:border-gray-700 dark:opacity-70">
                 {card?.mostrarimagen === "SI" ? (
                   <img

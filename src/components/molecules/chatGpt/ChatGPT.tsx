@@ -83,32 +83,44 @@ const Chat: React.FC = () => {
       p={4}
       rounded="md"
       boxShadow="lg"
-      w="32rem"
+      // w="32rem"
       mx="auto"
       h="66vh"
-      minW={"22rem"}
-      maxH={"90%"}
+      // minW={"18rem"}
+      // maxH={"90%"}
+      fontSize={"12px"}
     >
-      <VStack spacing={4} overflowY="auto" p={4} rounded="md" h="70vh" mb={4} zIndex={10}>
-        {messages.map((msg, index) => (
-          <Box
-            key={index}
-            alignSelf={msg.sender === "bot" ? "flex-start" : "flex-end"}
-            bg={
-              msg.sender === "bot"
-                ? "rgba(49, 130, 206, 0.8)"
-                : "rgba(72, 187, 120, 0.8)"
-            } // blue.600 and green.500 with transparency
-            color="white"
-            px={4}
-            py={2}
-            rounded="md"
-          >
-            <Text>{msg.text}</Text>
-          </Box>
-        ))}
+      <VStack
+        spacing={4}
+        overflowY="auto"
+        p={4}
+        rounded="md"
+        h="70vh"
+        mb={4}
+        zIndex={10}
+        flexDirection="column-reverse"
+      >
+        {messages
+          .slice()
+          .reverse()
+          .map((msg, index) => (
+            <Box
+              key={index}
+              alignSelf={msg.sender === "bot" ? "flex-start" : "flex-end"}
+              bg={
+                msg.sender === "bot"
+                  ? "rgba(49, 130, 206, 0.8)"
+                  : "rgba(72, 187, 120, 0.8)"
+              } // blue.600 and green.500 with transparency
+              color="white"
+              px={4}
+              py={2}
+              rounded="md"
+            >
+              <Text>{msg.text}</Text>
+            </Box>
+          ))}
       </VStack>
-
       <Flex direction="column">
         {!isServerAvailable && (
           <Alert status="error" mb={2}>
@@ -127,12 +139,14 @@ const Chat: React.FC = () => {
           minHeight="2rem"
           ref={textareaRef} // Attach ref here
           overflow="hidden" // Hide scrollbars
+          fontSize={"12px"}
         />
         <Button
           colorScheme="blue"
           onClick={sendMessage}
           isDisabled={isInputEmpty}
           rightIcon={<VscSend />}
+          size="sm"
         >
           ENVIAR
         </Button>
