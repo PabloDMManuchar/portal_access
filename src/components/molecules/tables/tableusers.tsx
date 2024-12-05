@@ -84,7 +84,7 @@ const TableUsers = () => {
   const handleRefreshPassword = async (id: number) => {
     try {
       // Llamada a la API para refrescar la contraseña
-      const result = await users.refreshpassword(id);
+      await users.refreshpassword(id);
 
       // Suponiendo que la API devuelve una respuesta exitosa
       toast.success(
