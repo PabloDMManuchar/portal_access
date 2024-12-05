@@ -94,7 +94,7 @@ const EditApplicationModal: React.FC<EditApplicationModalProps> = ({
     }
     try {
       await services.applications.UpdateApplication(formData);
-      console.log(formData);
+
       onSave();
       onClose();
       toast({

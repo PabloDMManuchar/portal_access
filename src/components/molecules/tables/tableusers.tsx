@@ -18,9 +18,10 @@ import { UserType } from "../../../types/usertype";
 import { users } from "../../../services/users/users";
 import { FaTimes, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import AddUserModal from "../modals/AddUserModal";
+import UpdateUserModal from "../modals/UpdateUserModal";
 import Dialog from "../Dialog/Dialog";
-
 import ExpandableRow from "./ExpandableRow";
+import { toast } from "sonner";
 
 const TableUsers = () => {
   const [usersdata, setUsersData] = useState<UserType[]>([]);
@@ -28,6 +29,9 @@ const TableUsers = () => {
   const [filteredUsers, setFilteredUsers] = useState<UserType[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10; // Número de filas por página
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<UserType | null>(null);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -72,19 +76,61 @@ const TableUsers = () => {
     setFilteredUsers(usersdata);
   };
 
-  const handleEditUser = (id: number) => {
-    console.log(`Editar usuario con ID: ${id}`);
-    // Lógica para editar usuario
+  const handleEditUser = (user: UserType) => {
+    setSelectedUser(user);
+    setIsEditModalOpen(true);
   };
 
-  const handleRefreshPassword = (id: number) => {
-    console.log(`Refrescar contraseña para el usuario con ID: ${id}`);
-    // Lógica para refrescar contraseña
+  const handleRefreshPassword = async (id: number) => {
+    try {
+      // Llamada a la API para refrescar la contraseña
+      const result = await users.refreshpassword(id);
+
+      // Suponiendo que la API devuelve una respuesta exitosa
+      toast.success(
+        `La contraseña para el usuario con ID ${id} ha sido actualizada correctamente.`,
+        { duration: 2000, closeButton: true }
+      );
+    } catch (error: any) {
+      console.error(
+        `Error al refrescar contraseña para el usuario con ID: ${id}`,
+        error
+      );
+      toast.warning(
+        `No se pudo actualizar la contraseña para el usuario con ID ${id}.`,
+        { duration: 2000, closeButton: true }
+      );
+    }
   };
 
-  const handleToggleUser = (id: number, status: string) => {
-    console.log(`Cambiar estado del usuario con ID: ${id} a: ${status}`);
-    // Lógica para habilitar/deshabilitar usuario
+  const handleToggleUser = async (id: number, status: string) => {
+    try {
+      if (status === "SI") {
+        const result = await users.disableduser(id);
+        console.info(result);
+        toast.success(`El usuario con ID ${id} ha sido deshabilitado.`, {
+          duration: 2000,
+          closeButton: true,
+        });
+      }
+      if (status === "NO") {
+        const result = await users.enableduser(id);
+        console.info(result);
+        toast.success(`El usuario con ID ${id} ha sido rehabilitado.`, {
+          duration: 2000,
+          closeButton: true,
+        });
+      }
+    } catch (error: any) {
+      console.error(
+        `Error al modificar el estado para el usuario con ID: ${id}`,
+        error
+      );
+      toast.warning(
+        `Error al modificar el estado para el usuario con ID: ${id}.`,
+        { duration: 2000, closeButton: true }
+      );
+    }
   };
 
   const totalPages = Math.ceil(filteredUsers.length / rowsPerPage);
@@ -135,7 +181,7 @@ const TableUsers = () => {
                   <Dialog buttonLabel={"ver más"}>
                     <ExpandableRow
                       data={user}
-                      onEdit={() => handleEditUser(user.idusuario)}
+                      onEdit={() => handleEditUser(user)}
                       onRefreshPassword={() =>
                         handleRefreshPassword(user.idusuario)
                       }
@@ -183,7 +229,11 @@ const TableUsers = () => {
       </Flex>
 
       {/* Modal de edición */}
-      {/* Implementa UpdateUserModal como en tu código original */}
+      <UpdateUserModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        user={selectedUser}
+      />
     </Box>
   );
 };
