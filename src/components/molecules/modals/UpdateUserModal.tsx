@@ -84,17 +84,53 @@ const UpdateUserModal: React.FC<EditUserModalProps> = ({
 
   const HandlerUpdate = async () => {
     if (!user) return;
+    let idempresasucursal = 0;
+    let idarea = 0;
+    let idperfil = 0;
+    let diasexppassword = 0;
+    let email = "";
+    let tip = "";
 
+    if (email === "") {
+      email = user.email;
+    } else {
+      email = email;
+    }
+    if (empresa === "") {
+      idempresasucursal = user.idempresasucursal;
+    } else {
+      idempresasucursal = parseInt(empresa, 10);
+    }
+    if (area === "") {
+      idarea = user.idarea;
+    } else {
+      idarea = parseInt(area, 10);
+    }
+    if (tipo === user.tipo) {
+      tip = user.tipo;
+    } else {
+      tip = tipo;
+    }
+    if (diasexpirapassword === 0) {
+      diasexppassword = user.diasexpirapassword;
+    } else {
+      diasexppassword = diasexpirapassword;
+    }
+    if (perfil === 0) {
+      idperfil = user.idperfil;
+    } else {
+      idperfil = perfil;
+    }
     try {
       const upUser: UpdateUserType = {
         idusuario: user.idusuario,
         usuario: user.usuario,
         email: email.trim(),
         diasexpirapassword: diasexpirapassword,
-        idperfil: perfil,
-        idempresasucursal: parseInt(empresa, 10),
-        idarea: parseInt(area, 10),
-        tipo,
+        idperfil: idperfil,
+        idempresasucursal: idempresasucursal,
+        idarea: idarea,
+        tipo: tip,
       };
 
       await services.users.updateUser(upUser);
@@ -132,7 +168,7 @@ const UpdateUserModal: React.FC<EditUserModalProps> = ({
             <FormLabel>Usuario: {user.usuario}</FormLabel>
           </FormControl>
           <FormControl mb={2}>
-            <FormLabel>Email</FormLabel>
+            <FormLabel>Email:{user.email}</FormLabel>
             <Input
               type="email"
               placeholder="Correo electrónico"

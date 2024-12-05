@@ -24,7 +24,10 @@ import {
 import * as Icons from "react-icons/fa";
 import { Aplicacion } from "../../../types/apptype";
 import { services } from "../../../services";
-import { newApplicationPrivateSchema } from "../../../schemas/applicationSchema";
+import {
+  newApplicationPrivateSchema,
+  newApplicationSchema,
+} from "../../../schemas/applicationSchema";
 
 interface EditApplicationModalProps {
   application: Aplicacion;
@@ -74,24 +77,47 @@ const EditApplicationModal: React.FC<EditApplicationModalProps> = ({
   );
 
   const handleSave = async () => {
-    const result = newApplicationPrivateSchema.safeParse({
-      ...formData,
-      icon: isImageSelected ? "" : selectedIcon,
-      src: isImageSelected ? formData.src : "",
-    });
-
-    if (!result.success) {
-      result.error.errors.forEach((error) => {
-        toast({
-          title: "Error en el formulario",
-          description: error.message,
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-        });
+    console.log(formData.type);
+    if (formData.type === "private" || formData.type === "powerBiC") {
+      const result = newApplicationPrivateSchema.safeParse({
+        ...formData,
+        icon: isImageSelected ? "" : selectedIcon,
+        src: isImageSelected ? formData.src : "",
       });
-      return;
+
+      if (!result.success) {
+        result.error.errors.forEach((error) => {
+          toast({
+            title: "Error en el formulario",
+            description: error.message,
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        });
+        return;
+      }
+    } else {
+      const result = newApplicationSchema.safeParse({
+        ...formData,
+        icon: isImageSelected ? "" : selectedIcon,
+        src: isImageSelected ? formData.src : "",
+      });
+
+      if (!result.success) {
+        result.error.errors.forEach((error) => {
+          toast({
+            title: "Error en el formulario",
+            description: error.message,
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        });
+        return;
+      }
     }
+
     try {
       await services.applications.UpdateApplication(formData);
 
