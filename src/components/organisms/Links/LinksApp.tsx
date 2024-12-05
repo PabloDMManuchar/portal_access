@@ -39,6 +39,10 @@ const LinksApp: React.FC = () => {
         const data = await services.applications.AllApplicationAuthByIdusuario(
           dataUser.idusuario
         );
+        const datapowerbib =
+          await services.applications.AllApplicationAuthPowerBiBByIdarea(
+            dataUser.idarea
+          );
         if (!data) return;
 
         const publicsapp = data?.filter(
@@ -47,15 +51,18 @@ const LinksApp: React.FC = () => {
         const powerBiA = data?.filter(
           (item: LinkApp) => item.type === "powerBiA"
         );
+        /*
         const powerBiB = data?.filter(
           (item: LinkApp) => item.type === "powerBiB"
         );
+        */
+        const powerBiB = datapowerbib;
         const powerBiC = data?.filter(
-          (item: LinkApp) => item.type === "powerBiC"
+          (item: LinkApp) => item.type === "powerBiC" && item.hab === "SI"
         );
 
         const privates = data?.filter(
-          (item: LinkApp) => item.type === "private"
+          (item: LinkApp) => item.type === "private" && item.hab === "SI"
         );
         const sugested = data?.filter(
           (item: LinkApp) =>
