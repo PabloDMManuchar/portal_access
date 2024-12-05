@@ -85,7 +85,7 @@ const AuthorizationModal: React.FC<AuthorizationModalProps> = ({
       updatedAuth.idusuario = authItem.idusuario;
       updatedAuth.nombre = authItem.nombre;
       updatedAuth.usuario = authItem.usuario;
-      const resp = await services.applications.UpdateAuthApplication(
+      await services.applications.UpdateAuthApplication(
         updatedAuth
       );
     } else {
@@ -93,7 +93,7 @@ const AuthorizationModal: React.FC<AuthorizationModalProps> = ({
       updatedAuth.idarea = authItem.idarea;
       updatedAuth.nombre = authItem.nombre;
       updatedAuth.area = authItem.area;
-      const resp = await services.applications.UpdateAuthApplicationPowerBiB(
+      await services.applications.UpdateAuthApplicationPowerBiB(
         updatedAuth
       );
     }
