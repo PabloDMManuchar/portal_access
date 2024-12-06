@@ -193,6 +193,7 @@ const TableAppPrivateUserTabs = () => {
           : item
       )
     );
+    fetchApplications();
   };
 
   const filteredApplications = applications.filter((app) =>
@@ -273,23 +274,26 @@ const TableAppPrivateUserTabs = () => {
               )}
               {type === "sugest" && (
                 <Td>
-                  <Button
-                    colorScheme={app.auth === "true" ? "green" : "red"}
-                    onClick={() =>
-                      handleAuthToggle({
-                        nombre: app.nombre,
-                        usuario: dataUser.usuario,
-                        area: "",
-                        auth: app.auth,
-                        hab: app.hab,
-                        idaplicaciones: app.idaplicaciones,
-                        idusuario: dataUser.idusuario,
-                        idarea: 0,
-                      })
-                    }
-                  >
-                    {app.auth === "true" ? "Quitar Autorización" : "Autorizar"}
-                  </Button>
+                  <Tooltip label="mostrar/ocultar">
+                    <IconButton
+                      aria-label="mostrar/ocultar"
+                      size="sm"
+                      colorScheme={app.auth === "true" ? "green" : "red"}
+                      icon={app.auth === "true" ? <FaCheck /> : <FaTimes />}
+                      onClick={() =>
+                        handleAuthToggle({
+                          nombre: app.nombre,
+                          usuario: dataUser.usuario,
+                          area: "",
+                          auth: app.auth,
+                          hab: app.hab,
+                          idaplicaciones: app.idaplicaciones,
+                          idusuario: dataUser.idusuario,
+                          idarea: 0,
+                        })
+                      }
+                    />
+                  </Tooltip>
                 </Td>
               )}
             </Tr>
