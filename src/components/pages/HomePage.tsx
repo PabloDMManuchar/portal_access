@@ -17,18 +17,19 @@ const HomePage = () => {
           className="mx-auto "
           style={{ minWidth: "30rem", maxWidth: "46rem" }}
         >
-          {dataUser.nombre && (
-            <Text
-              fontSize={"32px"}
-              textAlign={"center"}
-              color={"gray.200"}
-              fontWeight={"200"}
-            >
-              ¡Hola, <strong>{dataUser.nombre}!</strong>
-            </Text>
+          {dataUser?.nombre && (
+            <>
+              <Text
+                fontSize={"32px"}
+                textAlign={"center"}
+                color={"gray.200"}
+                fontWeight={"200"}
+              >
+                ¡Hola, <strong>{dataUser?.nombre}!</strong>
+              </Text>
+              <LinksApp />
+            </>
           )}
-
-          <LinksApp />
         </div>
         <div
           className="flex-grow mx-auto w-full sm:w-11/12 md:max-w-2xl sm:max-w-sm"

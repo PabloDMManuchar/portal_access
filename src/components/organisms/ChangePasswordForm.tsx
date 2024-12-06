@@ -15,7 +15,7 @@ const ChangePasswordForm: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const toast = useToast();
-  const { dataUser, login } = useAuth();
+  const { dataUser, loginContext } = useAuth();
 
   const handleChangePassword = async () => {
     if (password !== confirmPassword) {
@@ -45,7 +45,7 @@ const ChangePasswordForm: React.FC = () => {
         duration: 5000,
         isClosable: true,
       });
-      await login({ username: dataUser.usuario, password: password });
+      await loginContext({ username: dataUser.usuario, password: password });
     } catch (error) {
       toast({
         title: "Error",

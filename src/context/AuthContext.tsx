@@ -25,7 +25,7 @@ interface AuthContextType {
   isTokenValid: boolean;
   loading: boolean;
   loadingCheckToken: boolean;
-  login: (credentials: LoginCredentials) => Promise<LoginResponse>;
+  loginContext: (credentials: LoginCredentials) => Promise<LoginResponse>;
   logout: () => void;
   statusPassword: string;
   allLinks: {
@@ -51,27 +51,15 @@ interface AuthContextType {
   } | null>;
 }
 
-//inicializo DataUser
-const InitialdataUser: LoginDataUser = {
-  idusuario: 0, // valor inicial o predeterminado
-  idarea: 0,
-  nombre: "",
-  usuario: "",
-  avatar: "",
-  email: "",
-  perfil: "",
-  idperfil: 0,
-  empresa: "",
-  sucursal: "",
-  area: "",
-  tipo: "",
-  diascambiopassword: 0,
-  diasexpirapassword: 0, // valor inicial o predeterminado
-  cantapprivate: 0,
-  cantappublic: 0,
-};
-
 const InitialdataAuthLink: LinkApp[] = [];
+
+export interface AllLinksType {
+  publics: LinkApp[];
+  public: LinkApp[];
+  private: LinkApp[];
+  sugest: LinkApp[];
+  powerBi: { A: LinkApp[]; B: LinkApp[]; C: LinkApp[] };
+}
 
 // Crear el contexto con valores predeterminados
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -81,110 +69,69 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isTokenValid, setIsTokenValid] = useState(false);
   const [statusPassword, setStatusPassword] = useState("");
-  const [dataUser, setDataUSer] = useState<LoginDataUser>(InitialdataUser);
+  const [dataUser, setDataUSer] = useState<LoginDataUser | null>(null);
   const [dataAuthLink, setDataAuthLink] =
     useState<LinkApp[]>(InitialdataAuthLink);
-  //   const [message, setMessage] = useState(initialState)
   const [loading, setLoading] = useState(true);
   const [loadingCheckToken, setLoadingCheckToken] = useState(true);
-  const [allLinks, setAllLinks] = useState<{
-    publics: LinkApp[];
-    public: LinkApp[];
-    private: LinkApp[];
-    sugest: LinkApp[];
-    powerBi: { A: LinkApp[]; B: LinkApp[]; C: LinkApp[] };
-  } | null>(null);
+  const [allLinks, setAllLinks] = useState<AllLinksType | null>(null);
 
-  const loadData = (): Promise<{
-    publics: LinkApp[];
-    public: LinkApp[];
-    private: LinkApp[];
-    sugest: LinkApp[];
-    powerBi: { A: LinkApp[]; B: LinkApp[]; C: LinkApp[] };
-  } | null> => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const data = await services.applications.AllApplicationAuthByIdusuario(
-          dataUser.idusuario
-        );
-        const datapowerbib =
-          await services.applications.AllApplicationAuthPowerBiBByIdarea(
-            dataUser.idarea
-          );
-        if (!data) return resolve(null);
-
-        const publicsapp = data?.filter(
-          (item: LinkApp) => item.type === "public"
-        );
-        const powerBiA = data?.filter(
-          (item: LinkApp) => item.type === "powerBiA"
-        );
-        /*
-        const powerBiB = data?.filter(
-          (item: LinkApp) => item.type === "powerBiB"
-        );
-        */
-        const powerBiB = datapowerbib;
-        const powerBiC = data?.filter(
-          (item: LinkApp) => item.type === "powerBiC" && item.hab === "SI"
-        );
-
-        const privates = data?.filter(
-          (item: LinkApp) => item.type === "private" && item.hab === "SI"
-        );
-        const sugested = data?.filter(
-          (item: LinkApp) =>
-            item.type === "sugest" &&
-            item.auth === "true" &&
-            item.idusuario === dataUser.idusuario
-        );
-        const publicsAdd = [...publicsapp, ...privates];
-
-        resolve({
-          publics: publicsAdd,
-          public: publicsapp,
-          private: privates,
-          sugest: sugested,
-          powerBi: { A: powerBiA, B: powerBiB, C: powerBiC },
-        });
-      } catch (error) {
-        console.info("Error al cargar las aplicaciones", error);
-        reject(error);
-      }
-    });
-  };
-
-  const login = async (credentials: LoginCredentials) => {
+  const loadData = async (
+    user: LoginDataUser
+  ): Promise<AllLinksType | null> => {
     try {
-      toast("Consultando usuario...");
-      const response: LoginResponse = await users.login(credentials);
-      const accessToken = response.token;
-      Cookies.set("token", accessToken, { expires: 7, sameSite: "lax" });
-      toast.success("Bienvenido!! " + response.checkacceso.nombre);
-
-      setDataUSer(response.checkacceso);
-      // Establecer el estado de autenticación
-      setIsAuthenticated(true);
-      setIsTokenValid(true);
-      setStatusPassword(response.statuspass);
-
-      // Validación de contraseña
-      if (response.statuspass === "CAMBIOPASS") {
-        toast.warning("Debe Cambiar su Password");
-      } else if (response.statuspass === "VENCIDA") {
-        toast.warning("Contraseña Vencida!!!, Debe Cambiar su Password");
+      if (!user) {
+        console.log("error al recibir usuario", user);
+        return null;
       }
 
-      const result = await loadData();
-      if (!result) throw new Error("Failed to load data");
-      setAllLinks(result);
+      const data: LinkApp[] = user.idusuario
+        ? await services.applications.AllApplicationAuthByIdusuario(
+            user.idusuario
+          )
+        : [];
 
-      return response;
+      const datapowerbib: LinkApp[] = user.idarea
+        ? await services.applications.AllApplicationAuthPowerBiBByIdarea(
+            user.idarea
+          )
+        : [];
+
+      if (!data || !datapowerbib) {
+        console.log("user.idusuario", user.idusuario);
+        console.log("user.idarea", user.idarea);
+        console.log("error al recibir data o datapowerbib", data, datapowerbib);
+      }
+
+      const filterData = (type: string, hab?: string): LinkApp[] =>
+        data.filter(
+          (item: LinkApp) => item.type === type && (!hab || item.hab === hab)
+        );
+
+      const publicsapp: LinkApp[] = filterData("public");
+      const powerBiA: LinkApp[] = filterData("powerBiA");
+      const powerBiB: LinkApp[] = datapowerbib;
+      const powerBiC: LinkApp[] = filterData("powerBiC", "SI");
+      const privates: LinkApp[] = filterData("private", "SI");
+      const sugested: LinkApp[] = data.filter(
+        (item: LinkApp) =>
+          item.type === "sugest" &&
+          item.auth === "true" &&
+          item.idusuario === user?.idusuario
+      );
+
+      const publicsAdd: LinkApp[] = [...publicsapp, ...privates];
+
+      return {
+        publics: publicsAdd,
+        public: publicsapp,
+        private: privates,
+        sugest: sugested,
+        powerBi: { A: powerBiA, B: powerBiB, C: powerBiC },
+      };
     } catch (error) {
-      console.error("Error al iniciar sesión:", error);
-      toast.error("Error al iniciar sesión. Inténtalo de nuevo.");
-      setIsAuthenticated(false);
-      setIsTokenValid(false);
+      console.info("Error al cargar las aplicaciones", error);
+      toast.error("Error al cargar las aplicaciones.");
       throw error;
     }
   };
@@ -216,6 +163,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       return;
     }
     try {
+      if (!dataUser) return;
       if (!dataUser.idusuario) return;
       const data = await services.applications.AllApplicationAuthByIdusuario(
         dataUser.idusuario
@@ -231,7 +179,6 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const checktoken = async () => {
     setLoadingCheckToken(true);
     const token = Cookies.get("token");
-
     if (!token) {
       setIsTokenValid(false);
       setIsAuthenticated(false);
@@ -241,9 +188,13 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
     try {
       const resp = await users.checkToken();
-
-      if (resp.tokenvalid) {
+      if (resp.idusuario) {
         const response = await users.UserById(resp.idusuario);
+
+        if (!response) {
+          console.error("Error al obtener el usuario.", response);
+        }
+
         setDataUSer(response[0]);
         setStatusPassword(resp.statuspass);
         setIsAuthenticated(true);
@@ -251,10 +202,9 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         toast.success("Sesión recuperada.");
         setLoadingCheckToken(false);
         checkauthapplications();
-        const result = await loadData();
+        const result = await loadData(response[0]);
         if (!result) return;
         setAllLinks(result);
-  
       } else {
         setIsAuthenticated(false);
         setIsTokenValid(false);
@@ -273,6 +223,37 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     }
   };
 
+  const loginContext = async (credentials: LoginCredentials) => {
+    try {
+      toast("Consultando usuario...");
+      const response: LoginResponse = await services.users.login(credentials);
+      if (!response.token) {
+        toast.error("Usuario o contraseña incorrectos.");
+        setIsAuthenticated(false);
+        setIsTokenValid(false);
+        throw new Error("Usuario o contraseña incorrectos.");
+      }
+
+      const accessToken = response.token;
+
+      Cookies.set("token", accessToken, { expires: 7, sameSite: "lax" });
+
+      toast.success("Bienvenido!! " + response.checkacceso.nombre);
+
+      setDataUSer(response.checkacceso);
+      setIsAuthenticated(true);
+      setIsTokenValid(true);
+      setStatusPassword(response.statuspass);
+      // await loadData(response.checkacceso);
+      return;
+    } catch (error) {
+      // setIsAuthenticated(false);
+      setIsTokenValid(false);
+      console.error("Error al iniciar sesión:", error);
+      throw new Error("Error al iniciar sesión");
+    }
+  };
+
   useEffect(() => {
     checktoken();
   }, []);
@@ -284,13 +265,13 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         checkauthapplications,
         checktoken,
         dataAuthLink,
-        dataUser,
+        dataUser: dataUser!,
         isAuthenticated,
         isTokenValid,
         loadData,
         loading,
         loadingCheckToken,
-        login,
+        loginContext,
         logout,
         setAllLinks,
         statusPassword,
@@ -301,7 +282,6 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   );
 };
 
-// Crear un hook personalizado para usar el contexto de autenticación
 const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (context === undefined) {
