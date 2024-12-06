@@ -42,7 +42,7 @@ interface AuthContextType {
     sugest: LinkApp[];
     powerBi: { A: LinkApp[]; B: LinkApp[]; C: LinkApp[] };
   } | null>;
-  loadData: () => Promise<{
+  loadData: (user:LoginDataUser ) => Promise<{
     publics: LinkApp[];
     public: LinkApp[];
     private: LinkApp[];
@@ -245,7 +245,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       setIsTokenValid(true);
       setStatusPassword(response.statuspass);
       // await loadData(response.checkacceso);
-      return;
+      return response;
     } catch (error) {
       // setIsAuthenticated(false);
       setIsTokenValid(false);
