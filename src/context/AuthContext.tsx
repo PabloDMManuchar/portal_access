@@ -176,7 +176,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       }
 
       const result = await loadData();
-      if (!result) return;
+      if (!result) throw new Error("Failed to load data");
       setAllLinks(result);
 
       return response;
