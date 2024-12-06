@@ -15,6 +15,8 @@ import {
   Th,
   Td,
   Center,
+  Input,
+  Box,
 } from "@chakra-ui/react";
 import { services } from "../../../services/index";
 import { AuthAppType } from "../../../types/apptype";
@@ -33,6 +35,10 @@ const AuthorizationModal: React.FC<AuthorizationModalProps> = ({
   type,
 }) => {
   const [authorizations, setAuthorizations] = useState<AuthAppType[]>([]);
+  const [filter, setFilter] = useState(""); // Estado para el filtro
+  const [filteredAuthorizations, setFilteredAuthorizations] = useState<
+    AuthAppType[]
+  >([]);
 
   useEffect(() => {
     const fetchAuthorizations = async () => {
@@ -44,19 +50,18 @@ const AuthorizationModal: React.FC<AuthorizationModalProps> = ({
             await services.applications.AuthApplicationByIdAplicaciones(
               data.idaplicaciones
             );
+        } else if (type === "Usuario") {
+          response = await services.applications.AuthApplicationByIdUsuario(
+            data.idusuario
+          );
         } else {
-          if (type === "Usuario") {
-            response = await services.applications.AuthApplicationByIdUsuario(
-              data.idusuario
+          response =
+            await services.applications.AuthApplicationPowerbybByIdArea(
+              data.idarea
             );
-          } else {
-            response =
-              await services.applications.AuthApplicationPowerbybByIdArea(
-                data.idarea
-              );
-          }
         }
         setAuthorizations(response);
+        setFilteredAuthorizations(response); // Inicializamos el estado filtrado
       } catch (error) {
         console.error("Error al cargar autorizaciones:", error);
       }
@@ -67,35 +72,38 @@ const AuthorizationModal: React.FC<AuthorizationModalProps> = ({
     }
   }, [data, type]);
 
+  useEffect(() => {
+    // Filtrar autorizaciones basado en el texto del filtro
+    const lowerCaseFilter = filter.toLowerCase();
+    setFilteredAuthorizations(
+      authorizations.filter((auth) =>
+        type === "Aplicacion"
+          ? auth.usuario.toLowerCase().includes(lowerCaseFilter)
+          : auth.nombre.toLowerCase().includes(lowerCaseFilter)
+      )
+    );
+  }, [filter, authorizations, type]);
+
   const handleAuthToggle = async (authItem: AuthAppType) => {
     const updatedAuth = {
       ...authItem,
       auth: authItem.auth === "true" ? "false" : "true",
     };
-    if (authItem.auth === "true") {
-      updatedAuth.hab = "NO";
-      updatedAuth.auth = "false";
-    }
-    if (authItem.auth === "false") {
-      updatedAuth.hab = "SI";
-      updatedAuth.auth = "true";
-    }
-    if (type != "Area") {
+
+    updatedAuth.hab = updatedAuth.auth === "true" ? "SI" : "NO";
+
+    if (type !== "Area") {
       updatedAuth.idaplicaciones = authItem.idaplicaciones;
       updatedAuth.idusuario = authItem.idusuario;
       updatedAuth.nombre = authItem.nombre;
       updatedAuth.usuario = authItem.usuario;
-      await services.applications.UpdateAuthApplication(
-        updatedAuth
-      );
+      await services.applications.UpdateAuthApplication(updatedAuth);
     } else {
       updatedAuth.idaplicaciones = authItem.idaplicaciones;
       updatedAuth.idarea = authItem.idarea;
       updatedAuth.nombre = authItem.nombre;
       updatedAuth.area = authItem.area;
-      await services.applications.UpdateAuthApplicationPowerBiB(
-        updatedAuth
-      );
+      await services.applications.UpdateAuthApplicationPowerBiB(updatedAuth);
     }
 
     setAuthorizations((prevAuth) =>
@@ -123,7 +131,17 @@ const AuthorizationModal: React.FC<AuthorizationModalProps> = ({
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          {authorizations.length > 0 ? (
+          {/* Input para el filtro */}
+          <Box mb={4}>
+            <Input
+              placeholder={`Buscar ${
+                type === "Aplicacion" ? "usuario" : "aplicación"
+              }`}
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+            />
+          </Box>
+          {filteredAuthorizations.length > 0 ? (
             <Table variant="simple" size="sm">
               <Thead>
                 <Tr>
@@ -134,7 +152,7 @@ const AuthorizationModal: React.FC<AuthorizationModalProps> = ({
                 </Tr>
               </Thead>
               <Tbody>
-                {authorizations.map((auth) => (
+                {filteredAuthorizations.map((auth) => (
                   <Tr key={`${auth.idaplicaciones}-${auth.idusuario}`}>
                     <Td>
                       {type === "Aplicacion" ? auth.usuario : auth.nombre}
