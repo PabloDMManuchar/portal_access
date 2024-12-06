@@ -21,7 +21,7 @@ const LinksApp: React.FC = () => {
   useEffect(() => {
     if (dataUser.idusuario && dataUser.idarea) {
       const fetchData = async () => {
-        const result = await loadData();
+        const result = await loadData(dataUser);
         if (!result) return;
         setAllLinks(result);
       };
