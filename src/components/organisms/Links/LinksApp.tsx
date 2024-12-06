@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import {
   Box,
   Divider,
@@ -9,8 +9,6 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import { LinkApp } from "../../../types/apptype";
-import { services } from "../../../services";
 import { useAuth } from "../../../context/AuthContext";
 import CardLinksLoaders from "../../molecules/Loaders/CardLinks/CardLinksLoaders";
 import AddPrivateApplicationModal from "../../molecules/modals/AddPrivateApplicationModal";
@@ -18,70 +16,18 @@ import CardButtonLinkApp from "../../molecules/cardbuttonlinkapp/CardButtonLinkA
 import { FaLink, FaChartBar } from "react-icons/fa";
 
 const LinksApp: React.FC = () => {
-  const { dataUser } = useAuth();
-  const [allLinks, setAllLinks] = useState<{
-    publics: LinkApp[];
-    public: LinkApp[];
-    private: LinkApp[];
-    sugest: LinkApp[];
-    powerBi: { A: LinkApp[]; B: LinkApp[]; C: LinkApp[] };
-  }>({
-    publics: [],
-    public: [],
-    private: [],
-    sugest: [],
-    powerBi: { A: [], B: [], C: [] },
-  });
+  const { dataUser, allLinks, setAllLinks, loadData } = useAuth();
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const data = await services.applications.AllApplicationAuthByIdusuario(
-          dataUser.idusuario
-        );
-        const datapowerbib =
-          await services.applications.AllApplicationAuthPowerBiBByIdarea(
-            dataUser.idarea
-          );
-        if (!data) return;
-
-        const publicsapp = data?.filter(
-          (item: LinkApp) => item.type === "public"
-        );
-        const powerBiA = data?.filter(
-          (item: LinkApp) => item.type === "powerBiA"
-        );
-        /*
-        const powerBiB = data?.filter(
-          (item: LinkApp) => item.type === "powerBiB"
-        );
-        */
-        const powerBiB = datapowerbib;
-        const powerBiC = data?.filter(
-          (item: LinkApp) => item.type === "powerBiC" && item.hab === "SI"
-        );
-
-        const privates = data?.filter(
-          (item: LinkApp) => item.type === "private" && item.hab === "SI"
-        );
-        const sugested = data?.filter(
-          (item: LinkApp) =>
-            item.type === "sugest" &&
-            item.auth === "true" &&
-            item.idusuario === dataUser.idusuario
-        );
-        const publicsAdd = [...publicsapp, ...privates];
-        setAllLinks({
-          publics: publicsAdd,
-          public: publicsapp,
-          private: privates,
-          sugest: sugested,
-          powerBi: { A: powerBiA, B: powerBiB, C: powerBiC },
-        });
-      } catch (error) {}
-    };
-    getData();
-  }, [dataUser.idusuario]);
+    if (dataUser.idusuario && dataUser.idarea) {
+      const fetchData = async () => {
+        const result = await loadData();
+        if (!result) return;
+        setAllLinks(result);
+      };
+      fetchData();
+    }
+  }, [dataUser]);
 
   return (
     <div style={{ maxWidth: "56rem", fontSize: "12px" }}>
@@ -99,14 +45,14 @@ const LinksApp: React.FC = () => {
         <TabPanels
           style={{
             overflowY: "auto",
-            maxHeight: "60vh",
+            maxHeight: "64vh",
             scrollbarWidth: "thin",
             scrollbarColor: "#201f1f #161515",
           }}
         >
           <TabPanel>
             <>
-              {allLinks.publics.length > 0 ? (
+              {allLinks ? (
                 <>
                   <Text
                     color={"gray.200"}
@@ -152,7 +98,7 @@ const LinksApp: React.FC = () => {
           </TabPanel>
 
           <TabPanel>
-            {allLinks?.powerBi.A.length > 0 ? (
+            {allLinks ? (
               <Box>
                 <Text
                   color={"gray.200"}
