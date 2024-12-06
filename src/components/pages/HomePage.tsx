@@ -5,17 +5,14 @@ import LayoutMotion from "../Layout/LayoutMotion";
 import { Text } from "@chakra-ui/react";
 import GoogleSearch from "../atoms/GoogleSearch/GoogleSearch";
 import LinksApp from "../organisms/Links/LinksApp";
+// import GoogleSearch2 from "../atoms/GoogleSearch/GoogleSearch2";
 
 const HomePage = () => {
   const { dataUser, statusPassword } = useAuth();
 
-
   return (
     <LayoutMotion>
-      <div
-        className="w-full mx-auto flex flex-col md:flex-row justify-center"
-        style={{ minHeight: "100vh", height: "100%" }}
-      >
+      <div className="w-full mx-auto flex flex-col md:flex-row justify-center">
         <div
           className="mx-auto "
           style={{ minWidth: "30rem", maxWidth: "46rem" }}
@@ -47,6 +44,7 @@ const HomePage = () => {
             <ChangePasswordForm />
           ) : (
             <div>
+              {/* <GoogleSearch2 /> */}
               <GoogleSearch />
               <Chat />
             </div>

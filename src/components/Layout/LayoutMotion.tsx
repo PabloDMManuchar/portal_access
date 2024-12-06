@@ -45,7 +45,7 @@ const LayoutMotion: React.FC<LayoutProps> = ({ children }) => {
       <div className="circle circle1" />
       <div className="circle circle2" />
       <div className="circle circle3" />
-      <header className="p-8 w-full text-start flex z-10 justify-between">
+      <header className="p-4 w-full text-start flex z-10 justify-between">
         <img src="/manucharlogo.png" alt="Manuchar Logo" width="180" />
         <div className="flex justify-center items-center">
           <NavigationUsers />

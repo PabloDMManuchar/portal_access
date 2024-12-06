@@ -1,0 +1,37 @@
+{
+    "name": "Portal de accesos",
+    "short_name": "Portal",
+    "start_url": "/",
+    "display": "standalone",
+    "icons": [
+      {
+        "src": "/icon_192x192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "/icon_512x512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ],
+    "screenshots": [
+      {
+        "src": "/assets/screenshots/wide.png",
+        "sizes": "1280x720",
+        "type": "image/png",
+        "form_factor": "wide"
+      },
+      {
+        "src": "/assets/screenshots/portrait.png",
+        "sizes": "360x640",
+        "type": "image/png"
+      },
+      {
+        "src": "/assets/screenshots/tablet.png",
+        "sizes": "800x1280",
+        "type": "image/png",
+        "form_factor": "tablet"
+      }
+    ]
+  }
