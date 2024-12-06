@@ -1,7 +1,7 @@
 {
     "name": "Portal de accesos",
     "short_name": "Portal",
-    "start_url": "/",
+    "start_url": "/index.html",
     "display": "standalone",
     "icons": [
       {

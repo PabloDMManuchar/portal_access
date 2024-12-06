@@ -1,22 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Flex } from "@chakra-ui/react";
-import { useAuth } from "../../../context/AuthContext";
 
 const Preloader: React.FC = () => {
-  const { isAuthenticated } = useAuth();
-
-  useEffect(() => {
-    const verifyAuth = async () => {
-      if (!isAuthenticated) {
-        //   navigate("/");
-        // } else {
-        // navigate("/login");
-      }
-    };
-
-    verifyAuth();
-  }, [isAuthenticated]);
-
   return (
     <Flex
       zIndex={999}
