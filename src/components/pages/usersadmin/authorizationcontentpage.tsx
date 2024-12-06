@@ -14,6 +14,7 @@ import {
   Center,
   Spinner,
   Button,
+  Input,
   useDisclosure,
 } from "@chakra-ui/react";
 import { Aplicacion } from "../../../types/apptype";
@@ -26,6 +27,7 @@ const Authorizationcontentpage = () => {
   const [aplicaciones, setAplicaciones] = useState<Aplicacion[]>([]);
   const [usuarios, setUsuarios] = useState<UserType[]>([]);
   const [areas, setAreas] = useState<AreaType[]>([]);
+  const [searchText, setSearchText] = useState("");
   const [loading, setLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedData, setSelectedData] = useState<any>(null);
@@ -37,37 +39,16 @@ const Authorizationcontentpage = () => {
     setLoading(true);
     try {
       if (selectedOption === "Aplicaciones") {
-        try {
-          const data: Aplicacion[] | undefined =
-            await services.applications.AllApplications();
-          if (data) {
-            setAplicaciones(data);
-          }
-        } catch (error) {
-          console.error("Error fetching applications", error);
-        }
+        const data: Aplicacion[] | undefined =
+          await services.applications.AllApplications();
+        if (data) setAplicaciones(data);
+      } else if (selectedOption === "Usuario") {
+        const data: UserType[] | undefined = await services.users.AllUsers();
+        if (data) setUsuarios(data);
       } else {
-        if (selectedOption === "Usuario") {
-          try {
-            const data: UserType[] | undefined =
-              await services.users.AllUsers();
-            if (data) {
-              setUsuarios(data);
-            }
-          } catch (error) {
-            console.error("Error fetching users", error);
-          }
-        } else {
-          try {
-            const data: AreaType[] | undefined =
-              await services.users.allEnabledAreas();
-            if (data) {
-              setAreas(data);
-            }
-          } catch (error) {
-            console.error("Error fetching areas", error);
-          }
-        }
+        const data: AreaType[] | undefined =
+          await services.users.allEnabledAreas();
+        if (data) setAreas(data);
       }
     } catch (error) {
       console.error("Error al cargar los datos:", error);
@@ -81,7 +62,6 @@ const Authorizationcontentpage = () => {
     type: "Aplicacion" | "Usuario" | "Area"
   ) => {
     setSelectedData(item);
-
     setModalType(type);
     onOpen();
   };
@@ -89,6 +69,12 @@ const Authorizationcontentpage = () => {
   useEffect(() => {
     fetchData();
   }, [selectedOption]);
+
+  const filterData = (data: any[]) => {
+    return data.filter((item) =>
+      JSON.stringify(item).toLowerCase().includes(searchText.toLowerCase())
+    );
+  };
 
   return (
     <Box p={4} maxW="600px" mx="auto" textColor={"white"}>
@@ -106,6 +92,14 @@ const Authorizationcontentpage = () => {
           <Radio value="Area">Areas</Radio>
         </Stack>
       </RadioGroup>
+
+      <Input
+        placeholder="Buscar..."
+        mb={4}
+        value={searchText}
+        onChange={(e) => setSearchText(e.target.value)}
+      />
+
       {loading ? (
         <Center>
           <Spinner size="lg" color="teal.500" />
@@ -121,7 +115,7 @@ const Authorizationcontentpage = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {aplicaciones.map((app) => (
+            {filterData(aplicaciones).map((app) => (
               <Tr key={app.idaplicaciones}>
                 <Td>{app.idaplicaciones}</Td>
                 <Td>{app.nombre}</Td>
@@ -150,7 +144,7 @@ const Authorizationcontentpage = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {usuarios.map((user) => (
+            {filterData(usuarios).map((user) => (
               <Tr key={user.idusuario}>
                 <Td>{user.idusuario}</Td>
                 <Td>{user.nombre}</Td>
@@ -178,7 +172,7 @@ const Authorizationcontentpage = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {areas.map((area) => (
+            {filterData(areas).map((area) => (
               <Tr key={area.idarea}>
                 <Td>{area.idarea}</Td>
                 <Td>{area.area}</Td>

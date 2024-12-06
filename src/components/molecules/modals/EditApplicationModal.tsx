@@ -77,7 +77,6 @@ const EditApplicationModal: React.FC<EditApplicationModalProps> = ({
   );
 
   const handleSave = async () => {
-    console.log(formData.type);
     if (formData.type === "private" || formData.type === "powerBiC") {
       const result = newApplicationPrivateSchema.safeParse({
         ...formData,

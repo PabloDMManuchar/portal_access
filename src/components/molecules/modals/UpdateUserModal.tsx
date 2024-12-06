@@ -88,13 +88,13 @@ const UpdateUserModal: React.FC<EditUserModalProps> = ({
     let idarea = 0;
     let idperfil = 0;
     let diasexppassword = 0;
-    let email = "";
+    let emailuser = "";
     let tip = "";
 
     if (email === "") {
-      email = user.email;
+      emailuser = user.email;
     } else {
-      email = email;
+      emailuser = email;
     }
     if (empresa === "") {
       idempresasucursal = user.idempresasucursal;
@@ -125,8 +125,8 @@ const UpdateUserModal: React.FC<EditUserModalProps> = ({
       const upUser: UpdateUserType = {
         idusuario: user.idusuario,
         usuario: user.usuario,
-        email: email.trim(),
-        diasexpirapassword: diasexpirapassword,
+        email: emailuser.trim(),
+        diasexpirapassword: diasexppassword,
         idperfil: idperfil,
         idempresasucursal: idempresasucursal,
         idarea: idarea,
