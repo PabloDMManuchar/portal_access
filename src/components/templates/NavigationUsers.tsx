@@ -60,7 +60,7 @@ const NavigationUsers = () => {
             </Tooltip>
           </Box>
 
-          {dataUser.idperfil === 1 && (
+          {dataUser?.idperfil === 1 && (
             <Tooltip label="Administrador">
               <Link to="/administrator" className="flex items-center">
                 <MdOutlineAdminPanelSettings
