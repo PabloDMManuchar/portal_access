@@ -10,6 +10,7 @@ import {
   UpdateCompanyBranchType,
 } from "../../types/usertype";
 import Cookies from "js-cookie";
+import { toast } from "sonner";
 
 // URL de la API
 const API = import.meta.env.VITE_API_ACCESS + "/access/api";
@@ -27,9 +28,18 @@ const api = axios.create({
 
 // Función para hacer la solicitud de login
 const login = async (credentials: LoginCredentials): Promise<LoginResponse> => {
-  const response = await axios.post<LoginResponse>(`${API}/login`, credentials);
-
-  return response.data;
+  try {
+    const response = await axios.post<LoginResponse>(`${API}/login`, credentials);
+    if (response.data.statuspass === "CAMBIOPASS") {
+      toast.warning("Debe Cambiar su Password");
+    } else if (response.data.statuspass === "VENCIDA") {
+      toast.warning("Contraseña Vencida!!!, Debe Cambiar su Password");
+    }
+    return response.data;
+  } catch (error) {
+    console.error("Error al iniciar sesión:", error);
+    throw new Error("Error al iniciar sesión");
+  }
 };
 
 const logout = async () => {
@@ -196,7 +206,7 @@ const createEmpresaSucursal = async ({
     });
 
     return response;
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const enabledCompanyBranch = async ({
@@ -211,7 +221,7 @@ const enabledCompanyBranch = async ({
       sucursal,
     });
     return response;
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const disabledCompanyBranch = async ({
@@ -226,7 +236,7 @@ const disabledCompanyBranch = async ({
       sucursal,
     });
     return response;
-  } catch (error) {}
+  } catch (error) { }
 };
 
 //CRUD Areas
@@ -268,7 +278,7 @@ const createArea = async ({ area }: CreateAreaType) => {
       area,
     });
     return response;
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const enabledArea = async ({ idarea, area }: UpdateAreaType) => {
@@ -278,7 +288,7 @@ const enabledArea = async ({ idarea, area }: UpdateAreaType) => {
       area,
     });
     return response;
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const disabledArea = async ({ idarea, area }: UpdateAreaType) => {
@@ -288,7 +298,7 @@ const disabledArea = async ({ idarea, area }: UpdateAreaType) => {
       area,
     });
     return response;
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const createUser = async ({
@@ -313,7 +323,7 @@ const createUser = async ({
       tipo,
     });
     return response;
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const updateUser = async ({
@@ -338,28 +348,28 @@ const updateUser = async ({
       tipo,
     });
     return response;
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const refreshpassword = async (idusuario: number) => {
   try {
     const response = await api.post("/refreshpassword", { idusuario });
     return response;
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const disableduser = async (idusuario: number) => {
   try {
     const response = await api.post("/disableduser", { idusuario });
     return response;
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const enableduser = async (idusuario: number) => {
   try {
     const response = await api.post("/enableduser", { idusuario });
     return response;
-  } catch (error) {}
+  } catch (error) { }
 };
 
 export const users = {

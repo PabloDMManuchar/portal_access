@@ -12,9 +12,13 @@ function App() {
 
   return (
     <Router>
-      {loadingCheckToken ? <Preloader /> : !isAuthenticated && <LoginPage />}
+      {loadingCheckToken && <Preloader />}
+      {!isAuthenticated && <LoginPage />}
       <Routes>
-        <Route path="/login" element={ isAuthenticated && <LoginPage />} />
+        <Route
+          path="/login"
+          element={!isAuthenticated ? <LoginPage /> : <HomePage />}
+        />
         <Route path="/" element={<HomePage />} />
         <Route path="/mi-perfil" element={<ProfileUserPage />} />
         <Route path="/administrator" element={<AdministratorPage />} />

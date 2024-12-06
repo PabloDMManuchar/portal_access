@@ -18,10 +18,12 @@ import { useSpring, animated } from "@react-spring/web";
 import { useAuth } from "../../../context/AuthContext";
 import { LoginCredentials } from "../../../types/authtype";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { services } from "../../../services";
 
 const LoginPage = () => {
   const [loginVisible, setLoginVisible] = useState(false);
-  const { login, isAuthenticated } = useAuth();
+  const { loginContext, isAuthenticated } = useAuth();
+
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState<LoginCredentials>({
     username: "",
@@ -71,7 +73,8 @@ const LoginPage = () => {
     }
 
     try {
-      await login(credentials);
+      await loginContext(credentials);
+
       if (isAuthenticated) {
         setLoginVisible(false);
         navigate("/");
