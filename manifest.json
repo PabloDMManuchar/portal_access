@@ -19,8 +19,7 @@
       {
         "src": "/assets/screenshots/wide.png",
         "sizes": "1280x720",
-        "type": "image/png",
-        "form_factor": "wide"
+        "type": "image/png"
       },
       {
         "src": "/assets/screenshots/portrait.png",
@@ -30,8 +29,7 @@
       {
         "src": "/assets/screenshots/tablet.png",
         "sizes": "800x1280",
-        "type": "image/png",
-        "form_factor": "tablet"
+        "type": "image/png"
       }
     ]
   }
