@@ -28,6 +28,7 @@ import {
   AlertDialogHeader,
   AlertDialogBody,
   AlertDialogFooter,
+  Flex,
 } from "@chakra-ui/react";
 import { FaCheck, FaTimes, FaEdit, FaTrash } from "react-icons/fa";
 import { services } from "../../../services/index";
@@ -313,17 +314,20 @@ const TableAppPrivateUserTabs = () => {
   }
 
   return (
-    <Box p={6} textColor="white">
-      <Heading size="md" mb={4}>
-        Tus Accesos a Aplicaciones
-      </Heading>
-      <Input
-        placeholder="Buscar aplicaciones..."
-        value={filter}
-        onChange={handleFilterChange}
-        mb={4}
-      />
-      <Tabs variant="soft-rounded" colorScheme="teal">
+    <Box p={6} textColor="white" maxHeight="30rem" overflowY="auto">
+      <Flex justifyContent={'space-between'} alignItems={'center'}>
+        <Heading size="md" mb={4}>
+          Tus Accesos a Aplicaciones
+        </Heading>
+        <Input
+          placeholder="Buscar aplicaciones..."
+          value={filter}
+          onChange={handleFilterChange}
+          mb={4}
+          w={"16rem"}
+        />
+      </Flex>
+      <Tabs>
         <TabList>
           <Tab>Privadas</Tab>
           <Tab>Power BI</Tab>
