@@ -6,17 +6,9 @@ import { ChakraProvider } from "@chakra-ui/react";
 import theme from "./theme/theme.ts";
 import { Toaster } from "sonner";
 import { AuthProvider } from "./context/AuthContext.tsx"; // Importar AuthProvider
+import { register } from "register-service-worker";
 
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker
-      .register("/service-worker.js")
-      .then(() => {})
-      .catch((error) => {
-        console.error("Error al registrar el Service Worker:", error);
-      });
-  });
-}
+register(`/service-worker.js`);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

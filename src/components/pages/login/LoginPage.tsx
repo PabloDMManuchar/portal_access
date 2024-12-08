@@ -72,9 +72,8 @@ const LoginPage = () => {
     }
 
     try {
-      await loginContext(credentials);
-
-      if (isAuthenticated) {
+      const res = await loginContext(credentials);
+      if (res.token) {
         setLoginVisible(false);
         navigate("/");
       } else {
@@ -110,7 +109,14 @@ const LoginPage = () => {
       >
         <Image src="/manucharlogo.png" alt="Logo" width="200px" height="40px" />
       </Box>
-      <animated.div style={{ ...fadeIn, width: "50%", display:'flex', justifyContent:'center' }}>
+      <animated.div
+        style={{
+          ...fadeIn,
+          width: "50%",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
         <Flex
           maxW={"18rem"}
           minW={"18rem"}
@@ -164,7 +170,7 @@ const LoginPage = () => {
                   boxShadow: "0px 0px 14px rgba(60, 217, 245, 0.404)",
                 }}
               />
-              <Flex >
+              <Flex>
                 <Input
                   placeholder="Contraseña"
                   type={showPassword ? "password" : "text"}
@@ -179,16 +185,16 @@ const LoginPage = () => {
                     boxShadow: "0px 0px 14px rgba(60, 217, 245, 0.404)",
                   }}
                 />
-                  <Button
-                    colorScheme="white"
-                    // position={"relative"}
-                    // right={0}
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                  </Button>
+                <Button
+                  colorScheme="white"
+                  // position={"relative"}
+                  // right={0}
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                </Button>
               </Flex>
-              
+
               <Button
                 isDisabled={isDisabled}
                 colorScheme="red"

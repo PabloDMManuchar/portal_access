@@ -103,10 +103,10 @@ const HomeContentPage = () => {
           borderColor={"gray.700"}
           borderRadius="md"
           borderWidth={"2px"}
+          color={"gray.200"}
+          opacity={0.8}
           height={"fit-content"}
           minW="24rem"
-          opacity={0.8}
-          color={"gray.200"}
           p={2}
           w={"30%"}
         >
