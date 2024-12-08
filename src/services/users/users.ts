@@ -30,11 +30,16 @@ const api = axios.create({
 const login = async (credentials: LoginCredentials): Promise<LoginResponse> => {
   try {
     const response = await axios.post<LoginResponse>(`${API}/login`, credentials);
+
+    const accessToken = response.data.token;
+    Cookies.set("token", accessToken, { expires: 7, sameSite: "lax" });
+
     if (response.data.statuspass === "CAMBIOPASS") {
       toast.warning("Debe Cambiar su Password");
     } else if (response.data.statuspass === "VENCIDA") {
       toast.warning("Contraseña Vencida!!!, Debe Cambiar su Password");
     }
+
     return response.data;
   } catch (error) {
     console.error("Error al iniciar sesión:", error);

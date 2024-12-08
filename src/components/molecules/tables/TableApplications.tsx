@@ -186,12 +186,13 @@ const TableApplications = () => {
       <Heading size="md" mb={4}>
         Tus Accesos a Aplicaciones
       </Heading>
-      <Input
-        placeholder="Buscar aplicaciones..."
-        value={filter}
-        onChange={handleFilterChange}
-        mb={4}
-      />
+        <Input
+          placeholder="Buscar aplicaciones..."
+          value={filter}
+          onChange={handleFilterChange}
+          mb={4}
+          w={"16rem"}
+        />
       <Tabs variant="soft-rounded" colorScheme="teal">
         <TabList>
           <Tab>Publicas</Tab>

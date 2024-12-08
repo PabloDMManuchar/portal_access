@@ -11,21 +11,26 @@ import {
   UpAplicacion,
 } from "../../types/apptype";
 
-//const API = import.meta.env.API_ACCESS;
+// URL de la API
+const API = import.meta.env.VITE_API_ACCESS + "/access/api";
+
 // Función para obtener el token de la cookie
 const getToken = () => Cookies.get("token");
 
-// Crear una instancia de Axios con el token incluido en los headers
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_ACCESS + "/access/api", // Cambia por la URL base de tu API
-  headers: {
-    Authorization: `Bearer ${getToken()}`, // Incluye el token en el encabezado
-  },
-});
+const createApiInstance = () => {
+  const token = getToken();
+  return axios.create({
+    baseURL: API, // Cambia por la URL base de tu API
+    headers: {
+      Authorization: `Bearer ${token}`, // Incluye el token en el encabezado
+    },
+  });
+};
 
 // Función para obtener todas la aplicaciones
 const AllApplications = async () => {
   try {
+    const api = createApiInstance();
     const response = await api.get("/allapplications");
     return response.data.apps;
   } catch (error) {
@@ -36,6 +41,7 @@ const AllApplications = async () => {
 // Función para obtener la aplicacion x su id
 const ApplicationById = async (id: number) => {
   try {
+    const api = createApiInstance();
     const response = await api.get(`/applicationbyid/${id}`);
     return response.data.apps;
   } catch (error) {
@@ -47,6 +53,7 @@ const ApplicationById = async (id: number) => {
 // Función para obtener las aplicaciones x su idusuario
 const AllApplicationPrivateByIdusuario = async (id: number) => {
   try {
+    const api = createApiInstance();
     const response = await api.get(`/applicationsprivatebyidusuario/${id}`);
     return response.data.apps;
   } catch (error) {
@@ -58,6 +65,7 @@ const AllApplicationPrivateByIdusuario = async (id: number) => {
 // Función para obtener las aplicaciones private y public x idusuario
 const AllApplicationAuthByIdusuario = async (id: number) => {
   try {
+    const api = createApiInstance();
     const response = await api.get(`/applicationsauthbyidusuario/${id}`);
     return response.data.apps;
   } catch (error) {
@@ -69,6 +77,7 @@ const AllApplicationAuthByIdusuario = async (id: number) => {
 // Función para obtener las aplicaciones powerbib x idarea
 const AllApplicationAuthPowerBiBByIdarea = async (id: number) => {
   try {
+    const api = createApiInstance();
     const response = await api.get(`/applicationsauthpowerbibbyidarea/${id}`);
     return response.data.apps;
   } catch (error) {
@@ -79,6 +88,7 @@ const AllApplicationAuthPowerBiBByIdarea = async (id: number) => {
 
 const AllGroupApp = async () => {
   try {
+    const api = createApiInstance();
     const response = await api.get("/allgroupapp");
     return response.data.group;
   } catch (error) {
@@ -88,6 +98,7 @@ const AllGroupApp = async () => {
 
 const AllEnabledGroupApp = async (): Promise<Grupo[]> => {
   try {
+    const api = createApiInstance();
     const response = await api.get("/allenabledgroupapp");
     return response.data.group;
   } catch (error) {
@@ -98,11 +109,12 @@ const AllEnabledGroupApp = async (): Promise<Grupo[]> => {
 
 const CheckurlApplication = async ({ url }: CheckUrlApplication) => {
   try {
+    const api = createApiInstance();
     const response = await api.post("/checkurlapplication", {
       url,
     });
     return response;
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const CreateApplication = async ({
@@ -116,6 +128,7 @@ const CreateApplication = async ({
   idgrupoaplicaciones,
 }: NewAplicacion) => {
   try {
+    const api = createApiInstance();
     const response = await api.post("/createapplication", {
       nombre,
       descripcion,
@@ -127,7 +140,7 @@ const CreateApplication = async ({
       idgrupoaplicaciones,
     });
     return response;
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const UpdateApplication = async ({
@@ -142,6 +155,7 @@ const UpdateApplication = async ({
   idgrupoaplicaciones,
 }: UpAplicacion) => {
   try {
+    const api = createApiInstance();
     const response = await api.post("/updateapplication", {
       idaplicaciones,
       nombre,
@@ -168,6 +182,7 @@ const CreateApplicationPrivate = async ({
   src,
 }: NewAplicacionPrivate) => {
   try {
+    const api = createApiInstance();
     const response = await api.post("/createapplicationprivate", {
       nombre,
       descripcion,
@@ -177,7 +192,7 @@ const CreateApplicationPrivate = async ({
       src,
     });
     return response;
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const CreateAccessPowerBiPrivate = async ({
@@ -186,13 +201,14 @@ const CreateAccessPowerBiPrivate = async ({
   url,
 }: NewAplicacionPrivate) => {
   try {
+    const api = createApiInstance();
     const response = await api.post("/createaccesspowerbiprivate", {
       nombre,
       descripcion,
       url,
     });
     return response;
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const CreateAccessPowerBiPublic = async ({
@@ -203,6 +219,7 @@ const CreateAccessPowerBiPublic = async ({
   idgrupoaplicaciones,
 }: NewAplicacion) => {
   try {
+    const api = createApiInstance();
     const response = await api.post("/createaccesspowerbipublic", {
       nombre,
       descripcion,
@@ -211,7 +228,7 @@ const CreateAccessPowerBiPublic = async ({
       idgrupoaplicaciones,
     });
     return response;
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const EnabledApplication = async ({
@@ -220,6 +237,7 @@ const EnabledApplication = async ({
   hab,
 }: EnabledDisabledApplication) => {
   try {
+    const api = createApiInstance();
     const response = await api.post("/enabledapplication", {
       idaplicaciones,
       nombre,
@@ -237,6 +255,7 @@ const DisabledApplication = async ({
   hab,
 }: EnabledDisabledApplication) => {
   try {
+    const api = createApiInstance();
     const response = await api.post("/disabledapplication", {
       idaplicaciones,
       nombre,
@@ -255,6 +274,7 @@ const DeleteApplication = async ({
   hab,
 }: EnabledDisabledApplication) => {
   try {
+    const api = createApiInstance();
     const response = await api.post("/deleteapplication", {
       idaplicaciones,
       nombre,
@@ -270,6 +290,7 @@ const DeleteApplication = async ({
 // Función para obtener las aplicaciones private y public x idusuario
 const CheckAuthAplicationsByIdAplicaciones = async (id: number) => {
   try {
+    const api = createApiInstance();
     const response = await api.post("/checkauthbyidaplicaciones", {
       idaplicaciones: id,
     });
@@ -286,6 +307,7 @@ const CheckAuthAplicationsByIdAplicaciones = async (id: number) => {
 // Función para obtener los usuarios x aplicacion x su id
 const AuthApplicationByIdAplicaciones = async (id: number) => {
   try {
+    const api = createApiInstance();
     const response = await api.get(`/authappbyidaplicaciones/${id}`);
     return response.data.app;
   } catch (error) {
@@ -297,6 +319,7 @@ const AuthApplicationByIdAplicaciones = async (id: number) => {
 // Función para obtener las aplicaciones x usuario x su id
 const AuthApplicationByIdUsuario = async (id: number) => {
   try {
+    const api = createApiInstance();
     const response = await api.get(`/authappbyidusuario/${id}`);
     return response.data.app;
   } catch (error) {
@@ -308,6 +331,7 @@ const AuthApplicationByIdUsuario = async (id: number) => {
 // Función para obtener las aplicaciones x area x su id
 const AuthApplicationPowerbybByIdArea = async (id: number) => {
   try {
+    const api = createApiInstance();
     const response = await api.get(`/authapppowerbibbyidarea/${id}`);
     return response.data.app;
   } catch (error) {
@@ -324,6 +348,7 @@ const UpdateAuthApplication = async ({
   hab,
 }: AuthAppType) => {
   try {
+    const api = createApiInstance();
     const response = await api.post("/authorizationapp", {
       idusuario,
       usuario,
@@ -332,7 +357,7 @@ const UpdateAuthApplication = async ({
       hab,
     });
     return response;
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const UpdateAuthApplicationPowerBiB = async ({
@@ -343,6 +368,7 @@ const UpdateAuthApplicationPowerBiB = async ({
   hab,
 }: AuthAppType) => {
   try {
+    const api = createApiInstance();
     const response = await api.post("/authorizationapppowerbib", {
       idarea,
       area,
@@ -351,7 +377,7 @@ const UpdateAuthApplicationPowerBiB = async ({
       hab,
     });
     return response;
-  } catch (error) {}
+  } catch (error) { }
 };
 
 export const applications = {
