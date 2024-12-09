@@ -22,6 +22,7 @@ import UpdateUserModal from "../modals/UpdateUserModal";
 import Dialog from "../Dialog/Dialog";
 import ExpandableRow from "./ExpandableRow";
 import { toast } from "sonner";
+import { services } from "../../../services";
 
 const TableUsers = () => {
   const [usersdata, setUsersData] = useState<UserType[]>([]);
@@ -36,7 +37,7 @@ const TableUsers = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await users.AllUsers();
+        const response = await services.users.AllUsers();
         setUsersData(response);
         setFilteredUsers(response);
       } catch (error) {
@@ -106,16 +107,14 @@ const TableUsers = () => {
   const handleToggleUser = async (id: number, status: string) => {
     try {
       if (status === "SI") {
-        const result = await users.disableduser(id);
-        console.info(result);
+        await users.disableduser(id);
         toast.success(`El usuario con ID ${id} ha sido deshabilitado.`, {
           duration: 2000,
           closeButton: true,
         });
       }
       if (status === "NO") {
-        const result = await users.enableduser(id);
-        console.info(result);
+        await users.enableduser(id);
         toast.success(`El usuario con ID ${id} ha sido rehabilitado.`, {
           duration: 2000,
           closeButton: true,
