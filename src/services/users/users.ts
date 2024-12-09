@@ -18,13 +18,15 @@ const API = import.meta.env.VITE_API_ACCESS + "/access/api";
 // Función para obtener el token de la cookie
 const getToken = () => Cookies.get("token");
 
-// Crear una instancia de Axios con el token incluido en los headers
-const api = axios.create({
-  baseURL: API, // Cambia por la URL base de tu API
-  headers: {
-    Authorization: `Bearer ${getToken()}`, // Incluye el token en el encabezado
-  },
-});
+const createApiInstance = () => {
+  const token = getToken();
+  return axios.create({
+    baseURL: API, // Cambia por la URL base de tu API
+    headers: {
+      Authorization: `Bearer ${token}`, // Incluye el token en el encabezado
+    },
+  });
+};
 
 // Función para hacer la solicitud de login
 const login = async (credentials: LoginCredentials): Promise<LoginResponse> => {
@@ -128,6 +130,7 @@ const changePassword = async ({
 // Función para obtener todos los usuarios
 const AllUsers = async () => {
   try {
+    const api = createApiInstance();
     const response = await api.get("/allusers");
 
     return response.data.usuario;
@@ -138,6 +141,7 @@ const AllUsers = async () => {
 
 const UsersbyEmpresaSucursal = async () => {
   try {
+    const api = createApiInstance();
     const response = await api.get("/usersbyempresasucursal");
 
     return response.data.usuariosxempresa;
@@ -148,6 +152,7 @@ const UsersbyEmpresaSucursal = async () => {
 
 const UsersbyArea = async () => {
   try {
+    const api = createApiInstance();
     const response = await api.get("/usersbyarea");
 
     return response.data.usuariosxarea;
@@ -158,6 +163,7 @@ const UsersbyArea = async () => {
 
 const LastEvents = async () => {
   try {
+    const api = createApiInstance();
     const response = await api.get("/lasteventlog");
 
     return response.data.ultimoseventos;
@@ -168,6 +174,7 @@ const LastEvents = async () => {
 
 const UserById = async (id: number) => {
   try {
+    const api = createApiInstance();
     const response = await api.get(`/userbyid/${id}`);
 
     return response.data.usuario;
@@ -181,6 +188,7 @@ const UserById = async (id: number) => {
 
 const allCompanyBranchs = async () => {
   try {
+    const api = createApiInstance();
     const response = await api.get("/allcompanybranch");
 
     return response.data.empresasucursales;
@@ -191,6 +199,7 @@ const allCompanyBranchs = async () => {
 
 const allEnabledCompanyBranchs = async () => {
   try {
+    const api = createApiInstance();
     const response = await api.get("/enabledcompaniesbranch");
 
     return response.data.empresasucursales;
@@ -204,7 +213,7 @@ const createEmpresaSucursal = async ({
   sucursal,
 }: CreateCompanyBranchType) => {
   try {
-    console.info(sucursal);
+    const api = createApiInstance();
     const response = await api.post("/createcompanybranch", {
       empresa,
       sucursal,
@@ -220,6 +229,7 @@ const enabledCompanyBranch = async ({
   sucursal,
 }: UpdateCompanyBranchType) => {
   try {
+    const api = createApiInstance();
     const response = await api.post("/enabledcompanybranch", {
       idempresasucursal,
       empresa,
@@ -235,6 +245,7 @@ const disabledCompanyBranch = async ({
   sucursal,
 }: UpdateCompanyBranchType) => {
   try {
+    const api = createApiInstance();
     const response = await api.post("/disabledcompanybranch", {
       idempresasucursal,
       empresa,
@@ -248,6 +259,7 @@ const disabledCompanyBranch = async ({
 
 const allAreas = async () => {
   try {
+    const api = createApiInstance();
     const response = await api.get("/allareas");
 
     return response.data.areas;
@@ -258,6 +270,7 @@ const allAreas = async () => {
 
 const allEnabledAreas = async () => {
   try {
+    const api = createApiInstance();
     const response = await api.get("/enabledareas");
 
     return response.data.areas;
@@ -268,6 +281,7 @@ const allEnabledAreas = async () => {
 
 const areaById = async (id: number) => {
   try {
+    const api = createApiInstance();
     const response = await api.get(`/areabyid/${id}`);
 
     return response.data.usuario;
@@ -279,6 +293,7 @@ const areaById = async (id: number) => {
 
 const createArea = async ({ area }: CreateAreaType) => {
   try {
+    const api = createApiInstance();
     const response = await api.post("/createarea", {
       area,
     });
@@ -288,6 +303,7 @@ const createArea = async ({ area }: CreateAreaType) => {
 
 const enabledArea = async ({ idarea, area }: UpdateAreaType) => {
   try {
+    const api = createApiInstance();
     const response = await api.post("/enabledarea", {
       idarea,
       area,
@@ -298,6 +314,7 @@ const enabledArea = async ({ idarea, area }: UpdateAreaType) => {
 
 const disabledArea = async ({ idarea, area }: UpdateAreaType) => {
   try {
+    const api = createApiInstance();
     const response = await api.post("/disabledarea", {
       idarea,
       area,
@@ -317,6 +334,7 @@ const createUser = async ({
   tipo,
 }: CreateUserType) => {
   try {
+    const api = createApiInstance();
     const response = await api.post("/createuser", {
       nombre,
       usuario,
@@ -342,6 +360,7 @@ const updateUser = async ({
   tipo,
 }: UpdateUserType) => {
   try {
+    const api = createApiInstance();
     const response = await api.post("/updateuser", {
       idusuario,
       usuario,
@@ -358,6 +377,7 @@ const updateUser = async ({
 
 const refreshpassword = async (idusuario: number) => {
   try {
+    const api = createApiInstance();
     const response = await api.post("/refreshpassword", { idusuario });
     return response;
   } catch (error) { }
@@ -365,6 +385,7 @@ const refreshpassword = async (idusuario: number) => {
 
 const disableduser = async (idusuario: number) => {
   try {
+    const api = createApiInstance();
     const response = await api.post("/disableduser", { idusuario });
     return response;
   } catch (error) { }
@@ -372,6 +393,7 @@ const disableduser = async (idusuario: number) => {
 
 const enableduser = async (idusuario: number) => {
   try {
+    const api = createApiInstance();
     const response = await api.post("/enableduser", { idusuario });
     return response;
   } catch (error) { }

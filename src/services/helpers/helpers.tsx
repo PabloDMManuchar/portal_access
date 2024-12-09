@@ -1,4 +1,3 @@
-import { toast } from "sonner";
 import { LoginDataUser } from "../../types/authtype";
 import { AllLinksType } from "../../context/AuthContext";
 import { LinkApp } from "../../types/apptype";
@@ -50,7 +49,6 @@ const loadData = async (
       };
     } catch (error) {
       console.info("Error al cargar las aplicaciones", error);
-      toast.error("Error al cargar las aplicaciones.");
       throw error;
     }
   };

@@ -46,7 +46,7 @@ const LinksApp: React.FC = () => {
         <TabPanels
           style={{
             overflowY: "auto",
-            maxHeight: "64vh",
+            maxHeight: "72vh",
             scrollbarWidth: "thin",
             scrollbarColor: "#201f1f #161515",
           }}

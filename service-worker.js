@@ -1,12 +1,14 @@
-const CACHE_NAME = 'mi-pwa-cache-v1';
+// service-worker.js
+const CACHE_NAME = 'my-cache-v1';
+const BASE_URL = self.__BASE_URL__ || '/';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/src/main.tsx',
-  '/src/App.tsx',
-  '/src/index.css',
-  '/icon_192x192.png',
-  '/icon_512x512.png'
+  `${BASE_URL}`,
+  `${BASE_URL}index.html`,
+  `${BASE_URL}src/main.tsx`,
+  `${BASE_URL}src/App.tsx`,
+  `${BASE_URL}src/index.css`,
+  `${BASE_URL}icon_192x192.png`,
+  `${BASE_URL}icon_512x512.png`
 ];
 
 self.addEventListener('install', event => {
@@ -14,6 +16,9 @@ self.addEventListener('install', event => {
     caches.open(CACHE_NAME)
       .then(cache => {
         return cache.addAll(urlsToCache);
+      })
+      .catch(error => {
+        console.error('Failed to cache:', error);
       })
   );
 });
@@ -26,6 +31,10 @@ self.addEventListener('fetch', event => {
           return response;
         }
         return fetch(event.request);
+      })
+      .catch(error => {
+        console.error('Fetch failed:', error);
+        throw error;
       })
   );
 });

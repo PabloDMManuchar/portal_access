@@ -48,7 +48,8 @@ const TableAppPrivateUserTabs = () => {
   const [appToDelete, setAppToDelete] = useState<Aplicacion | null>(null);
   const toast = useToast();
   const { dataUser } = useAuth();
-  const [authorizations, setAuthorizations] = useState<AuthAppType[]>([]);
+  // const [authorizations, setAuthorizations] = useState<AuthAppType[]>([]);
+
   const {
     isOpen: isDeleteDialogOpen,
     onOpen: openDeleteDialog,
@@ -65,7 +66,6 @@ const TableAppPrivateUserTabs = () => {
           dataUser.idusuario
         );
       setApplications(data);
-      console.info(authorizations);
     } catch (error) {
       console.error("Error fetching applications:", error);
       toast({
@@ -186,14 +186,15 @@ const TableAppPrivateUserTabs = () => {
     updatedAuth.nombre = authItem.nombre;
     updatedAuth.usuario = authItem.usuario;
     await services.applications.UpdateAuthApplication(updatedAuth);
-    setAuthorizations((prevAuth) =>
-      prevAuth.map((item) =>
-        item.idaplicaciones === authItem.idaplicaciones &&
-        item.idusuario === authItem.idusuario
-          ? updatedAuth
-          : item
-      )
-    );
+
+    // setAuthorizations((prevAuth: AuthAppType[]) =>
+    //   prevAuth.map((item) =>
+    //     item.idaplicaciones === authItem.idaplicaciones &&
+    //     item.idusuario === authItem.idusuario
+    //       ? updatedAuth
+    //       : item
+    //   )
+    // );
     fetchApplications();
   };
 
@@ -315,7 +316,7 @@ const TableAppPrivateUserTabs = () => {
 
   return (
     <Box p={6} textColor="white" maxHeight="30rem" overflowY="auto">
-      <Flex justifyContent={'space-between'} alignItems={'center'}>
+      <Flex justifyContent={"space-between"} alignItems={"center"}>
         <Heading size="md" mb={4}>
           Tus Accesos a Aplicaciones
         </Heading>
