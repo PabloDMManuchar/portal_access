@@ -213,7 +213,6 @@ const createEmpresaSucursal = async ({
   sucursal,
 }: CreateCompanyBranchType) => {
   try {
-    console.info(sucursal);
     const api = createApiInstance();
     const response = await api.post("/createcompanybranch", {
       empresa,

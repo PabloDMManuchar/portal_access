@@ -20,7 +20,6 @@ import {
   UsersbyArea,
   LastEvents,
 } from "../../../types/usertype";
-import { users } from "../../../services/users/users";
 import { services } from "../../../services";
 
 // Componente para el Dashboard
