@@ -3,8 +3,6 @@ import react from '@vitejs/plugin-react';
 import { join } from "node:path";
 import { buildSync } from "esbuild";
 
-
-
 export default defineConfig({
   plugins: [
     react(),
@@ -22,4 +20,7 @@ export default defineConfig({
       },
     }
   ],
+  define: {
+    'self.__BASE_URL__': JSON.stringify(process.env.REACT_APP_BASE_URL || '/')
+  }
 });

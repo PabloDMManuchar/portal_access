@@ -9,6 +9,7 @@ import {
 
 import { users } from "../services/users/users";
 import { UserType, CreateUserType, UpdateUserType } from "../types/usertype";
+import { services } from "../services";
 
 interface UserContextProps {
   userslist: UserType[];
@@ -28,7 +29,7 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchAllUsers = async () => {
     try {
-      const response = await users.AllUsers();
+      const response = await services.users.AllUsers();
       setUsersList(response.data);
     } catch (error) {
       console.error("Error fetching users", error);

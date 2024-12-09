@@ -21,6 +21,7 @@ import {
   LastEvents,
 } from "../../../types/usertype";
 import { users } from "../../../services/users/users";
+import { services } from "../../../services";
 
 // Componente para el Dashboard
 const HomeContentPage = () => {
@@ -68,10 +69,10 @@ const HomeContentPage = () => {
       try {
         const [allUsers, usersByEmpSuc, usersByArea, lastEvents] =
           await Promise.all([
-            users.AllUsers(),
-            users.UsersbyEmpresaSucursal(),
-            users.UsersbyArea(),
-            users.LastEvents(),
+            services.users.AllUsers(),
+            services.users.UsersbyEmpresaSucursal(),
+            services.users.UsersbyArea(),
+            services.users.LastEvents(),
           ]);
 
         setData({

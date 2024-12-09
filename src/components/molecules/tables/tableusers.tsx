@@ -22,6 +22,7 @@ import UpdateUserModal from "../modals/UpdateUserModal";
 import Dialog from "../Dialog/Dialog";
 import ExpandableRow from "./ExpandableRow";
 import { toast } from "sonner";
+import { services } from "../../../services";
 
 const TableUsers = () => {
   const [usersdata, setUsersData] = useState<UserType[]>([]);
@@ -36,7 +37,7 @@ const TableUsers = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await users.AllUsers();
+        const response = await services.users.AllUsers();
         setUsersData(response);
         setFilteredUsers(response);
       } catch (error) {

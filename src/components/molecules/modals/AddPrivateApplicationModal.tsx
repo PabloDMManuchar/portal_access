@@ -53,7 +53,7 @@ const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
 
   const [isImageSelected, setIsImageSelected] = useState(true);
   const [selectedIcon, setSelectedIcon] = useState<string>("");
-  const [showIconList, setShowIconList] = useState<boolean>(true);
+  const [showIconList, setShowIconList] = useState<boolean>(false);
   const [filter, setFilter] = useState("");
 
   const iscompleted =
@@ -221,7 +221,7 @@ const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
               value={formData.descripcion}
               onChange={handleChange}
             />
-            <FormLabel>URL</FormLabel>
+            <FormLabel>URL </FormLabel>
             <Input name="url" value={formData.url} onChange={handleChange} />
             {type === "powerBiC" && (
               <Input
@@ -233,7 +233,7 @@ const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
             )}
             {type !== "powerBiC" && (
               <>
-                <FormLabel mt="4">¿Mostrar Imagen?</FormLabel>
+                <FormLabel mt="4">¿Tipo de Imagen?</FormLabel>
                 <Box
                   display={"flex"}
                   flexDirection={"row"}
@@ -253,6 +253,7 @@ const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
                       <Radio value="NO">Icon</Radio>
                     </Stack>
                   </RadioGroup>
+
                   {showIconList && (
                     <Input
                       mx={4}
