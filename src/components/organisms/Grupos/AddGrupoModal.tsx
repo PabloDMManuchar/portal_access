@@ -43,15 +43,6 @@ const AddGrupoModal = () => {
 
     setIsLoading(true);
     try {
-      // Llamada a la API para agregar el área
-      {
-        /*const newgrupo: NewGrupo = {
-        grupo: grupoName,
-        descripcion: grupoDescripcion,
-      };
-      console.info(newgrupo);*/
-      }
-      //await services.applications.(newarea);
       toast({
         title: "Grupo Agregado",
         description: `El grupo "${grupoName}" se agregó exitosamente.`,

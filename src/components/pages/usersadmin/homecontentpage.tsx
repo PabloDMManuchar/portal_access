@@ -20,7 +20,7 @@ import {
   UsersbyArea,
   LastEvents,
 } from "../../../types/usertype";
-import { users } from "../../../services/users/users";
+import { services } from "../../../services";
 
 // Componente para el Dashboard
 const HomeContentPage = () => {
@@ -68,10 +68,10 @@ const HomeContentPage = () => {
       try {
         const [allUsers, usersByEmpSuc, usersByArea, lastEvents] =
           await Promise.all([
-            users.AllUsers(),
-            users.UsersbyEmpresaSucursal(),
-            users.UsersbyArea(),
-            users.LastEvents(),
+            services.users.AllUsers(),
+            services.users.UsersbyEmpresaSucursal(),
+            services.users.UsersbyArea(),
+            services.users.LastEvents(),
           ]);
 
         setData({
@@ -103,10 +103,10 @@ const HomeContentPage = () => {
           borderColor={"gray.700"}
           borderRadius="md"
           borderWidth={"2px"}
+          color={"gray.200"}
+          opacity={0.8}
           height={"fit-content"}
           minW="24rem"
-          opacity={0.8}
-          color={"gray.200"}
           p={2}
           w={"30%"}
         >

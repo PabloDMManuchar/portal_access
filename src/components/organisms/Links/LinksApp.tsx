@@ -14,20 +14,21 @@ import CardLinksLoaders from "../../molecules/Loaders/CardLinks/CardLinksLoaders
 import AddPrivateApplicationModal from "../../molecules/modals/AddPrivateApplicationModal";
 import CardButtonLinkApp from "../../molecules/cardbuttonlinkapp/CardButtonLinkApp"; // Si es una exportación por defecto
 import { FaLink, FaChartBar } from "react-icons/fa";
+import { services } from "../../../services";
 
 const LinksApp: React.FC = () => {
-  const { dataUser, allLinks, setAllLinks, loadData } = useAuth();
+  const { dataUser, allLinks, setAllLinks } = useAuth();
 
   useEffect(() => {
     if (dataUser.idusuario && dataUser.idarea) {
       const fetchData = async () => {
-        const result = await loadData(dataUser);
+        const result = await services.helper.loadData(dataUser); 
         if (!result) return;
         setAllLinks(result);
       };
       fetchData();
     }
-  }, [dataUser]);
+  }, []);
 
   return (
     <div style={{ maxWidth: "56rem", fontSize: "12px" }}>
@@ -45,7 +46,7 @@ const LinksApp: React.FC = () => {
         <TabPanels
           style={{
             overflowY: "auto",
-            maxHeight: "64vh",
+            maxHeight: "72vh",
             scrollbarWidth: "thin",
             scrollbarColor: "#201f1f #161515",
           }}

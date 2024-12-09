@@ -42,13 +42,6 @@ interface AuthContextType {
     sugest: LinkApp[];
     powerBi: { A: LinkApp[]; B: LinkApp[]; C: LinkApp[] };
   } | null>;
-  loadData: (user:LoginDataUser ) => Promise<{
-    publics: LinkApp[];
-    public: LinkApp[];
-    private: LinkApp[];
-    sugest: LinkApp[];
-    powerBi: { A: LinkApp[]; B: LinkApp[]; C: LinkApp[] };
-  } | null>;
 }
 
 const InitialdataAuthLink: LinkApp[] = [];
@@ -76,109 +69,11 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [loadingCheckToken, setLoadingCheckToken] = useState(true);
   const [allLinks, setAllLinks] = useState<AllLinksType | null>(null);
 
-  const loadData = async (
-    user: LoginDataUser
-  ): Promise<AllLinksType | null> => {
-    try {
-      if (!user) {
-        console.log("error al recibir usuario", user);
-        return null;
-      }
-
-      const data: LinkApp[] = user.idusuario
-        ? await services.applications.AllApplicationAuthByIdusuario(
-            user.idusuario
-          )
-        : [];
-
-      const datapowerbib: LinkApp[] = user.idarea
-        ? await services.applications.AllApplicationAuthPowerBiBByIdarea(
-            user.idarea
-          )
-        : [];
-
-      if (!data || !datapowerbib) {
-        console.log("user.idusuario", user.idusuario);
-        console.log("user.idarea", user.idarea);
-        console.log("error al recibir data o datapowerbib", data, datapowerbib);
-      }
-
-      const filterData = (type: string, hab?: string): LinkApp[] =>
-        data.filter(
-          (item: LinkApp) => item.type === type && (!hab || item.hab === hab)
-        );
-
-      const publicsapp: LinkApp[] = filterData("public");
-      const powerBiA: LinkApp[] = filterData("powerBiA");
-      const powerBiB: LinkApp[] = datapowerbib;
-      const powerBiC: LinkApp[] = filterData("powerBiC", "SI");
-      const privates: LinkApp[] = filterData("private", "SI");
-      const sugested: LinkApp[] = data.filter(
-        (item: LinkApp) =>
-          item.type === "sugest" &&
-          item.auth === "true" &&
-          item.idusuario === user?.idusuario
-      );
-
-      const publicsAdd: LinkApp[] = [...publicsapp, ...privates];
-
-      return {
-        publics: publicsAdd,
-        public: publicsapp,
-        private: privates,
-        sugest: sugested,
-        powerBi: { A: powerBiA, B: powerBiB, C: powerBiC },
-      };
-    } catch (error) {
-      console.info("Error al cargar las aplicaciones", error);
-      toast.error("Error al cargar las aplicaciones.");
-      throw error;
-    }
-  };
-
-  const logout = async () => {
-    try {
-      await users.logout();
-      Cookies.remove("token");
-      setIsAuthenticated(false);
-      toast.success("Sesión cerrada correctamente.");
-      setIsTokenValid(false);
-    } catch (error) {
-      setIsTokenValid(false);
-      console.error("Error al cerrar sesión:", error);
-      toast.error("Error al cerrar sesión. Inténtalo de nuevo.");
-    }
-  };
-
-  const checkauthapplications = async () => {
-    const token = Cookies.get("token"); // Cambia "token" al nombre exacto de la cookie que contiene el token
-
-    if (!token) {
-      // Si no existe el token, cierra la sesión directamente
-      logout();
-      setIsTokenValid(false);
-      setIsAuthenticated(false);
-      toast.error("No hay token disponible. Por favor, inicie sesión.");
-      setLoading(false);
-      return;
-    }
-    try {
-      if (!dataUser) return;
-      if (!dataUser.idusuario) return;
-      const data = await services.applications.AllApplicationAuthByIdusuario(
-        dataUser.idusuario
-      );
-      const authLink: LinkApp[] = data;
-      setDataAuthLink(authLink);
-    } catch (error) {
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const checktoken = async () => {
     setLoadingCheckToken(true);
     const token = Cookies.get("token");
+
     if (!token) {
       setIsTokenValid(false);
       setIsAuthenticated(false);
@@ -202,11 +97,10 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         toast.success("Sesión recuperada.");
         setLoadingCheckToken(false);
         checkauthapplications();
-        const result = await loadData(response[0]);
+        const result = await services.helper.loadData(response[0]);
         if (!result) return;
         setAllLinks(result);
       } else {
-        setIsAuthenticated(false);
         setIsTokenValid(false);
         setLoadingCheckToken(false);
         Cookies.remove("token");
@@ -214,7 +108,6 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       }
     } catch (error) {
       console.error("Error en la verificación del token:", error);
-      setIsAuthenticated(false);
       setIsTokenValid(false);
       setLoadingCheckToken(false);
       toast.error("Token Invalido, vuelva a iniciar sesión.");
@@ -227,32 +120,68 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     try {
       toast("Consultando usuario...");
       const response: LoginResponse = await services.users.login(credentials);
+
       if (!response.token) {
         toast.error("Usuario o contraseña incorrectos.");
-        setIsAuthenticated(false);
         setIsTokenValid(false);
         throw new Error("Usuario o contraseña incorrectos.");
       }
 
-      const accessToken = response.token;
-
-      Cookies.set("token", accessToken, { expires: 7, sameSite: "lax" });
-
+    
       toast.success("Bienvenido!! " + response.checkacceso.nombre);
 
       setDataUSer(response.checkacceso);
       setIsAuthenticated(true);
       setIsTokenValid(true);
       setStatusPassword(response.statuspass);
-      // await loadData(response.checkacceso);
+      // await new Promise((resolve) => setTimeout(resolve, 100));
       return response;
     } catch (error) {
-      // setIsAuthenticated(false);
       setIsTokenValid(false);
       console.error("Error al iniciar sesión:", error);
       throw new Error("Error al iniciar sesión");
     }
   };
+
+  const logout = async () => {
+    try {
+      await users.logout();
+      Cookies.remove("token");
+      setIsAuthenticated(false);
+      toast.success("Sesión cerrada correctamente.");
+      setIsTokenValid(false);
+    } catch (error) {
+      setIsTokenValid(false);
+      console.error("Error al cerrar sesión:", error);
+      toast.error("Error al cerrar sesión. Inténtalo de nuevo.");
+    }
+  };
+
+  const checkauthapplications = async () => {
+    const token = Cookies.get("token"); 
+
+    if (!token) {
+      logout();
+      setIsTokenValid(false);
+      toast.error("No hay token disponible. Por favor, inicie sesión.");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      if (!dataUser) return;
+      if (!dataUser.idusuario) return;
+      const data = await services.applications.AllApplicationAuthByIdusuario(
+        dataUser.idusuario
+      );
+      const authLink: LinkApp[] = data;
+      setDataAuthLink(authLink);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   useEffect(() => {
     checktoken();
@@ -268,7 +197,6 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         dataUser: dataUser!,
         isAuthenticated,
         isTokenValid,
-        loadData,
         loading,
         loadingCheckToken,
         loginContext,
