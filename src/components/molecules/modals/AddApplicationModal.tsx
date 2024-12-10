@@ -72,6 +72,7 @@ const AddApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
     type: "",
     idgrupoaplicaciones: 0,
   };
+  
   //carga de grupos
   useEffect(() => {
     const fetchGroups = async () => {
@@ -208,12 +209,13 @@ const AddApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
         </Button>
       ) : (
         <Button
-          colorScheme="blue.500"
-          color={"blue.500"}
+          colorScheme="gray.2 00"
+          color={"gray.200"}
           leftIcon={<FaPlusCircle />}
           onClick={onOpen}
           variant="outline"
           w="100%"
+          _hover={{ bg: "gray.100", color: "gray.800" }}
         >
           {typeform === "public"
             ? "AÑADIR NUEVO ACCESO"

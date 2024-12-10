@@ -20,6 +20,7 @@ import {
 } from "@chakra-ui/react";
 import { services } from "../../../services/index";
 import { AuthAppType } from "../../../types/apptype";
+import { useAuth } from "../../../context/AuthContext";
 
 type AuthorizationModalProps = {
   isOpen: boolean;
@@ -34,6 +35,7 @@ const AuthorizationModal: React.FC<AuthorizationModalProps> = ({
   data,
   type,
 }) => {
+  const { dataUser, setAllLinks } = useAuth();
   const [authorizations, setAuthorizations] = useState<AuthAppType[]>([]);
   const [filter, setFilter] = useState(""); // Estado para el filtro
   const [filteredAuthorizations, setFilteredAuthorizations] = useState<
@@ -106,6 +108,10 @@ const AuthorizationModal: React.FC<AuthorizationModalProps> = ({
       await services.applications.UpdateAuthApplicationPowerBiB(updatedAuth);
     }
 
+    const result = await services.helper.loadData(dataUser);
+    if (!result) return;
+    setAllLinks(result);
+
     setAuthorizations((prevAuth) =>
       prevAuth.map((item) =>
         item.idaplicaciones === authItem.idaplicaciones &&
@@ -154,9 +160,7 @@ const AuthorizationModal: React.FC<AuthorizationModalProps> = ({
               <Tbody>
                 {filteredAuthorizations.map((auth) => (
                   <Tr key={`${auth.idaplicaciones}-${auth.idusuario}`}>
-                    <Td>
-                      {type === "Aplicacion" ? auth.usuario : auth.nombre}
-                    </Td>
+                    <Td>{type === "Aplicacion" ? auth.email : auth.nombre}</Td>
                     <Td>{auth.auth}</Td>
                     <Td>{auth.hab}</Td>
                     <Td>
