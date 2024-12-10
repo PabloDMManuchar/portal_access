@@ -42,12 +42,11 @@ import EditApplicationModal from "../modals/EditApplicationModal";
 
 const TableAppPrivateUserTabs = () => {
   const [applications, setApplications] = useState<Aplicacion[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [filter, setFilter] = useState("");
   const [selectedApp, setSelectedApp] = useState<Aplicacion | null>(null); // App seleccionada para editar
   const [appToDelete, setAppToDelete] = useState<Aplicacion | null>(null);
   const toast = useToast();
-  const { dataUser } = useAuth();
+  const { dataUser, setAllLinks } = useAuth();
   // const [authorizations, setAuthorizations] = useState<AuthAppType[]>([]);
 
   const {
@@ -60,12 +59,15 @@ const TableAppPrivateUserTabs = () => {
   // Fetch applications from the server
   const fetchApplications = async () => {
     try {
-      setIsLoading(true);
+      // setIsLoading(true);
       const data: Aplicacion[] =
         await services.applications.AllApplicationAuthByIdusuario(
           dataUser.idusuario
         );
       setApplications(data);
+      const result = await services.helper.loadData(dataUser);
+      if (!result) return;
+      setAllLinks(result);
     } catch (error) {
       console.error("Error fetching applications:", error);
       toast({
@@ -76,7 +78,7 @@ const TableAppPrivateUserTabs = () => {
         isClosable: true,
       });
     } finally {
-      setIsLoading(false);
+      // setIsLoading(false);
     }
   };
 
@@ -238,7 +240,7 @@ const TableAppPrivateUserTabs = () => {
               <Td>{app.descripcion}</Td>
               {type !== "sugest" && ( // Ocultar botones si es 'sugest'
                 <>
-                  <Td>
+                  <Td display={'flex'} justifyContent={'center'}>
                     {" "}
                     <Tooltip label="mostrar/ocultar">
                       <IconButton
@@ -260,6 +262,7 @@ const TableAppPrivateUserTabs = () => {
                         colorScheme="blue"
                         onClick={() => handleEdit(app)}
                         icon={<FaEdit />}
+                        mr={2}
                       />
                     </Tooltip>
                     <Tooltip label="Eliminar aplicación">
@@ -305,14 +308,7 @@ const TableAppPrivateUserTabs = () => {
     );
   };
 
-  if (isLoading) {
-    return (
-      <Box textAlign="center" py={6}>
-        <Spinner size="xl" />
-        <Text>Cargando aplicaciones...</Text>
-      </Box>
-    );
-  }
+
 
   return (
     <Box p={6} textColor="white" maxHeight="30rem" overflowY="auto">

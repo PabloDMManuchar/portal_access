@@ -16,6 +16,7 @@ import {
   Button,
   Input,
   useDisclosure,
+  Flex,
 } from "@chakra-ui/react";
 import { Aplicacion } from "../../../types/apptype";
 import { UserType, AreaType } from "../../../types/usertype";
@@ -77,28 +78,43 @@ const Authorizationcontentpage = () => {
   };
 
   return (
-    <Box p={4} maxW="600px" mx="auto" textColor={"white"}>
-      <Heading as="h2" size="md" mb={4} textAlign="center">
+    <Box
+      p={4}
+      // maxW="600px"
+      mx="auto"
+      textColor={"white"}
+      bg={"gray.800"}
+      borderColor={"gray.700"}
+      borderRadius="md"
+      borderWidth={"2px"}
+      // color={"gray.200"}
+      opacity={0.8}
+    >
+      {/* <Heading as="h2" size="md" mb={4} textAlign="center">
         Seleccione una tabla para mostrar
-      </Heading>
+      </Heading> */}
 
-      <RadioGroup
-        onChange={(value) => setSelectedOption(value)}
-        value={selectedOption}
-      >
-        <Stack direction="row" spacing={5} justify="center" mb={4}>
-          <Radio value="Aplicaciones">Aplicaciones</Radio>
-          <Radio value="Usuario">Usuarios</Radio>
-          <Radio value="Area">Areas</Radio>
-        </Stack>
-      </RadioGroup>
+      <Flex justifyContent={'center'} gap={4} alignItems={'center'}>
+        <RadioGroup
+          onChange={(value) => setSelectedOption(value)}
+          value={selectedOption}
+        >
+          <Stack direction="row" spacing={5} justify="center" mb={4}>
+            <Radio value="Aplicaciones">Aplicaciones</Radio>
+            <Radio value="Usuario">Usuarios</Radio>
+            <Radio value="Area">Areas</Radio>
+          </Stack>
+        </RadioGroup>
+        <Box width={"16rem"}>
+          <Input
+            placeholder="Buscar..."
+            mb={4}
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+          />
+        </Box>
 
-      <Input
-        placeholder="Buscar..."
-        mb={4}
-        value={searchText}
-        onChange={(e) => setSearchText(e.target.value)}
-      />
+      </Flex>
 
       {loading ? (
         <Center>

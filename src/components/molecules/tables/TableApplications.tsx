@@ -20,26 +20,32 @@ import {
   IconButton,
   Image,
   useToast,
+  Flex,
 } from "@chakra-ui/react";
 import { FaCheck, FaTimes, FaEdit } from "react-icons/fa";
 import { services } from "../../../services/index";
 import { Aplicacion, EnabledDisabledApplication } from "../../../types/apptype";
 
 import EditApplicationModal from "../modals/EditApplicationModal";
+import { useAuth } from "../../../context/AuthContext";
+import AddApplicationModal from "../modals/AddApplicationModal";
 
 const TableApplications = () => {
   const [applications, setApplications] = useState<Aplicacion[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [filter, setFilter] = useState("");
   const [selectedApp, setSelectedApp] = useState<Aplicacion | null>(null); // App seleccionada para editar
   const toast = useToast();
+  const { dataUser, setAllLinks } = useAuth();
 
   // Fetch applications from the server
   const fetchApplications = async () => {
     try {
-      setIsLoading(true);
       const data: Aplicacion[] = await services.applications.AllApplications();
       setApplications(data);
+
+      const result = await services.helper.loadData(dataUser);
+      if (!result) return;
+      setAllLinks(result);
     } catch (error) {
       console.error("Error fetching applications:", error);
       toast({
@@ -49,8 +55,6 @@ const TableApplications = () => {
         duration: 3000,
         isClosable: true,
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -109,7 +113,7 @@ const TableApplications = () => {
     app.nombre.toLowerCase().includes(filter)
   );
 
-  const renderTable = (type: string) => {
+  const RenderTable = (type: string) => {
     const filteredData = filteredApplications.filter(
       (app) => app.type === type
     );
@@ -172,20 +176,18 @@ const TableApplications = () => {
     );
   };
 
-  if (isLoading) {
-    return (
-      <Box textAlign="center" py={6}>
-        <Spinner size="xl" />
-        <Text>Cargando aplicaciones...</Text>
-      </Box>
-    );
-  }
-
   return (
-    <Box p={6} textColor="white">
-      <Heading size="md" mb={4}>
-        Tus Accesos a Aplicaciones
-      </Heading>
+    <Box
+      p={6}
+      textColor="white"
+      bg={"gray.800"}
+      borderColor={"gray.700"}
+      borderRadius="md"
+      borderWidth={"2px"}
+      color={"gray.200"}
+      opacity={0.8}
+    >
+      <Flex gap={4} justifyContent={'center'}>
         <Input
           placeholder="Buscar aplicaciones..."
           value={filter}
@@ -193,18 +195,25 @@ const TableApplications = () => {
           mb={4}
           w={"16rem"}
         />
-      <Tabs variant="soft-rounded" colorScheme="teal">
+        <Flex width={"36rem"} gap={"2rem"}>
+          <AddApplicationModal typeform="public" />
+          <AddApplicationModal typeform="powerBi" />
+        </Flex>
+      </Flex>
+
+      <Tabs>
         <TabList>
           <Tab>Publicas</Tab>
           <Tab>Power BI A</Tab>
           <Tab>Power BI B</Tab>
           <Tab>Sugerencias</Tab>
         </TabList>
+
         <TabPanels>
-          <TabPanel>{renderTable("public")}</TabPanel>
-          <TabPanel>{renderTable("powerBiA")}</TabPanel>
-          <TabPanel>{renderTable("powerBiB")}</TabPanel>
-          <TabPanel>{renderTable("sugest")}</TabPanel>
+          <TabPanel>{RenderTable("public")}</TabPanel>
+          <TabPanel>{RenderTable("powerBiA")}</TabPanel>
+          <TabPanel>{RenderTable("powerBiB")}</TabPanel>
+          <TabPanel>{RenderTable("sugest")}</TabPanel>
         </TabPanels>
       </Tabs>
       {selectedApp && (

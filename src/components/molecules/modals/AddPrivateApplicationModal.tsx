@@ -19,6 +19,8 @@ import {
   SimpleGrid,
   IconButton,
   Text,
+  // InputGroup,
+  // InputLeftAddon,
 } from "@chakra-ui/react";
 import * as Icons from "react-icons/fa"; // Importa todos los iconos de FontAwesome
 import { FaCheckCircle, FaPlusCircle } from "react-icons/fa";
@@ -28,6 +30,7 @@ import {
 } from "../../../types/apptype";
 import { services } from "../../../services/index";
 import { newApplicationPrivateSchema } from "../../../schemas/applicationSchema";
+import { useAuth } from "../../../context/AuthContext";
 
 interface AddPrivateApplicationModalProps {
   isAddButtonMyPrifile?: boolean;
@@ -40,6 +43,7 @@ const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
 }) => {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { dataUser, setAllLinks } = useAuth();
 
   const [formData, setFormData] = useState<NewAplicacionPrivate>({
     nombre: "",
@@ -124,8 +128,14 @@ const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
       } else {
         if (type === "private") {
           await services.applications.CreateApplicationPrivate(formData);
+          const result = await services.helper.loadData(dataUser);
+          if (!result) return;
+          setAllLinks(result);
         } else {
           await services.applications.CreateAccessPowerBiPrivate(formData);
+          const result = await services.helper.loadData(dataUser);
+          if (!result) return;
+          setAllLinks(result);
         }
         onClose();
         setFormData(initialFormData); // Restablece el formulario
@@ -223,6 +233,16 @@ const AddPrivateApplicationModal: React.FC<AddPrivateApplicationModalProps> = ({
             />
             <FormLabel>URL </FormLabel>
             <Input name="url" value={formData.url} onChange={handleChange} />
+
+            {/* <InputGroup size="sm">
+              <InputLeftAddon bg={"gray.600"}>https://</InputLeftAddon>
+              <Input
+                name="url"
+                placeholder={"www.ejemplo.com"}
+                onChange={handleChange}
+              />
+            </InputGroup> */}
+
             {type === "powerBiC" && (
               <Input
                 type="hidden"
