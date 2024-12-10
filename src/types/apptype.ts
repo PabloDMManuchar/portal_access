@@ -118,4 +118,5 @@ export interface AuthAppType {
   idaplicaciones: number;
   idusuario: number;
   idarea: number;
+  email: string;
 }

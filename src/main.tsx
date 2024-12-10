@@ -5,7 +5,7 @@ import "./index.css";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "./theme/theme.ts";
 import { Toaster } from "sonner";
-import { AuthProvider } from "./context/AuthContext.tsx"; // Importar AuthProvider
+import { AuthProvider } from "./context/AuthContext.tsx";
 import { register } from "register-service-worker";
 
 register(`/service-worker.js`);
