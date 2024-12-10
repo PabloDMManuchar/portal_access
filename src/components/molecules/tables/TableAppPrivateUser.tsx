@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Heading,
-  Spinner,
   Text,
   Input,
   Tab,
@@ -295,6 +294,7 @@ const TableAppPrivateUserTabs = () => {
                           idaplicaciones: app.idaplicaciones,
                           idusuario: dataUser.idusuario,
                           idarea: 0,
+                          email: dataUser.email,
                         })
                       }
                     />
